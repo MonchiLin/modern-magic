@@ -1,0 +1,15 @@
+{
+  "name": "fp-js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@types/ramda": "^0.25.51",
+    "mori": "^0.3.2",
+    "ramda": "^0.26.1",
+    "underscore": "^1.9.1"
+  },
+  "devDependencies": {
+    "typescript": "^3.3.3333"
+  }
+}
