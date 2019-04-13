@@ -4,12 +4,14 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@types/ramda": "^0.25.51",
-    "mori": "^0.3.2",
-    "ramda": "^0.26.1",
-    "underscore": "^1.9.1"
+    "lodash": "latest",
+    "monet": "latest",
+    "mori": "latest",
+    "ramda": "latest"
   },
   "devDependencies": {
-    "typescript": "^3.3.3333"
+    "@types/lodash": "^4.14.123",
+    "@types/ramda": "latest",
+    "typescript": "latest"
   }
 }
