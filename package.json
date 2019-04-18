@@ -7,10 +7,11 @@
     "lodash": "latest",
     "monet": "latest",
     "mori": "latest",
-    "ramda": "latest"
+    "ramda": "latest",
+    "rxjs": "latest"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.123",
+    "@types/lodash": "latest",
     "@types/ramda": "latest",
     "typescript": "latest"
   }
