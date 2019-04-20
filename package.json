@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "@types/node": "^11.13.6",
     "lodash": "latest",
     "moment": "^2.24.0",
     "monet": "latest",
