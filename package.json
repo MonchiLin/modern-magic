@@ -4,15 +4,15 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "@types/node": "^11.13.6",
     "lodash": "latest",
-    "moment": "^2.24.0",
+    "moment": "latest",
     "monet": "latest",
     "mori": "latest",
     "ramda": "latest",
     "rxjs": "latest"
   },
   "devDependencies": {
+    "@types/node": "latest",
     "@types/lodash": "latest",
     "@types/ramda": "latest",
     "typescript": "latest"
