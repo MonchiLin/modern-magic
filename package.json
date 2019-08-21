@@ -4,17 +4,21 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "day3": "^1.0.0",
     "lodash": "latest",
     "moment": "latest",
     "monet": "latest",
     "mori": "latest",
     "ramda": "latest",
-    "rxjs": "latest"
+    "rxjs": "latest",
+    "vue": "^2.6.10",
+    "vue-hot-reload-api": "^2.3.3"
   },
   "devDependencies": {
     "@types/lodash": "latest",
     "@types/ramda": "latest",
-    "typescript": "^3.5.3"
+    "@vue/component-compiler-utils": "^3.0.0",
+    "sass": "^1.22.10",
+    "typescript": "^3.5.3",
+    "vue-template-compiler": "^2.6.10"
   }
 }
