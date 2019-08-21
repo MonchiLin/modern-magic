@@ -1,0 +1,1 @@
+import Vue, { VueConstructor } from 'vue';
