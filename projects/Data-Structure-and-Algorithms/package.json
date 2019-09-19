@@ -1,0 +1,15 @@
+{
+  "name": "@magic/data-structure-and-algorithms",
+  "version": "1.0.0",
+  "description": "数据结构与算法实现",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@magic/predicates": "^0.0.1"
+  }
+}

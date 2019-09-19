@@ -28,6 +28,53 @@ class Stack {
         return this.top
     }
 
+    static fromArray(arr: any[]): Stack {
+        const stack = new Stack()
+
+        for (let e of arr) {
+            stack.push(e)
+        }
+
+        return stack
+    }
+
+    static fromFilter(arr: any[], cb) {
+        const stack = new Stack()
+
+        for (let e of arr) {
+            if (cb(e)) {
+                stack.push(e)
+            }
+        }
+
+        return stack
+    }
+
+
+    static fromArrayReverse(arr: any[]): Stack {
+        const stack = new Stack()
+
+        const newArr = arr.reverse()
+
+        for (let e of newArr) {
+            stack.push(e)
+        }
+
+        return stack
+    }
+
+    toString() {
+        let s = ""
+
+        let top = this.pop()
+        while (top) {
+            s += top
+            top = this.pop()
+        }
+
+        return s
+    }
+
     clear() {
         this.top = 0
     }

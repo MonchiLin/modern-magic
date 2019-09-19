@@ -1,4 +1,4 @@
-import Stack from '../stack'
+import Stack from '../Stack'
 
 describe('Stack 功能性测试', function () {
 

@@ -2,6 +2,11 @@
   "name": "modern-magic",
   "version": "0.0.0",
   "license": "MIT",
+  "scripts": {
+    "bootstrap": "yarn && lerna bootstrap --ignore-scripts && yarn run build",
+    "build": "tsc --build projects/tsconfig.project.json",
+    "watch": "tsc --build --watch projects/tsconfig.project.json"
+  },
   "private": true,
   "workspaces": [
     "projects/*"
@@ -10,11 +15,13 @@
     "ramda": "^0.26.1",
     "fp-ts": "^2.0.5",
     "jest": "^24.9.0",
-    "@types/jest": "^24.0.18",
     "ts-jest": "^24.1.0",
-    "typescript": "3.6.3"
+    "typescript": "3.6.3",
+    "ts-node": "^8.4.1"
   },
   "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/ramda": "^0.26.22",
     "lerna": "^3.16.4"
   }
 }
