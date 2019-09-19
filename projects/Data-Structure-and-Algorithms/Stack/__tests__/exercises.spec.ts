@@ -1,5 +1,5 @@
 import Stack from '../Stack'
-import {isBrackets, isNumber, isOperator} from '@magic/predicates'
+import {isLeftBrackets, isNumber, isOperator, isRightBrackets, isSpace} from '@magic/predicates'
 
 describe('Stack 练习', function () {
 
@@ -56,9 +56,11 @@ describe('Stack 练习', function () {
      *
      */
     it('练习二 中缀表达式转换后缀表达式', function () {
-        function infix2suffix(input: string) {
+        function Infix2Prefix(input: string) {
 
+            // 储存数字
             const operands = new Stack()
+            // 储存加减乘除以及括号
             const operators = new Stack()
 
             for (let i = 0; i < input.length; i++) {
@@ -68,10 +70,17 @@ describe('Stack 练习', function () {
                     operands.push(e)
                 } else if (isOperator(e)) {
                     operators.push(e)
-                } else if (isBrackets(e)) {
+                } else if (isLeftBrackets(e)) {
+                    operators.push(e)
+                } else if (isRightBrackets(e)) {
+                    // 遇到了右括号, 弹出最左边的两个
+                    const poped1 = operands.pop()
+                    const poped2 = operands.pop()
 
+                } else if (isSpace(e)) {
+                    console.log("传入了空格, 但是不做处理", e)
                 } else {
-                    throw new TypeError(`传入了错误的表达式${e}`)
+                    throw new TypeError(`传入了错误的表达式 ${e}`)
                 }
             }
 
@@ -79,7 +88,7 @@ describe('Stack 练习', function () {
         }
 
 
-        expect(infix2suffix("(3 + 4) × 5 - 6")).toBe("3 4 + 5 × 6 -")
+        expect(Infix2Prefix("(3 + 4) * 5 - 6")).toBe("3 4 + 5 * 6 -")
     });
 
 });

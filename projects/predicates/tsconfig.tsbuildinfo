@@ -21,6 +21,10 @@
         "version": "9c67dcc7ca897b61f58d57d487bc9f07950546e5ac8701cbc41a8a4fec48b091",
         "signature": "9c67dcc7ca897b61f58d57d487bc9f07950546e5ac8701cbc41a8a4fec48b091"
       },
+      "../../node_modules/typescript/lib/lib.dom.d.ts": {
+        "version": "2d53f3741e5a4f78a90f623387d71a1cc809bb258f10cdaec034b67cbf71022f",
+        "signature": "2d53f3741e5a4f78a90f623387d71a1cc809bb258f10cdaec034b67cbf71022f"
+      },
       "../../node_modules/typescript/lib/lib.es2015.core.d.ts": {
         "version": "4ab19088d508f9e62bfc61c157e8a65b2afaefa251ecca315e7d20b5b97b256f",
         "signature": "4ab19088d508f9e62bfc61c157e8a65b2afaefa251ecca315e7d20b5b97b256f"
@@ -110,8 +114,8 @@
         "signature": "63b66918290d794f73832a6d0325be5026236674fe8c0cb0b68d162000d7bbe8"
       },
       "./src/index.ts": {
-        "version": "f8e9477f9bc720bb9982a5294dd812716125821914c523a85f9a143f2f8f367b",
-        "signature": "a7778e4bc5823fbf0b97cba71a4fabaef99f0bc13df148c3821e71bb093d799f"
+        "version": "eba777dbdb7442581b426ec2f3ad83b4dfb48c230ba33950d1b472cb1415787d",
+        "signature": "d03a572a5f0145ed9b1690342908cbd541021845e2e14a2939a9de104351dfe8"
       },
       "../../node_modules/@babel/types/lib/index.d.ts": {
         "version": "9831162ce5f45c26f22caf9436a7e0dd0295001a7ec0e628405dd41e870148f5",
@@ -3203,17 +3207,18 @@
       }
     },
     "options": {
-      "noImplicitThis": true,
-      "preserveConstEnums": true,
-      "lib": [
-        "lib.es5.d.ts",
-        "lib.es2015.d.ts",
-        "lib.es2018.asynciterable.d.ts"
-      ],
-      "target": 3,
-      "module": 1,
-      "moduleResolution": 2,
       "allowJs": false,
+      "allowSyntheticDefaultImports": true,
+      "jsx": 2,
+      "lib": [
+        "lib.dom.d.ts",
+        "lib.es2017.d.ts"
+      ],
+      "target": 2,
+      "module": 1,
+      "noImplicitThis": false,
+      "preserveConstEnums": true,
+      "moduleResolution": 2,
       "esModuleInterop": true,
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
@@ -3221,17 +3226,12 @@
       "forceConsistentCasingInFileNames": true,
       "sourceMap": true,
       "declarationMap": true,
-      "noImplicitAny": true,
-      "declaration": true,
-      "noFallthroughCasesInSwitch": true,
-      "noImplicitReturns": true,
-      "stripInternal": true,
       "pretty": true,
-      "strictNullChecks": true,
-      "noUnusedLocals": true,
+      "noUnusedLocals": false,
       "rootDir": "./src",
       "outDir": "./lib",
       "composite": true,
+      "watch": true,
       "configFilePath": "./tsconfig.json"
     },
     "referencedMap": {
@@ -3252,6 +3252,10 @@
         "../../node_modules/@types/node/ts3.2/util.d.ts"
       ],
       "../../node_modules/typescript/lib/lib.es2018.d.ts": [
+        "../../node_modules/@types/node/util.d.ts",
+        "../../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
+      "../../node_modules/typescript/lib/lib.dom.d.ts": [
         "../../node_modules/@types/node/util.d.ts",
         "../../node_modules/@types/node/ts3.2/util.d.ts"
       ],
@@ -8451,6 +8455,10 @@
         "../../node_modules/@types/node/util.d.ts",
         "../../node_modules/@types/node/ts3.2/util.d.ts"
       ],
+      "../../node_modules/typescript/lib/lib.dom.d.ts": [
+        "../../node_modules/@types/node/util.d.ts",
+        "../../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
       "../../node_modules/typescript/lib/lib.es2015.core.d.ts": [
         "../../node_modules/@types/node/util.d.ts",
         "../../node_modules/@types/node/ts3.2/util.d.ts"
@@ -13628,6 +13636,7 @@
       "../../node_modules/typescript/lib/lib.es2016.d.ts",
       "../../node_modules/typescript/lib/lib.es2017.d.ts",
       "../../node_modules/typescript/lib/lib.es2018.d.ts",
+      "../../node_modules/typescript/lib/lib.dom.d.ts",
       "../../node_modules/typescript/lib/lib.es2015.core.d.ts",
       "../../node_modules/typescript/lib/lib.es2015.collection.d.ts",
       "../../node_modules/typescript/lib/lib.es2015.generator.d.ts",
@@ -13650,7 +13659,6 @@
       "../../node_modules/typescript/lib/lib.es2018.regexp.d.ts",
       "../../node_modules/typescript/lib/lib.esnext.intl.d.ts",
       "../../node_modules/typescript/lib/lib.esnext.bigint.d.ts",
-      "./src/index.ts",
       "../../node_modules/@babel/types/lib/index.d.ts",
       "../../node_modules/@types/babel__generator/index.d.ts",
       "../../node_modules/@types/babel__traverse/index.d.ts",
@@ -14422,7 +14430,8 @@
       "../../node_modules/@types/ramda/index.d.ts",
       "../../node_modules/@types/stack-utils/index.d.ts",
       "../../node_modules/@types/yargs-parser/index.d.ts",
-      "../../node_modules/@types/yargs/index.d.ts"
+      "../../node_modules/@types/yargs/index.d.ts",
+      "./src/index.ts"
     ]
   },
   "version": "3.6.3"

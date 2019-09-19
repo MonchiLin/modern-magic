@@ -6,10 +6,12 @@ const NavActions = {
 const States = {
     [NavActions.Show]: function () {
         console.log("banner 展开了, 点击后关闭")
+        // @ts-ignore
         this._currentState = NavActions.Hide
     },
     [NavActions.Hide]: function () {
         console.log("banner 展开了, 点击后关闭")
+        // @ts-ignore
         this._currentState = NavActions.Show
     },
 }

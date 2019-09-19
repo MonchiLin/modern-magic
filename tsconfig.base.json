@@ -1,11 +1,18 @@
 {
   "compilerOptions": {
-    "noImplicitThis": true,
-    "preserveConstEnums": true,
-    "target": "esnext",
-    "module": "esnext",
-    "moduleResolution": "node",
     "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "jsx": "react",
+    "lib": [
+      "dom",
+      "es2017"
+    ],
+    "target": "es6",
+    "module": "commonjs",
+
+    "noImplicitThis": false,
+    "preserveConstEnums": true,
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -13,13 +20,7 @@
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
     "declarationMap": true,
-    "noImplicitAny": false,
-    "declaration": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "stripInternal": true,
     "pretty": true,
-    "strictNullChecks": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": false
   }
 }

@@ -1,20 +1,11 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "./lib",
-    "rootDirs": [
-      "List",
-      "Stack"
-    ],
     "composite": true
   },
   "references": [
     {
       "path": "../predicates/tsconfig.json"
     }
-  ],
-  "include": [
-    "./List",
-    "./Stack"
   ]
 }

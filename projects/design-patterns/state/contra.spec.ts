@@ -1,6 +1,3 @@
-import { expect } from 'chai';
-import 'mocha'
-
 enum ContraEnumActions {
     Up,
     Forward,
