@@ -13,17 +13,17 @@ const ContraActions = {
     [ContraEnumActions.Backward]: () => console.log("backward"),
     [ContraEnumActions.Down]: () => console.log("down"),
     [ContraEnumActions.Shoot]: () => console.log("shoot"),
-}
+};
 
 class Contra {
-    _currentState: ContraEnumActions[] = []
+    _currentState: ContraEnumActions[] = [];
 
     constructor() {
 
     }
 
     changeState(...args: ContraEnumActions[]) {
-        this._currentState = args.map(state => state)
+        this._currentState = args.map(state => state);
 
         return this
     }
@@ -31,7 +31,7 @@ class Contra {
     contraGo() {
         this._currentState.forEach(state => {
             ContraActions[state].apply(this)
-        })
+        });
 
         return this
     }
@@ -40,7 +40,7 @@ class Contra {
 
 describe('Contra', function () {
     it('Case 1', function () {
-        const littered = new Contra()
+        const littered = new Contra();
         littered.changeState(ContraEnumActions.Up,ContraEnumActions.Shoot)
             .contraGo()
     });

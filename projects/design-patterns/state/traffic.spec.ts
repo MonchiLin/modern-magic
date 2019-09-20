@@ -14,13 +14,13 @@ const LightStates = {
     [LightActions.Yellow]: function () {
         console.log("黄灯转换到红灯")
     },
-}
+};
 
 class Traffic {
-    _currentState = LightActions.Red
+    _currentState = LightActions.Red;
 
     change(light: LightActions) {
-        this._currentState = light
+        this._currentState = light;
         LightStates[light].apply(this)
     }
 
@@ -28,8 +28,8 @@ class Traffic {
 
 describe("Traffic", () => {
     it('Case 1', () => {
-        const traffic =  new Traffic()
-        traffic.change(LightActions.Red)
+        const traffic =  new Traffic();
+        traffic.change(LightActions.Red);
         traffic.change(LightActions.Green)
     });
-})
+});

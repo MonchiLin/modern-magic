@@ -37,17 +37,16 @@ describe('Stack 功能性测试', function () {
         stack.push("李四");
 
         let poped = stack.pop();
+        expect(poped).toBe("李四");
 
         stack.push("王五");
-
-        expect(poped).toBe("李四");
         stack.push("王五1");
         stack.push("王五2");
         poped = stack.pop();
         expect(poped).toBe("王五2");
+
         stack.pop();
-        stack.pop();
-        expect(stack.pop()).toBe("张三")
+        expect(stack.pop()).toBe("王五")
 
     });
 
@@ -58,7 +57,7 @@ describe('Stack 功能性测试', function () {
         stack.push("第二");
         stack.push("第一");
 
-        expect(stack.length).toBe(3)
+        expect(stack.size).toBe(3)
     });
 
     it('case 3 PEEK', function () {

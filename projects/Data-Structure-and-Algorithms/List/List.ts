@@ -2,13 +2,13 @@
 export default class List {
     listSize = 0;
 
-    pos = 0
+    pos = 0;
 
-    dataStore = []
+    dataStore = [];
 
     clear() {
-        this.dataStore = []
-        this.listSize = 0
+        this.dataStore = [];
+        this.listSize = 0;
         this.pos = 0
     }
 
@@ -27,7 +27,7 @@ export default class List {
     }
 
     map(cb) {
-        const list = new List()
+        const list = new List();
 
         for (let i = 0; i < this.dataStore.length; i++) {
             list.append(cb(this.dataStore[i]))
@@ -53,25 +53,25 @@ export default class List {
     }
 
     insert(elemnt, after) {
-        const afterPos = this.find(after)
+        const afterPos = this.find(after);
 
         if (afterPos < -1) {
             return false
         }
 
-        this.dataStore.splice(afterPos, 0, elemnt)
-        this.listSize += 1
+        this.dataStore.splice(afterPos, 0, elemnt);
+        this.listSize += 1;
 
         return true
     }
 
     append(element) {
-        this.dataStore[this.listSize] = element
+        this.dataStore[this.listSize] = element;
         this.listSize += 1
     }
 
     filter(cb) {
-        const dataStore = []
+        const dataStore = [];
         for (let e of this.dataStore) {
             if (cb(e)) {
                 dataStore.push(e)
@@ -82,11 +82,11 @@ export default class List {
     }
 
     remove(element) {
-        const foundAt = this.find(element)
+        const foundAt = this.find(element);
 
         if (foundAt > -1) {
-            this.dataStore.splice(foundAt, 1)
-            this.listSize -= 1
+            this.dataStore.splice(foundAt, 1);
+            this.listSize -= 1;
             return true
         }
 
@@ -135,7 +135,7 @@ export default class List {
     }
 
     contains(element) {
-        const foundAt = this.find(element)
+        const foundAt = this.find(element);
 
         return foundAt > -1;
     }

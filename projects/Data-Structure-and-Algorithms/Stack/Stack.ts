@@ -17,15 +17,11 @@ class Stack {
      *
      */
 
-    top = 0;
-    dataStore = [];
+    size = 0;
+    items = {};
 
     get empty() {
-        return this.length === 0
-    }
-
-    get length() {
-        return this.top
+        return this.size === 0
     }
 
     static fromArray(arr: any[]): Stack {
@@ -72,30 +68,33 @@ class Stack {
             top = this.pop()
         }
 
-        if(split) {
+        if (split) {
             return s.slice(0, s.length - 1)
-        } {
+        } else {
             return s
         }
     }
 
     clear() {
-        this.top = 0
+        this.items = {};
+        this.size = 0
     }
 
     pop() {
-        if (this.top === 0) {
-            return
+        if (this.empty) {
+            return undefined
         }
-        const toped = this.dataStore[this.top];
-        this.dataStore.splice(this.top, 1);
-        this.top -= 1;
-        return toped
+
+        this.size -= 1;
+        const deleted = this.items[this.size];
+        delete this.items[this.size];
+
+        return deleted
     }
 
     push(element) {
-        this.top += 1;
-        this.dataStore[this.top] = element
+        this.items[this.size] = element;
+        this.size += 1
     }
 
     /**
@@ -103,7 +102,11 @@ class Stack {
      * 返回栈顶, 但是不会删除栈顶
      */
     peek() {
-        return this.dataStore[this.top]
+        if (this.empty) {
+            return undefined
+        }
+
+        return this.items[this.size - 1]
     }
 }
 
