@@ -113,9 +113,13 @@
         "version": "63b66918290d794f73832a6d0325be5026236674fe8c0cb0b68d162000d7bbe8",
         "signature": "63b66918290d794f73832a6d0325be5026236674fe8c0cb0b68d162000d7bbe8"
       },
+      "./src/re.ts": {
+        "version": "2ec6751308474fc2a2562f35a5c1c8f9412019c906459bd0091912ef279e1451",
+        "signature": "426cf0305e13b61054473a18d94bd63eff168d31646341e37d37c912b0609ce1"
+      },
       "./src/index.ts": {
-        "version": "eba777dbdb7442581b426ec2f3ad83b4dfb48c230ba33950d1b472cb1415787d",
-        "signature": "d03a572a5f0145ed9b1690342908cbd541021845e2e14a2939a9de104351dfe8"
+        "version": "4f99e4d0fd74b116104e0e122feb9450dfca5eab4d96559743bc2ea208207483",
+        "signature": "0033b9c1d961a5028c3386055239d1ff0393fff42b8b66e639bf7ba7d3cae784"
       },
       "../../node_modules/@babel/types/lib/index.d.ts": {
         "version": "9831162ce5f45c26f22caf9436a7e0dd0295001a7ec0e628405dd41e870148f5",
@@ -3347,7 +3351,12 @@
         "../../node_modules/@types/node/util.d.ts",
         "../../node_modules/@types/node/ts3.2/util.d.ts"
       ],
+      "./src/re.ts": [
+        "../../node_modules/@types/node/util.d.ts",
+        "../../node_modules/@types/node/ts3.2/util.d.ts"
+      ],
       "./src/index.ts": [
+        "./src/re.ts",
         "../../node_modules/@types/node/util.d.ts",
         "../../node_modules/@types/node/ts3.2/util.d.ts"
       ],
@@ -8547,6 +8556,9 @@
         "../../node_modules/@types/node/util.d.ts",
         "../../node_modules/@types/node/ts3.2/util.d.ts"
       ],
+      "./src/index.ts": [
+        "./src/re.ts"
+      ],
       "../../node_modules/@babel/types/lib/index.d.ts": [
         "../../node_modules/@types/node/util.d.ts",
         "../../node_modules/@types/node/ts3.2/util.d.ts"
@@ -13659,6 +13671,7 @@
       "../../node_modules/typescript/lib/lib.es2018.regexp.d.ts",
       "../../node_modules/typescript/lib/lib.esnext.intl.d.ts",
       "../../node_modules/typescript/lib/lib.esnext.bigint.d.ts",
+      "./src/index.ts",
       "../../node_modules/@babel/types/lib/index.d.ts",
       "../../node_modules/@types/babel__generator/index.d.ts",
       "../../node_modules/@types/babel__traverse/index.d.ts",
@@ -14431,7 +14444,7 @@
       "../../node_modules/@types/stack-utils/index.d.ts",
       "../../node_modules/@types/yargs-parser/index.d.ts",
       "../../node_modules/@types/yargs/index.d.ts",
-      "./src/index.ts"
+      "./src/re.ts"
     ]
   },
   "version": "3.6.3"

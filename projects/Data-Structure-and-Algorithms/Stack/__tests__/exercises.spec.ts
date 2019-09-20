@@ -1,5 +1,122 @@
 import Stack from '../Stack'
-import {isLeftBrackets, isNumber, isOperator, isRightBrackets, isSpace} from '@magic/predicates'
+import {isLeftBrackets, isNumber, isOperator, isRightBrackets, isSpace, isWord} from '@magic/predicates'
+
+
+function 比较优先级(s1, s2) {
+    const priorities = {
+        "+": 1,
+        "-": 1,
+        "*": 2,
+        "/": 2,
+        "(": 3,
+        ")": 3
+    };
+    return priorities[s1] > priorities[s2]
+}
+
+function infix2Suffix(input: string) {
+    const input$ = input.split("");
+
+    const Output = new Stack();
+    const Operator = new Stack();
+
+
+    for (let e of input$) {
+        if (isSpace(e)) {
+            continue
+        }
+
+        if (isNumber(e)) {
+            Output.push(e);
+            continue
+        }
+
+        let peeked = Operator.peek();
+
+        if (isOperator(e)) {
+            if (Operator.empty) {
+                Operator.push(e);
+                continue
+            }
+
+            if (isLeftBrackets(peeked)) {
+                Operator.push(e);
+                continue
+            }
+
+            if (比较优先级(e, peeked)) {
+                Operator.push(e);
+                continue
+            }
+
+            // 栈顶元素高于或者等于当前元素
+            if (!比较优先级(e, peeked)) {
+
+                // 只要操作符栈没空并且当前不是开括号
+                while (
+                    !Operator.empty
+                    && !isLeftBrackets(Operator.peek())
+                    && !比较优先级(e, Operator.peek())
+                    ) {
+                    const poped = Operator.pop();
+                    Output.push(poped)
+                }
+
+                Operator.push(e);
+
+                continue
+            }
+
+        }
+
+        if (isLeftBrackets(e)) {
+            Operator.push(e);
+            continue
+        }
+
+        if (isRightBrackets(e)) {
+
+            while (
+                !Operator.empty
+                && !isLeftBrackets(Operator.peek())
+                ) {
+                Output.push(Operator.pop())
+            }
+
+            // 弹出 左括号
+            Operator.pop();
+            continue
+        }
+
+        console.log("居然有没有处理的情况 => ", e)
+
+    }
+
+    let poped = Operator.pop();
+    while (poped) {
+        Output.push(poped);
+        poped = Operator.pop()
+    }
+
+    return Output
+}
+
+function calcSuffix(stack: Stack) {
+    let poped = stack.pop();
+    while (poped) {
+
+        if (isOperator(poped)) {
+            const poepd1 = stack.pop();
+            const poepd2 = stack.pop();
+            const s = poepd1 + poped + poepd2;
+            stack.push(eval(s))
+        }
+
+        poped = stack.pop()
+    }
+    
+}
+
 
 describe('Stack 练习', function () {
 
@@ -12,34 +129,34 @@ describe('Stack 练习', function () {
     it('练习一', function () {
 
         function matchBrackets(input: string) {
-            const stack = new Stack()
+            const stack = new Stack();
 
 
             for (let index in input.split("")) {
-                const e = input[index]
+                const e = input[index];
 
                 if (e === "(") {
                     stack.push(e)
                 } else if (e === ")") {
-                    const top = stack.pop()
+                    const top = stack.pop();
 
                     if (top !== "(") {
-                        console.log(`当前位置${index}, 缺少 )`)
+                        console.log(`当前位置${index}, 缺少 )`);
                         return false
                     }
                 }
             }
 
             if (stack.length === 1) {
-                console.log(input, "仅匹配到了一个括号")
+                console.log(input, "仅匹配到了一个括号");
                 return false
             }
 
             return true
         }
 
-        expect(matchBrackets("2.3 + 23 / 12 + (3.14159×0.24")).toBe(false)
-        expect(matchBrackets("2.3 + 23 / 12 + (3.14159×0.24)")).toBe(true)
+        expect(matchBrackets("2.3 + 23 / 12 + (3.14159×0.24")).toBe(false);
+        expect(matchBrackets("2.3 + 23 / 12 + (3.14159×0.24)")).toBe(true);
         expect(matchBrackets("2.3 + (23 / 12) + (3.14159×0.24)")).toBe(true)
     });
 
@@ -56,40 +173,28 @@ describe('Stack 练习', function () {
      *
      */
     it('练习二 中缀表达式转换后缀表达式', function () {
-        function Infix2Prefix(input: string) {
+        const output = infix2Suffix("(3 + 4) * 5 - 6")
+            .toString(" ")
+            .split("")
+            .reverse()
+            .join("");
 
-            // 储存数字
-            const operands = new Stack()
-            // 储存加减乘除以及括号
-            const operators = new Stack()
-
-            for (let i = 0; i < input.length; i++) {
-                const e = input[i]
-
-                if (isNumber(e)) {
-                    operands.push(e)
-                } else if (isOperator(e)) {
-                    operators.push(e)
-                } else if (isLeftBrackets(e)) {
-                    operators.push(e)
-                } else if (isRightBrackets(e)) {
-                    // 遇到了右括号, 弹出最左边的两个
-                    const poped1 = operands.pop()
-                    const poped2 = operands.pop()
-
-                } else if (isSpace(e)) {
-                    console.log("传入了空格, 但是不做处理", e)
-                } else {
-                    throw new TypeError(`传入了错误的表达式 ${e}`)
-                }
-            }
-
-
-        }
-
-
-        expect(Infix2Prefix("(3 + 4) * 5 - 6")).toBe("3 4 + 5 * 6 -")
+        expect(output).toBe("3 4 + 5 * 6 -")
     });
 
+    it('练习二 计算后缀表达式', function () {
+        // TODO
+        // expect(infix2Suffix("a + b * c + ( d * e + f ) * g")).toBe("a b c * + d e * f  + g * +")
+        expect(true).toBe(false)
+    });
+
+    /**
+     * 现实生活中栈的一个例子是佩兹糖果盒。想象一下你有一盒佩兹糖果，里面塞满了红
+     * 色、黄色和白色的糖果，但是你不喜欢黄色的糖果。使用栈（有可能用到多个栈）写一
+     * 段程序，在不改变盒内其他糖果叠放顺序的基础上，将黄色糖果移出。
+     */
+    it('删除黄色糖果', function () {
+        
+    });
 });
 

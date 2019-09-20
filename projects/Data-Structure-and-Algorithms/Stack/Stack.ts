@@ -17,8 +17,8 @@ class Stack {
      *
      */
 
-    top = 0
-    dataStore = []
+    top = 0;
+    dataStore = [];
 
     get empty() {
         return this.length === 0
@@ -29,7 +29,7 @@ class Stack {
     }
 
     static fromArray(arr: any[]): Stack {
-        const stack = new Stack()
+        const stack = new Stack();
 
         for (let e of arr) {
             stack.push(e)
@@ -39,7 +39,7 @@ class Stack {
     }
 
     static fromFilter(arr: any[], cb) {
-        const stack = new Stack()
+        const stack = new Stack();
 
         for (let e of arr) {
             if (cb(e)) {
@@ -52,9 +52,9 @@ class Stack {
 
 
     static fromArrayReverse(arr: any[]): Stack {
-        const stack = new Stack()
+        const stack = new Stack();
 
-        const newArr = arr.reverse()
+        const newArr = arr.reverse();
 
         for (let e of newArr) {
             stack.push(e)
@@ -63,16 +63,20 @@ class Stack {
         return stack
     }
 
-    toString() {
-        let s = ""
+    toString(split: string = "") {
+        let s = "";
 
-        let top = this.pop()
+        let top = this.pop();
         while (top) {
-            s += top
+            s += top + split;
             top = this.pop()
         }
 
-        return s
+        if(split) {
+            return s.slice(0, s.length - 1)
+        } {
+            return s
+        }
     }
 
     clear() {
@@ -80,13 +84,17 @@ class Stack {
     }
 
     pop() {
-        const toped = this.dataStore[this.top]
-        this.top -= 1
+        if (this.top === 0) {
+            return
+        }
+        const toped = this.dataStore[this.top];
+        this.dataStore.splice(this.top, 1);
+        this.top -= 1;
         return toped
     }
 
     push(element) {
-        this.top += 1
+        this.top += 1;
         this.dataStore[this.top] = element
     }
 
