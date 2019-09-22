@@ -147,7 +147,7 @@ describe('Stack 练习', function () {
                 }
             }
 
-            if (stack.length === 1) {
+            if (stack.size === 1) {
                 console.log(input, "仅匹配到了一个括号");
                 return false
             }

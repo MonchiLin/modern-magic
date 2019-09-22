@@ -7,7 +7,7 @@
  * 一队没人时，主持人也会把这个情况告诉大家。
  *
  */
-import Queue from "../Queue";
+import {Queue} from "../Queue";
 
 class Dancer {
     sex: string;
@@ -42,8 +42,8 @@ describe('舞伴分配问题', function () {
     it('should ', function () {
 
         while (
-            !males.empty()
-            && !females.empty()
+            !males.isEmpty()
+            && !females.isEmpty()
             ) {
 
             console.log(`男舞者 => ${females.dequeue().name}, 女舞者 => ${males.dequeue().name}`)
