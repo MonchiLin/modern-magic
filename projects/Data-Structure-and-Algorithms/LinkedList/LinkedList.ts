@@ -232,6 +232,10 @@ class DoubleNode extends Node {
 
 }
 
+class CircularLinkedList extends LinkedList {
+
+}
+
 export {
     LinkedList,
     simpleEQ,
