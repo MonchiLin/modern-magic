@@ -41,4 +41,16 @@ describe('测试 DQueue', function () {
         expect(dqueue.peekFront()).toBe("小王")
     });
 
+    it('测试 removeFront', function () {
+        expect.assertions(2);
+        const dqueue = new DQueue();
+        dqueue.addBack("张三");
+        dqueue.addBack("李四");
+        dqueue.addFront("小王");
+        dqueue.addBack("大王");
+
+        expect(dqueue.removeFront()).toBe("小王");
+        expect(dqueue.peekFront()).toBe("张三")
+    });
+
 });

@@ -117,7 +117,7 @@ class DQueue {
             return null
         }
 
-        const deleted = this.items[this.count];
+        const deleted = this.items[this.count - 1];
 
         delete this.items[this.count];
 
