@@ -1,6 +1,6 @@
 {
   "name": "@magic/data-structure-and-algorithms",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "数据结构与算法实现",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

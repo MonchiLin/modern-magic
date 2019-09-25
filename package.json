@@ -5,25 +5,31 @@
   "scripts": {
     "bootstrap": "yarn && lerna bootstrap --ignore-scripts && yarn run build",
     "build": "tsc --build projects/tsconfig.project.json",
-    "watch": "tsc --build --watch projects/tsconfig.project.json"
+    "watch": "tsc --build --watch projects/tsconfig.project.json",
+    "run:animations": "lerna run dev --scope @magic/data-structure-and-algorithms-animations --stream --no-prefix"
   },
   "private": true,
   "workspaces": [
     "projects/*"
   ],
   "dependencies": {
-    "ramda": "^0.26.1",
+    "axios": "^0.19.0",
     "fp-ts": "^2.0.5",
     "jest": "^24.9.0",
+    "ramda": "^0.26.1",
     "ts-jest": "^24.1.0",
-    "typescript": "3.6.3",
     "ts-node": "^8.4.1",
-    "axios": "^0.19.0",
-    "babel-jest": "^24.9.0"
+    "typescript": "3.6.3"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
     "@types/ramda": "^0.26.22",
-    "lerna": "^3.16.4"
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.4.0",
+    "eslint-config-alloy": "^3.0.0",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-vue": "^5.2.3",
+    "lerna": "^3.16.4",
+    "vue-eslint-parser": "5.0.0"
   }
 }
