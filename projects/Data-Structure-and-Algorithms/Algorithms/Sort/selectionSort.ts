@@ -72,7 +72,7 @@ function SelectionSort(array, compareFn = defaultCompare) {
             }
         }
 
-        console.log("indexMin", indexMin);
+        // console.log("indexMin", indexMin);
 
         if (i !== indexMin) {
             swap(array, i, indexMin)
@@ -83,6 +83,5 @@ function SelectionSort(array, compareFn = defaultCompare) {
     return array
 }
 
-export {
-    SelectionSort
-}
+export default SelectionSort
+

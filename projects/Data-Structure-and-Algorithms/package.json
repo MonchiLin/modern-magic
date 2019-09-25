@@ -2,9 +2,10 @@
   "name": "@magic/data-structure-and-algorithms",
   "version": "1.0.0",
   "description": "数据结构与算法实现",
-  "main": "index.js",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc -b ./tsconfig.json"
   },
   "keywords": [],
   "author": "",

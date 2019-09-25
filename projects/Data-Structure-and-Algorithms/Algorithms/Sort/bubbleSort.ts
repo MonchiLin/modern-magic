@@ -109,3 +109,5 @@ export {
     BubbleSort,
     ModifiedBubbleSort
 }
+
+export default ModifiedBubbleSort

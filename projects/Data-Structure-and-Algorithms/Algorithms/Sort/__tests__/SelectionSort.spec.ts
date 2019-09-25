@@ -1,4 +1,4 @@
-import {SelectionSort} from '../SelectionSort'
+import SelectionSort from '../SelectionSort'
 
 describe('测试 SelectionSort', function () {
     it('case 1', function () {

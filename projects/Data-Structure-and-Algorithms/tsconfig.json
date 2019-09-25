@@ -1,11 +1,24 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "./lib",
     "composite": true
   },
+  "files": [
+    "index.ts",
+    "util.ts"
+  ],
+  "include": [
+    "Algorithms",
+    "DataStructure"
+  ],
   "references": [
     {
       "path": "../predicates/tsconfig.json"
     }
+  ],
+  "exclude": [
+    "tests"
   ]
 }
