@@ -1,6 +1,6 @@
 {
   "name": "@magic/data-structure-and-algorithms-animations",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "> TODO: description",
   "author": "muxi2015 <lin91235043@gmail.com>",
   "homepage": "https://github.com/muxi2015/fp-js#readme",
@@ -24,6 +24,6 @@
     "url": "https://github.com/muxi2015/fp-js/issues"
   },
   "dependencies": {
-    "@magic/data-structure-and-algorithms": "^1.0.0"
+    "@magic/data-structure-and-algorithms": "^0.0.1"
   }
 }
