@@ -5,8 +5,42 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="React Mobx Starter">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type="text/css">
+        body {
+            background-color: black;
+        }
+
+        #static-loading {
+            width: 50%;
+            margin: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #static-loading img {
+            animation: InfiniteRotate 2s infinite linear;
+        }
+
+        @keyframes InfiniteRotate {
+            0% {
+                transform: rotateY(0deg);
+            }
+
+            100% {
+                transform: rotateY(360deg);
+            }
+        }
+
+    </style>
 </head>
 <body>
-    <div id="root"></div>
+<div id="root">
+    <div id="static-loading">
+        <img src="<%= require('./assets/images/transition.png') %>"/>
+    </div>
+</div>
+
 </body>
 </html>

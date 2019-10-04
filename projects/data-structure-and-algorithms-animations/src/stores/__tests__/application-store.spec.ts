@@ -1,4 +1,4 @@
-import { ApplicationStore } from './ApplicationStore';
+import { ApplicationStore } from '../application-store';
 
 test('that counters initial value is zero', () => {
     const applicationStore = new ApplicationStore();

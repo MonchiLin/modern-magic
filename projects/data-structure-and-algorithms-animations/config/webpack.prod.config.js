@@ -1,38 +1,13 @@
-const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const merge = require('webpack-merge')
+const baseConfig = require('./webpack.base.config.js')
 
 const config = {
   mode: 'production',
   entry: './src/index.tsx',
-  output: {
-    path: path.resolve(__dirname, '../dist'),
-    filename: '[name].bundle.js'
-  },
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js']
-  },
   devtool: 'source-map',
   module: {
-    rules: [{
-        test: /\.tsx?$/,
-        use: [{
-          loader: 'ts-loader',
-          options: {
-            onlyCompileBundledFiles: true,
-          }
-        }]
-      },
-      {
-        test: /\.(png|jpe?g|gif|svg)$/,
-        use: [{
-          loader: 'url-loader',
-          options: {
-            limit: 8192
-          }
-        }]
-      },
-    ],
+    rules: [],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -41,6 +16,6 @@ const config = {
       inject: 'body',
     })
   ]
-};
+}
 
-module.exports = config;
+module.exports = merge(baseConfig, config)

@@ -1,43 +1,18 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
+const webpack = require('webpack')
+const merge = require('webpack-merge')
+const baseConfig = require('./webpack.base.config.js')
 
-const HOST = process.env.HOST || '127.0.0.1';
-const PORT = process.env.PORT || '9000';
+const HOST = process.env.HOST || '127.0.0.1'
+const PORT = process.env.PORT || '9000'
 
 const config = {
   mode: 'development',
   entry: {
     app: './src/index.tsx',
   },
-  output: {
-    path: path.resolve(__dirname, '../dist'),
-    filename: '[name].bundle.js'
-  },
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js']
-  },
   devtool: 'eval-cheap-module-source-map',
   module: {
-    rules: [{
-        test: /\.tsx?$/,
-        use: [{
-          loader: 'ts-loader',
-          options: {
-            onlyCompileBundledFiles: true,
-          }
-        }]
-      },
-      {
-        test: /\.(png|jpe?g|gif|svg)$/,
-        use: [{
-          loader: 'url-loader',
-          options: {
-            limit: 8192
-          }
-        }]
-      },
-    ],
+    rules: [],
   },
   devServer: {
     host: HOST,
@@ -51,12 +26,7 @@ const config = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new HtmlWebpackPlugin({
-      template: 'src/index.html',
-      title: 'React Mobx Starter',
-      inject: 'body'
-    }),
   ]
-};
+}
 
-module.exports = config;
+module.exports = merge(baseConfig, config)

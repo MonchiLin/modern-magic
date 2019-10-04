@@ -1,7 +1,8 @@
 import * as React from "react";
-import {BrowserRouter, Route, NavLink} from 'react-router-dom'
+import {BrowserRouter, Route} from 'react-router-dom'
 
-const HomePage = () => <div>Home Page</div>;
+const HomePage = () => <div>
+</div>;
 const UsersPage = () => <div>Users Page</div>;
 
 const Layout = (props) => {
@@ -17,21 +18,20 @@ const Layout = (props) => {
                 {props.children}
             </main>
 
-
         </div>
     )
 };
 
-class App extends React.Component {
-    render() {
-        return <BrowserRouter>
+const App = () => {
+    return (
+        <BrowserRouter>
             <Layout>
                 <Route path="/" exact component={HomePage}/>
                 <Route path="/users" exact component={UsersPage}/>
             </Layout>
         </BrowserRouter>
-    }
-}
+    )
+};
 
 export {
     App

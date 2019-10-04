@@ -21,6 +21,8 @@ module.exports = {
     // myGlobal: false
   },
   rules: {
+    'no-debugger': "warn",
+
     // 这里填入你的项目需要的个性化配置
     'no-invalid-this': "off"
   }

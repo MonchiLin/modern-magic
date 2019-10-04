@@ -1,13 +1,11 @@
 import React from "react";
 
-type Props = {
-
-}
+type Props = {}
 
 const Transition = (props: Props) => {
     return (
         <div>
-
+            <img src={require("@/assets/images/transition.png")} alt=""/>
         </div>
     )
 };

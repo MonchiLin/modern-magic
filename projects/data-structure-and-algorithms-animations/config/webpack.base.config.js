@@ -1,9 +1,5 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
-
-const HOST = process.env.HOST || '127.0.0.1';
-const PORT = process.env.PORT || '9000';
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const config = {
   mode: 'development',
@@ -15,10 +11,14 @@ const config = {
     filename: '[name].bundle.js'
   },
   resolve: {
+    alias: {
+      '@': path.resolve(__dirname, '../src')
+    },
     extensions: ['.ts', '.tsx', '.js']
   },
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.tsx?$/,
         use: [{
           loader: 'ts-loader',
@@ -28,11 +28,22 @@ const config = {
         }]
       },
       {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          'style-loader',
+          // Translates CSS into CommonJS
+          'css-loader',
+          // Compiles Sass to CSS
+          'sass-loader',
+        ],
+      },
+      {
         test: /\.(png|jpe?g|gif|svg)$/,
         use: [{
           loader: 'url-loader',
           options: {
-            limit: 8192
+            limit: 10000
           }
         }]
       },
@@ -45,6 +56,6 @@ const config = {
       inject: 'body'
     }),
   ]
-};
+}
 
-module.exports = config;
+module.exports = config
