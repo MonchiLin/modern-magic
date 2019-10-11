@@ -374,7 +374,8 @@ export default App;
 
 ```
 
-renderer.tsx
+renderer.tsx 
+这样做虽然不会热更新, 但是效果已经勉强可以了.
 ```typescript
 import * as React from "react";
 import * as ReactDOM from "react-dom";
