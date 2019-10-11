@@ -25,7 +25,6 @@ notification 消息通知: react-native-push-notification
 图标库: react-native-vector-icons
 data engine: realm
 
-
 ## 坑与心得
 
 ### 我就想导个航
