@@ -36,6 +36,19 @@
  需要在根目录的 package.json 的重新配置 `workspaces`, 增加 `nohoist` 对象, 
  这个对象用于匹配不提升的 node_modules, 笔者的配置如下
 
+lerna.json
+```
+{
+  "packages": [
+    "projects/*"
+  ],
+  "version": "independent",
+  "useWorkspaces": true,
+  "npmClient": "yarn"
+}
+```
+
+packages.json
 ``` json
   "workspaces": {
     "packages": [     
