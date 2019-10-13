@@ -17,6 +17,7 @@
     "fp-ts": "^2.0.5",
     "jest": "^24.9.0",
     "ramda": "^0.26.1",
+    "ramda-adjunct": "^2.21.0",
     "ts-jest": "^24.1.0",
     "ts-node": "^8.4.1",
     "typescript": "3.6.3"

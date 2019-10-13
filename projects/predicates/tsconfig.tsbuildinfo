@@ -117,7 +117,7 @@
         "version": "2ec6751308474fc2a2562f35a5c1c8f9412019c906459bd0091912ef279e1451",
         "signature": "426cf0305e13b61054473a18d94bd63eff168d31646341e37d37c912b0609ce1"
       },
-      "./src/index.ts": {
+      "./src/reactivity.ts": {
         "version": "4f99e4d0fd74b116104e0e122feb9450dfca5eab4d96559743bc2ea208207483",
         "signature": "0033b9c1d961a5028c3386055239d1ff0393fff42b8b66e639bf7ba7d3cae784"
       },
@@ -3355,7 +3355,7 @@
         "../../node_modules/@types/node/util.d.ts",
         "../../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "./src/index.ts": [
+      "./src/reactivity.ts": [
         "./src/re.ts",
         "../../node_modules/@types/node/util.d.ts",
         "../../node_modules/@types/node/ts3.2/util.d.ts"
@@ -8556,7 +8556,7 @@
         "../../node_modules/@types/node/util.d.ts",
         "../../node_modules/@types/node/ts3.2/util.d.ts"
       ],
-      "./src/index.ts": [
+      "./src/reactivity.ts": [
         "./src/re.ts"
       ],
       "../../node_modules/@babel/types/lib/index.d.ts": [
@@ -13671,7 +13671,7 @@
       "../../node_modules/typescript/lib/lib.es2018.regexp.d.ts",
       "../../node_modules/typescript/lib/lib.esnext.intl.d.ts",
       "../../node_modules/typescript/lib/lib.esnext.bigint.d.ts",
-      "./src/index.ts",
+      "./src/reactivity.ts",
       "../../node_modules/@babel/types/lib/index.d.ts",
       "../../node_modules/@types/babel__generator/index.d.ts",
       "../../node_modules/@types/babel__traverse/index.d.ts",

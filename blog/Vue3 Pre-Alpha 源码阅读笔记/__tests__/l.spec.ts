@@ -77,4 +77,22 @@ describe('l', function () {
         console.log(proxies.bar)
     })
 
+    it("why is receiver?", () => {
+        const target = {
+            foo: 1
+        }
+
+        const handler = {
+            get(target, p: string | number | symbol, receiver: any): any {
+                console.log(receiver === proxies) // true
+
+                return Reflect.get(target, p, receiver)
+            },
+        }
+
+        const proxies = new Proxy(target, handler)
+
+        console.log(proxies.foo)
+    })
+
 });
