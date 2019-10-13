@@ -24,7 +24,7 @@ function track(target, type: "set" | "add" | "get", key: string) {
         depsMap.set(key, dep)
     }
 
-    if (!depsMap.has(effect)) {
+    if (!dep.has(effect)) {
         dep.add(effect)
     }
 
