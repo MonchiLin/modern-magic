@@ -12,15 +12,25 @@
 ## 解决方案
 
 导航库: react-native-navigation
+
 UI 组件库: NativeBase
+
 阿里云推送: react-native-aliyun-push
+
 高德地图: react-native-amap3d
+
 高德定位: react-native-amap-geolocation
+
 RN 动画库: react-native-animatable
+
 collapsible / Accordion (手风琴组件): react-native-collapsible
+
 dialog 组件: react-native-modal
+
 notification 消息通知: react-native-push-notification
+
 图标库: react-native-vector-icons
+
 data engine: realm
 
 
