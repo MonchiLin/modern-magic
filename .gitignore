@@ -118,3 +118,4 @@ dist
 .idea
 .cache/*
 *.tsbuildinfo
+blog/assets/*.psd
