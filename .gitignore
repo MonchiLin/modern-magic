@@ -119,3 +119,4 @@ dist
 .cache/*
 *.tsbuildinfo
 blog/assets/*.psd
+projects/playground
