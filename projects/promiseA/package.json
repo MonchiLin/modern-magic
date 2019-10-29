@@ -1,0 +1,13 @@
+{
+  "name": "promise-a",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "MonchiLin <lin912305043@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "promises-aplus-tests ./__tests__/promise.spec.ts"
+  },
+  "dependencies": {
+    "promises-aplus-tests": "*"
+  }
+}
