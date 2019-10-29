@@ -7492,7 +7492,7 @@ promise-retry@^1.1.1:
     err-code "^1.0.0"
     retry "^0.10.0"
 
-promises-aplus-tests@^2.1.2:
+promises-aplus-tests@*:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/promises-aplus-tests/-/promises-aplus-tests-2.1.2.tgz#76b7c5638968720861969cfbcd8795afd274885c"
   integrity sha1-drfFY4locghhlpz7zYeVr9J0iFw=
