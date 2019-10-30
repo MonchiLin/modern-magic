@@ -1,6 +1,7 @@
 # TypeScript 的使用心得
 
 [时间]: 2018/3/20
+
 [keyword]: Typescript, 心得, 最佳实践
 
 ## 如何将一个 实体( Entity ) 的所有 property 作为另一个对象的 key
