@@ -1,7 +1,7 @@
-# 使用 WebStrom 调试现代前端应用
+# 使用 WebStorm 调试现代前端应用
 
 * \[时间\]: 2019/10/30
-* \[keyword\]: 前端, webstrom
+* \[keyword\]: 前端, WebStorm
 
 
 
@@ -11,7 +11,7 @@
 > 2. 调试时看其他文件的源码不方便
 > 3. 最重要的当然是统一快捷键（误）
 >
-> 本文适用与  **jetbrains** 家的其他 IDE, 大部分内容来源均为 webstrom 的 [这一篇博文]( https://blog.jetbrains.com/webstorm/2018/01/how-to-debug-with-webstorm/ )
+> 本文适用与  **jetbrains** 家的其他 IDE, 大部分内容来源均为 WebStorm 的 [这一篇博文]( https://blog.jetbrains.com/webstorm/2018/01/how-to-debug-with-webstorm/ )
 
 
 
