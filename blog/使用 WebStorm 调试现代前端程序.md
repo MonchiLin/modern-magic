@@ -43,8 +43,16 @@ npm start
 
 在进入调试模式后在 ide 中的打断点下次程序执行到断点处 app 就会自动进入调试模式.
 
+
+*React 成功调试截图*
+
 ![示例](https://raw.githubusercontent.com/MonchiLin/modern-magic/master/blog/assets/auto-debugger-1.png)
 
+
+
+*Vue 成功调试截图*
+
+![示例](https://raw.githubusercontent.com/MonchiLin/modern-magic/f9f87cc1b231d646c4eaf19f6057fb88fb68f539/blog/assets/auto-debugger-vue.png)
 
 
 除了 React, Vue, Angular, Electron 都是可以调试的, 步骤也都相同.
@@ -59,9 +67,9 @@ npm start
 
 2. 调试时打开的 chrome 不是正常使用的 chrome, 没有数据.(下面两个路径, 都已通过用 chrome 打开 ` chrome://version/`找到, 参考附录 `设置 chrome path 和 user_data` 部分)
 
-   * 原因1: 未设置 chrome 的正确执行路径.
+   * 可能原因1:  未设置 chrome 的正确执行路径.
    * 解决方法: 打开 IDE 的设置页面, 找到 `Tools\Web Browsers`, 找到 chrome, 编辑 path 部分, 设置为正确的路径.
-   * 这个问题的第一个可能原因是未设置 user_data, chrome 有一个 user_data 数据, IDE 启动 chrome 的默认情况下会使用 IDE 内部的 user_data, 这就会运行一个什么数据都没有的 chrome.
+   * 可能原因2: 是未设置 user_data, chrome 有一个 user_data 数据, IDE 启动 chrome 的默认情况下会使用 IDE 内部的 user_data, 这就会运行一个什么数据都没有的 chrome.
    * 解决方法: 打开 IDE 的设置页面, 找到 `Tools\Web Browsers`, 找到 chrome, 点击右边的编辑图片, 勾选` Use custom user data directory`, 然后填入正确的路径即可.
 
 3. 调试时每次都打开一个新的窗口.
@@ -79,13 +87,11 @@ npm start
 
 ## 附录
 
-
-
 ### 安装插件
 
 ![step-1]( https://raw.githubusercontent.com/MonchiLin/modern-magic/master/blog/assets/install-ide-plugins-step-1.png )
 
-![step-3](https://raw.githubusercontent.com/MonchiLin/modern-magic/master/blog/assets/install-ide-plugins-step-2.png)
+![step-2](https://raw.githubusercontent.com/MonchiLin/modern-magic/master/blog/assets/install-ide-plugins-step-2.png)
 
 
 
