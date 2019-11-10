@@ -80,6 +80,26 @@ npm start
 
 
 
+### 在 vue-cli3+ 创建的项目中使用
+
+在 `vue-cli3+` 下创建的项目开发环境下 webpack devtool 是 `cheap-module-eval-source-map`，会导致 IDE 无法定位到文件位置，从而导致调试失效，在`vue.config.js`中修改为 `source-map`即可.
+
+1. 在项目根目录创建 `vue.config.js` 文件，如果已有则无需创建
+
+2. 修改 `webpack devtool` 为如下代码 (如果读者使用的是 `chainWebpack` 来配置 `webpack`, 请自行搜索如果修改 `webpack 配置`。)
+
+   ```javascript
+   module.exports = {
+       configureWebpack: config => {
+           if (process.env.NODE_ENV === 'development') {
+               config.devtool = 'source-map';
+           }
+       }
+   };
+   ```
+
+   
+
 
 
 
