@@ -54,12 +54,12 @@ class DFADesign < Struct.new(:start_state, :accept_states, :rulebooks)
 end
 
 
-rulebook = DFARuleBook
-               .new([
-                        FARule.new(1, 'a', 2), FARule.new(1, 'b', 1),
-                        FARule.new(2, 'a', 2), FARule.new(2, 'b', 3),
-                        FARule.new(3, 'a', 3), FARule.new(3, 'b', 3),
-                    ])
+# rulebook = DFARuleBook
+#                .new([
+#                         FARule.new(1, 'a', 2), FARule.new(1, 'b', 1),
+#                         FARule.new(2, 'a', 2), FARule.new(2, 'b', 3),
+#                         FARule.new(3, 'a', 3), FARule.new(3, 'b', 3),
+#                     ])
 
 
 # puts rulebook.next_state(1, "a")
@@ -75,9 +75,21 @@ rulebook = DFARuleBook
 # puts dfa.accepting?
 # dfa.read_string("aaa")
 
-dfa_design = DFADesign.new(1, [3], rulebook)
-puts dfa_design.accept?("a")
-puts dfa_design.accept?("ab")
+# dfa_design = DFADesign.new(1, [3], rulebook)
+# puts dfa_design.accept?("a")
+# puts dfa_design.accept?("ab")
+
+abRuleBook = DFARuleBook.new(
+    [
+        FARule.new("a", "a", "b"),
+        FARule.new("b", "b", "b"),
+        FARule.new("c", "b", "b"),
+    ]
+)
+
+def_design = DFADesign.new("a", ["b"], abRuleBook)
+# puts def_design.accept?("a")
+
 
 
 
