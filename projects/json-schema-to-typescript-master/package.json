@@ -1,0 +1,95 @@
+{
+  "name": "@magic/json-schema-to-typescript",
+  "version": "7.1.0",
+  "description": "compile json schema to typescript typings",
+  "main": "dist/src/index.js",
+  "bin": {
+    "json2ts": "dist/src/cli.js"
+  },
+  "typings": "dist/src/index.d.ts",
+  "engines": {
+    "node": ">=4.5.0"
+  },
+  "scripts": {
+    "build": "npm run clean && mkdir dist && npm run build:browser && npm run build:server",
+    "build:browser": "browserify src/index.ts -s jstt -p tsify > dist/bundle.js",
+    "build:server": "tsc -d",
+    "clean": "shx rm -rf dist",
+    "lint": "tslint -c tslint.json src/*.ts",
+    "tdd": "concurrently -r -p '' -k 'npm run watch' 'npm run watch:test'",
+    "test": "ava --verbose",
+    "prepublishOnly": "npm test",
+    "pretest": "npm run build",
+    "watch": "tsc -w",
+    "watch:test": "ava -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcherny/json-schema-to-typescript.git"
+  },
+  "keywords": [
+    "json",
+    "schema",
+    "typescript",
+    "compile",
+    "transpile",
+    "api",
+    "interface",
+    "typing",
+    "share"
+  ],
+  "author": "Boris Cherny <boris@performancejs.com> (http://performancejs.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bcherny/json-schema-to-typescript/issues"
+  },
+  "homepage": "https://github.com/bcherny/json-schema-to-typescript#readme",
+  "dependencies": {
+    "@types/json-schema": "^7.0.3",
+    "@types/node": ">=4.5.0",
+    "@types/prettier": "^1.16.1",
+    "cli-color": "^1.4.0",
+    "json-schema-ref-parser": "^6.1.0",
+    "json-stringify-safe": "^5.0.1",
+    "lodash": "^4.17.11",
+    "minimist": "^1.2.0",
+    "mz": "^2.7.0",
+    "prettier": "^1.18.2",
+    "stdin": "0.0.1"
+  },
+  "devDependencies": {
+    "@types/cli-color": "^0.3.29",
+    "@types/lodash": "^4.14.121",
+    "@types/minimist": "^1.2.0",
+    "@types/mz": "0.0.32",
+    "ava": "^1.2.1",
+    "browserify": "^16.2.3",
+    "browserify-shim": "^3.8.14",
+    "concurrently": "^4.1.0",
+    "shx": "^0.3.2",
+    "tsify": "^4.0.1",
+    "tslint": "^5.13.1",
+    "typescript": "^3.3.3333"
+  },
+  "ava": {
+    "files": [
+      "./dist/test/test.js"
+    ],
+    "snapshotDir": "./test/__snapshots__",
+    "sources": [
+      "./dist/test/e2e/*.js",
+      "./dist/test/normalizer/*.json",
+      "./dist/src/*.js",
+      "./test/resources/*.json"
+    ],
+    "vebose": true
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "prettier": "global:prettier"
+  }
+}

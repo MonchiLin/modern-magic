@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "sourceMap": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true

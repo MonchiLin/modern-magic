@@ -1,0 +1,9 @@
+{
+  "name": "TypeScriptParse",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@magic/json-schema-to-typescript": "*"
+  }
+}
