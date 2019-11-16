@@ -2,45 +2,9 @@ import BinarySearchTree from "./BinarySearchTree";
 import {BalanceFactor, defaultCompare, isNull} from "../../util";
 
 class AVLTree extends BinarySearchTree {
-    constructor(compareFn = defaultCompare) {
+    constructor(public compareFn = defaultCompare) {
         super(compareFn)
-    }
-
-    insert(key) {
-
-    }
-
-    insertNode(node, key) {
-
-    }
-
-    removeNode(node, key): null | any {
-
-    }
-
-    // 这里的 node 是中间节点
-    rotationLL(node) {
-        const temp = node.left;
-        node.left = temp.right;
-        node.right = node;
-        return temp
-    }
-
-    rotationRR(node) {
-        const tmp = node.right; // {1}
-        node.right = tmp.left; // {2}
-        tmp.left = node; // {3}
-        return tmp;
-    }
-
-    rotationLR(node) {
-        node.left = this.rotationRR(node.left);
-        return this.rotationLL(node);
-    }
-
-    rotationRL(node) {
-        node.right = this.rotationLL(node.right);
-        return this.rotationRR(node);
+        this.root = null
     }
 
     /**
@@ -104,7 +68,7 @@ class AVLTree extends BinarySearchTree {
      * @param node
      */
     getNodeHeight(node) {
-        if (isNull(node)) {
+        if (node == null) {
             return -1
         }
 
@@ -113,25 +77,46 @@ class AVLTree extends BinarySearchTree {
         ) + 1
     }
 
+    /**
+     * 如何判断树是否平衡：
+     * 1. 左子树和右子树一样高
+     * 2. 左子树比右子树高两两个
+     * 3. 右子树比左子树高两两个
+     * 除了以上三种情况，我们都认为树不平衡
+     *
+     * @param node
+     */
     getBalanceFactor(node) {
-        const heightDifference = this.getNodeHeight(node.left) - this.getNodeHeight(node.right);
+        // 得出两边子树的高度差
+        const heightDifference = this.getNodeHeight(node.left) - this.getNodeHeight(node.right)
 
         switch (heightDifference) {
             case -2:
-                // 右边不平衡
-                return BalanceFactor.UNBALANCED_RIGHT;
+                // 如果左子树高度比右子树低两
+                return BalanceFactor.UNBALANCED_RIGHT
             case -1:
-                // 右边稍微有一点不平衡
-                return BalanceFactor.SLIGHTLY_UNBALANCED_RIGHT;
+                return BalanceFactor.SLIGHTLY_UNBALANCED_RIGHT
             case 1:
-                // 左边稍微有一点不平衡
-                return BalanceFactor.SLIGHTLY_UNBALANCED_LEFT;
+                return BalanceFactor.SLIGHTLY_UNBALANCED_LEFT
             case 2:
-                // 左边不平衡
-                return BalanceFactor.UNBALANCED_LEFT;
+                return BalanceFactor.UNBALANCED_LEFT
             default:
                 return BalanceFactor.BALANCED
         }
+    }
+
+    rotationLL(node) {
+        const temp = node.left
+        node.left = temp.right
+        temp.right = node
+        return temp
+    }
+
+    rotationRR(node) {
+        const temp = node.left
+        node.left = temp.right
+        temp.right = node
+        return temp
     }
 
 }
