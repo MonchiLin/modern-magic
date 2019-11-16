@@ -5,33 +5,83 @@
 
 
 
-## 相关文件
-
-[cloneDeep 源码](https://github.com/lodash/lodash/blob/master/cloneDeep.js)
-
-[baseDeep 源码](https://github.com/lodash/lodash/blob/master/.internal/baseClone.js)
-
-上面两个文件都可以在 github 的 lodash 仓库里找到, 下面会以流程图的形式来解读, 请对应源码观看图片.
+> 本文分析以 [lodash.clonedeep]( https://github.com/lodash/lodash/blob/4.5.0-npm-packages/lodash.clonedeep/index.js ) 为准，因为主分支里面的代码比较分散。
 
 
 
 ## 前置知识
 
-**Host Object** : 宿主对象,  由宿主提供的对象, 例如 `window`, `setTimeout` [参考]( http://es5.github.io/#x4.3.8 ), 与之对应的还有下面这个.
+**Host Object** : 宿主对象,  由宿主提供的对象, 例如 `window`, `setTimeout` [参考]( http://es5.github.io/#x4.3.8 ), 与之对应的还有下面这个。
 
-**Native Object** : 原生对象,  由 ECMAScript 定义的规范从而实现的对象, 例如 `String`, `Math`, `RegExp`.
+**Native Object** : 原生对象,  由 ECMAScript 定义的规范从而实现的对象, 例如 `String`, `Math`, `RegExp`。
 
 
 
-**baseClone的参数 ** : 
+### 数据结构
 
-	* value: 需要克隆的值
-	* isDeep: 指定是否深克隆
-	* isFull: 指定是否克隆 Symbol
-	* customizer: 自定义的 clone 函数
-	* key: value 的 key
-	* object: value 的父对象
-	* stack
+在 cloneDeep 的过程中 lodash 会使用一些数据结构来提升性能。
+
+Set：
+
+MapCache：
+
+
+
+### 常量
+
+LARGE_ARRAY_SIZE： lodash 在深克隆时会处理循环引用，循环引用被存在栈中的，这也就意味着这个栈往往会很大，为了性能优化。
+
+HASH_UNDEFINED ：未定义的 Hash 值的内部表现。
+
+MAX_SAFE_INTEGER ：Javascript 中的最大整数。
+
+xxTag ：Javascript 变量的真实类型。通过 Object.prototype.toString.call(Variable) 获取。
+
+reRegExpChar ：用于匹配正则表达式
+
+freeGlobal ：尝试获取 NodeJS 中的 global 对象
+
+freeSelf：尝试获取 self 对象
+
+root：尝试从 freeGlobal 和 freeSelf 或者当前的 `this` 中获取 global 对象
+
+freeExports：尝试获取 export 对象
+
+freeModule：尝试获取 module 对象
+
+moduleExports: 检测是否使用的 common.js 模块系统
+
+
+
+### 函数
+
+addSetEntry：将一个变量存入 Set 中，类似 Set#add 并返回 Set（方便链式调用）。
+
+arrayEach：参考 [Array#foreach]( https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach )
+
+arrayPush：将两个数组合并，类似 Array#concat，并返回 Array（方便链式调用）。
+
+arrayReduce：参考 [Array#reduce](  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce )
+
+baseTimes：类似 Python 中的 range，接受一个起始值（数字），然后从 0 开始调用这个起始值本身的次数。
+
+getValue: 从一个对象中获取指定 `key` 若对象不存在则返回 null。
+
+isHostObject：参考`前置知识`开始部分。
+
+mapToArray：将 `Map` 转换为 `Array`，以 `[key,value]`的形式存入数组。
+
+overArg：接受两个变量`func,transform`，返回一个函数，执行该函数时返回将 func(transform()) 的结果。
+
+setToArray：将 `Set`转换为 `Array`。
+
+跳过一部分引用原生方法的变量。
+
+***
+
+Hash：创建一个 hash 对象，
+
+
 
 
 
@@ -89,13 +139,22 @@ function stackSet(key, value) {
 
 
 
-
-
-
-
 ## cloneDeep
 
+**baseClone的参数 ** : 
+
+	* value: 需要克隆的值
+	* isDeep: 指定是否深克隆
+	* isFull: 指定是否克隆 Symbol
+	* customizer: 自定义的 clone 函数
+	* key: value 的 key
+	* object: value 的父对象
+	* stack
+
+
+
 cloneDeep 文件只有几行代码, 主要作用就是间接调用 baseClone.
+
 ```javascript
 import baseClone from './.internal/baseClone.js'
 
