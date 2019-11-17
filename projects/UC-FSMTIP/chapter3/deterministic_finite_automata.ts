@@ -11,7 +11,7 @@ const l = console.log.bind(console)
  * 1. 判断一个输入(state, character)能否应用在当前规则上
  * 2. 返回下一个状态
  */
-class FARule {
+export class FARule {
     constructor(
         public state,
         public character,
@@ -138,16 +138,16 @@ const rulebook = DFARulebook.new([
     FARule.new(3, "a", 3), FARule.new(3, "b", 3),
 ])
 
-let dfa = DFA.new(1, [1, 3], rulebook)
-
-l(dfa.accepting())
-
-dfa.read_character("b")
-
-l(dfa.accepting())
-
-const dfa_design = DFADesign.new(1, [3], rulebook)
-l(dfa_design.accept("a"))
+// let dfa = DFA.new(1, [1, 3], rulebook)
+//
+// l(dfa.accepting())
+//
+// dfa.read_character("b")
+//
+// l(dfa.accepting())
+//
+// const dfa_design = DFADesign.new(1, [3], rulebook)
+// l(dfa_design.accept("a"))
 
 
 

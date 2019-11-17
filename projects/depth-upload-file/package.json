@@ -1,0 +1,26 @@
+{
+  "name": "depth-upload-file",
+  "version": "0.0.1",
+  "description": "> TODO: description",
+  "author": "muxi2015 <lin91235043@gmail.com>",
+  "homepage": "https://github.com/muxi2015/fp-js#readme",
+  "license": "ISC",
+  "main": "lib/tool-cabinet.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muxi2015/fp-js.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/muxi2015/fp-js/issues"
+  }
+}

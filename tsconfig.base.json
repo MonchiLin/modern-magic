@@ -4,11 +4,10 @@
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
     "lib": [
-      "dom",
-      "es2017"
+      "esnext"
     ],
-    "target": "es6",
-    "module": "commonjs",
+    "target": "esnext",
+    "module": "esnext",
 
     "noImplicitThis": false,
     "preserveConstEnums": true,
