@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>3D 旋转木马</title>
+  <style>
+    .container {
+      width: 200px;
+      height: 200px;
+      position: relative;
+      perspective: 1000px;
+      margin-left: 200px;
+    }
+
+    @-webkit-keyframes t {
+      from {
+        -webkit-transform: rotateY(0deg);
+      }
+      to {
+        -webkit-transform: rotateY(-360deg);
+      }
+    }
+
+
+    #carousel {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      transform-style: preserve-3d;
+      /*animation: t linear infinite 36s;*/
+    }
+
+    #carousel figure {
+      display: block;
+      position: absolute;
+      width: 186px;
+      height: 116px;
+      left: 10px;
+      top: 10px;
+      border: 2px solid black;
+    }
+
+    #carousel figure:nth-child(1) {
+      transform: rotateY(0deg) translateZ(288px);
+    }
+
+    #carousel figure:nth-child(2) {
+      transform: rotateY(40deg) translateZ(288px);
+    }
+
+    #carousel figure:nth-child(3) {
+      transform: rotateY(80deg) translateZ(288px);
+    }
+
+    #carousel figure:nth-child(4) {
+      transform: rotateY(120deg) translateZ(288px);
+    }
+
+    #carousel figure:nth-child(5) {
+      transform: rotateY(160deg) translateZ(288px);
+    }
+
+    #carousel figure:nth-child(6) {
+      transform: rotateY(200deg) translateZ(288px);
+    }
+
+    #carousel figure:nth-child(7) {
+      transform: rotateY(240deg) translateZ(288px);
+    }
+
+    #carousel figure:nth-child(8) {
+      transform: rotateY(280deg) translateZ(288px);
+    }
+
+    #carousel figure:nth-child(9) {
+      transform: rotateY(320deg) translateZ(288px);
+    }
+  </style>
+</head>
+<body>
+
+<section class="container">
+  <div id="carousel">
+    <figure></figure>
+    <figure></figure>
+    <figure></figure>
+    <figure></figure>
+    <figure></figure>
+    <figure></figure>
+    <figure></figure>
+    <figure></figure>
+    <figure></figure>
+  </div>
+</section>
+
+</body>
+</html>
+
