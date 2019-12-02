@@ -2370,6 +2370,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.8.tgz#dab418655af39ce2fa99286a0bed21ef8072ac9d"
   integrity sha512-XLla8N+iyfjvsa0KKV+BP/iGSoTmwxsu5Ci5sM33z9TjohF72DEz95iNvD6pPmemvbQgxAv/909G73gUn8QR7w==
 
+"@types/p5@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@types/p5/-/p5-0.9.0.tgz#aea0afe6ab2f7368b000165a27869cee8f9060a7"
+  integrity sha512-GhI0ctGdKlnf1oUEYqE+sTWuGHhjQCZXQPxazdI9Lx2eE6z7qO6T55FGFenOY3wpL8jSzLWRmt83RHGblr4AWg==
+
 "@types/prettier@^1.16.1":
   version "1.18.3"
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-1.18.3.tgz#64ff53329ce16139f17c3db9d3e0487199972cd8"
@@ -10371,6 +10376,11 @@ p-waterfall@^1.0.0:
   integrity sha1-ftlLPOszMngjU69qrhGqn8I1uwA=
   dependencies:
     p-reduce "^1.0.0"
+
+p5@^0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/p5/-/p5-0.10.2.tgz#9437b28e803b9c8a94383c6b5f4d05b13603e1cc"
+  integrity sha512-kZnC7JllCEnEUTB3sv2iETUg1ulNvB60h3MHb63u7W/nCJc3XIlMGXcKk28cuezdQ7TOlKScm0qmWCsol+302Q==
 
 package-hash@^3.0.0:
   version "3.0.0"

@@ -30,9 +30,11 @@
     "dayjs": "^1.8.17",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "styled-components": "^4.4.1"
+    "styled-components": "^4.4.1",
+    "p5": "^0.10.2"
   },
   "devDependencies": {
+    "@types/p5": "^0.9.0",
     "node-sass": "^4.13.0",
     "normalize.css": "^8.0.1",
     "babel-plugin-styled-components": "^1.10.6",
