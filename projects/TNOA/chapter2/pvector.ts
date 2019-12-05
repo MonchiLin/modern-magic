@@ -41,6 +41,9 @@ class PVector {
     }
   }
 
+  limit(topspeed: number) {
+    if (topspeed > this.sp)
+  }
 }
 
 export default PVector
