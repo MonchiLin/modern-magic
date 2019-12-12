@@ -20,11 +20,7 @@ class PVector {
   div(n) {
     this.x /= n
     this.y /= n
-  }
-
-  length(n) {
-    this.x /= n
-    this.y /= n
+    return this
   }
 
   mag() {
@@ -34,15 +30,23 @@ class PVector {
     )
   }
 
+  magSq() {
+    return Math.pow(this.x, 2) + Math.pow(this.y, 2)
+  }
+
   normalize() {
     const mag = this.mag()
     if(mag !== 0) {
       this.div(mag)
     }
+    return this
   }
 
   limit(topspeed: number) {
-    if (topspeed > this.sp)
+    if (this.magSq() > topspeed * topspeed) {
+      this.normalize()
+        .mult(topspeed)
+    }
   }
 }
 

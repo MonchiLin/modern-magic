@@ -9,7 +9,7 @@ class Mover {
   constructor(private p) {
     this.location = new PVector(p.width * 0.5, p.height * 0.5)
     this.velocity = new PVector(0, 0)
-    this.acceleration = new PVector(-0.001, 0.01)
+    this.acceleration = new PVector(-0.01, 0.1)
   }
 
   checkEdges() {
@@ -29,7 +29,8 @@ class Mover {
 
   update() {
     this.velocity.add(this.acceleration)
-    this.velocity.limt(this.topspeed)
+    this.velocity.limit(this.topspeed)
+    console.log(this.velocity.y)
 
     this.location.add(this.velocity)
   }

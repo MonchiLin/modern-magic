@@ -1,7 +1,5 @@
 import P5 from 'p5'
-import PVector from "./pvector";
 import Mover from "./mover";
-
 
 const sketch = (p: P5) => {
 
