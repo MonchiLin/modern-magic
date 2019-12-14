@@ -11,6 +11,38 @@ class Car extends Mover {
     this.acceleration = new PVector(0, 0)
   }
 
+  reset() {
+    this.acceleration.y = 0
+    this.acceleration.x = 0
+    this.velocity.y = 0
+    this.velocity.x = 0
+  }
+
+  handleKeyPressed(event) {
+    this.keyIsDown = true
+    this.key = event.key
+
+    switch (event.key) {
+      case "ArrowUp":
+        this.acceleration.y = 0.1
+        break
+      case "ArrowDown":
+        this.acceleration.y = -0.1
+        break
+      case "ArrowLeft":
+        this.acceleration.x = 0.1
+        break
+      case "ArrowRight":
+        this.acceleration.x = -0.1
+        break
+    }
+  }
+
+  handleKeyReleased() {
+    this.keyIsDown = false
+    this.reset()
+  }
+
   update() {
     this.checkEdges()
 
