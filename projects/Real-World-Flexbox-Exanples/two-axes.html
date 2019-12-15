@@ -10,7 +10,10 @@
 
     .box--1 {
       flex-direction: row;
-      justify-content: center;
+    }
+
+    .box--2 {
+      flex-direction: column;
     }
 
     .item {
@@ -30,13 +33,18 @@
 
 </head>
 <body>
-<p>现在我们该让 item1 和 item2 居中了</p>
-<p>注意看 css 代码， box--1 仅仅添加了一个 justify-content: center 后 item1 和 item2 就乖乖的居中了</p>
-
 <div class="box box--1">
   <div class="item item--1">item1</div>
   <div class="item item--2">item2</div>
 </div>
+<p>主轴是 X 轴</p>
+
+<hr>
+<div class="box box--2">
+  <div class="item item--1">item1</div>
+  <div class="item item--2">item2</div>
+</div>
+<p>主轴是 Y 轴</p>
 
 
 </body>
