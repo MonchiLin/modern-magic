@@ -12,7 +12,7 @@
 
     .box--1 {
       flex-direction: row;
-      justify-content: center;
+      justify-content: inherit;
     }
 
     .item--1 {
@@ -28,7 +28,16 @@
 </head>
 <body>
 <div class="control">
-  <input type="radio" value="">
+  <input name="justify" id="input1" type="radio" value="flex-start"/>
+  <label for="input1">flex-start</label>
+  <input name="justify" id="input2" type="radio" value="flex-end"/>
+  <label for="input2">flex-end</label>
+  <input name="justify" id="input3" type="radio" value="center"/>
+  <label for="input3">center</label>
+  <input name="justify" id="input4" type="radio" value="space-between"/>
+  <label for="input4">space-between</label>
+  <input name="justify" id="input5" type="radio" value="space-around"/>
+  <label for="input5">space-around</label>
 </div>
 
 <div class="box box--1">
@@ -39,8 +48,15 @@
 <script>
   window.onload = () => {
     const box = document.querySelector(".box")
+    const ids = [1, 2, 3, 4, 5]
+    ids.forEach(id => {
+      const inputId = "input" + id
+      const inputEl = document.querySelector("#" + inputId)
+      inputEl.addEventListener("click", () => {
+        box.style.justifyContent = inputEl.value
+      })
 
-
+    })
 
   }
 </script>
