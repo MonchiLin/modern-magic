@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>start-and-end</title>
+  <style>
+    .box {
+      display: flex;
+      width: 200px;
+      border: 1px darkblue dashed;
+    }
+
+    .box--2 {
+      flex-direction: row;
+    }
+
+    .item {
+      width: 50px;
+      height: 50px;
+    }
+
+    .item--1 {
+      background-color: #7b7b7b;
+    }
+
+    .item--2 {
+      background-color: #7b5a47;
+    }
+
+  </style>
+
+</head>
+<body>
+
+<div class="box box--1">
+  <div class="item item--1">item1</div>
+  <div class="item item--2">item2</div>
+</div>
+<p>item1 与 item 2 此时已经神奇的拥有了 inline-block 的效果</p>
+<p>此时主轴为 x 轴</p>
+
+<p>我是分割线</p>
+<p>在给 box1 添加了宽度和边框之后，我们可以清晰的看到 box1 有多大</p>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>two-axes</title>
+  <style>
+    .box {
+      display: flex;
+    }
+
+    .box--1 {
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    .item {
+      width: 50px;
+      height: 50px;
+    }
+
+    .item--1 {
+      background-color: #7b7b7b;
+    }
+
+    .item--2 {
+      background-color: #7b5a47;
+    }
+
+  </style>
+
+</head>
+<body>
+<p>现在我们该让 item1 和 item2 居中了</p>
+<p>注意看 css 代码， box--1 仅仅添加了一个 justify-content: center 后 item1 和 item2 就乖乖的居中了</p>
+
+<div class="box box--1">
+  <div class="item item--1">item1</div>
+  <div class="item item--2">item2</div>
+</div>
+
+
+</body>
+</html>
