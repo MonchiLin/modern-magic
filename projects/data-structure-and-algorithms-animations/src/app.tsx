@@ -1,5 +1,7 @@
 import * as React from "react";
 import {BrowserRouter, Route} from 'react-router-dom'
+import {SelectionSort} from '@magic/data-structure-and-algorithms/Algorithms'
+
 
 const HomePage = () => <div>
 </div>;

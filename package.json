@@ -6,7 +6,8 @@
     "bootstrap": "yarn && lerna bootstrap --ignore-scripts && yarn run build",
     "build": "tsc --build projects/tsconfig.project.json",
     "watch": "tsc --build --watch projects/tsconfig.project.json",
-    "run:animations": "lerna run dev --scope @magic/data-structure-and-algorithms-animations --stream --no-prefix"
+    "run:animations": "lerna run dev --scope @magic/data-structure-and-algorithms-animations --stream --no-prefix",
+    "story": "start-storybook -p 9001 -c .storybook"
   },
   "private": true,
   "workspaces": [
@@ -34,21 +35,24 @@
     "typescript": "3.7.3"
   },
   "devDependencies": {
-    "@types/p5": "^0.9.0",
-    "node-sass": "^4.13.0",
-    "normalize.css": "^8.0.1",
-    "babel-plugin-styled-components": "^1.10.6",
+    "@storybook/addon-actions": "^5.2.8",
+    "@storybook/addon-storyshots": "^5.2.8",
+    "@storybook/react": "^5.2.8",
     "@types/animejs": "^3.1.0",
-    "@types/react": "^16.9.16",
-    "@types/react-dom": "^16.9.4",
     "@types/express": "^4.17.2",
-    "@types/styled-components": "^4.4.0",
     "@types/jest": "^24.0.23",
     "@types/koa": "^2.11.0",
     "@types/koa-router": "^7.0.42",
+    "@types/p5": "^0.9.0",
     "@types/ramda": "^0.26.38",
+    "@types/react": "^16.9.16",
+    "@types/react-dom": "^16.9.4",
+    "@types/storybook__addon-storyshots": "^5.1.2",
+    "@types/styled-components": "^4.4.0",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-styled-components": "^1.10.6",
     "eslint": "^6.7.2",
     "eslint-config-alloy": "^3.4.0",
     "eslint-plugin-react": "^7.17.0",
@@ -57,6 +61,11 @@
     "koa-body": "^4.1.1",
     "koa-router": "^7.4.0",
     "lerna": "^3.19.0",
+    "node-sass": "^4.13.0",
+    "normalize.css": "^8.0.1",
+    "react-scripts": "^3.3.0",
+    "react-test-renderer": "^16.12.0",
+    "require-context.macro": "^1.2.2",
     "vue-eslint-parser": "5.0.0"
   }
 }
