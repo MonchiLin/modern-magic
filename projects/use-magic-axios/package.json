@@ -1,0 +1,9 @@
+{
+  "name": "use-magic-axios",
+  "version": "0.0.1",
+  "main": "index.js",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  }
+}
