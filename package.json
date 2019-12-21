@@ -16,7 +16,7 @@
   "dependencies": {
     "animejs": "^3.1.0",
     "axios": "^0.19.0",
-    "dayjs": "^1.8.17",
+    "dayjs": "^1.8.18",
     "express": "^4.17.1",
     "fp-ts": "^2.3.1",
     "jest": "^24.9.0",
@@ -29,10 +29,10 @@
     "ramda-fantasy": "^0.8.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "styled-components": "^4.4.0",
+    "styled-components": "^4.4.1",
     "ts-jest": "^24.2.0",
     "ts-node": "^8.5.4",
-    "typescript": "3.7.3"
+    "typescript": "3.7.4"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^5.2.8",
@@ -40,23 +40,23 @@
     "@storybook/react": "^5.2.8",
     "@types/animejs": "^3.1.0",
     "@types/express": "^4.17.2",
-    "@types/jest": "^24.0.23",
+    "@types/jest": "^24.0.24",
     "@types/koa": "^2.11.0",
     "@types/koa-router": "^7.0.42",
     "@types/p5": "^0.9.0",
     "@types/ramda": "^0.26.38",
-    "@types/react": "^16.9.16",
+    "@types/react": "^16.9.17",
     "@types/react-dom": "^16.9.4",
     "@types/storybook__addon-storyshots": "^5.1.2",
-    "@types/styled-components": "^4.4.0",
+    "@types/styled-components": "^4.4.1",
     "babel-eslint": "^10.0.3",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
     "babel-plugin-styled-components": "^1.10.6",
-    "eslint": "^6.7.2",
+    "eslint": "^6.8.0",
     "eslint-config-alloy": "^3.4.0",
     "eslint-plugin-react": "^7.17.0",
-    "eslint-plugin-vue": "^5.2.3",
+    "eslint-plugin-vue": "^6.0.1",
     "koa": "^2.11.0",
     "koa-body": "^4.1.1",
     "koa-router": "^7.4.0",
@@ -66,6 +66,6 @@
     "react-scripts": "^3.3.0",
     "react-test-renderer": "^16.12.0",
     "require-context.macro": "^1.2.2",
-    "vue-eslint-parser": "5.0.0"
+    "vue-eslint-parser": "7.0.0"
   }
 }
