@@ -4,7 +4,7 @@ import "./swiper.css"
 const id = _ => _
 
 type Props = {
-  initial: number,
+  initial?: number,
   autoPlay?: boolean,
   duration?: number,
   onChange?: (item) => void
