@@ -27,22 +27,26 @@ class Mover {
   }
 
   update() {
+    // 更新速度
     this.velocity.add(this.acceleration);
+    // 更新位置
     this.location.add(this.velocity);
+    // 更新角速度
+    this.aVelocity += this.aAcceleration
+    // 更新角度
     this.angle += this.aVelocity;
+    // 重置速度
     this.acceleration.mult(0);
   }
 
   display() {
-    stroke(0);
-    fill(175, 200);
-    rectMode(CENTER);
-    push();
-    translate(this.location.x, this.location.y);
-    rotate(this.angle);
-    ellipse(0, 0, this.radius * 2);
-    line(0, 0, this.radius, 0);
-    pop();
+    // 设置边框颜色
+    stroke(0)
+    // 设置形状的颜色
+    fill(175,200)
+    //
+    rectMode(CENTER)
+
   }
 }
 
