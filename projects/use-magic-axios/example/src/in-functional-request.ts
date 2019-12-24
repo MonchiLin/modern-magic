@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import axios from 'axios'
 
-const InHooksRequest = () => {
+const InFunctionalRequest = () => {
   useEffect(() => {
     axios({url: ""})
       .then(res => {
@@ -13,4 +13,4 @@ const InHooksRequest = () => {
   }, [])
 }
 
-export default InHooksRequest
+export default InFunctionalRequest

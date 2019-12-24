@@ -1,34 +1,25 @@
 import "p5"
+import Mover from "./mover";
 
 // 角度转换弧度 2PI * 角度除以 360°
 const toRadians = (angle) => 2 * Math.PI * (angle / 360)
 
 // 弧度转换角度 弧度 * 360 除以 2PI
-const toAngle = (radian) => radian * 360 / (2 * Math.PI)
+const toDegrees = (radian) => radian * 360 / (2 * Math.PI)
 
-let angle = 0;
-let aVelocity = 0
-let aAcceleration = 0.001
+let mover: Mover
 
 function setup() {
   createCanvas(640, 360);
+  mover = new Mover(width * .5, height * .5, 2)
 }
 
 function draw() {
   background(255);
-  translate(width * 0.5, height * 0.5)
 
-  fill(175)
-  stroke(0)
-  rectMode(CENTER)
-  rotate(angle)
-
-  line(-50, 0, 50, 0)
-  ellipse(50, 0, 8, 8)
-  ellipse(-50, 0, 8, 8)
-
-  aVelocity += aAcceleration
-  angle += aVelocity
+  mover.applyForce(createVector(0.01, 0))
+  mover.update()
+  mover.display()
 }
 
 // @ts-ignore
