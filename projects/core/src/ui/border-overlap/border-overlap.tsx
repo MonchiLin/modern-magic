@@ -1,16 +1,16 @@
 import React, {useEffect} from 'react'
 import "./index.scss"
 
-type Props = {
+export type BorderOverlapProps = {
   column: number,
   row: number,
   itemBackgroundColor: string,
-  border?: {
+  itemBorder?: {
     width?: number,
     style?: string,
     color?: string,
   }
-}
+} & React.HTMLAttributes<any>
 
 /**
  *
@@ -28,19 +28,19 @@ type Props = {
  * @param column - 列数
  * @param row - 行数
  * @param itemBackgroundColor - 必填 内部元素的背景颜色
- * @param border - 边框属性
+ * @param itemBorder - 边框属性
  *
  * @param children
  * @param resetProps
  * @constructor
  */
-const BorderOverlap: React.FC<Props> = (
+const BorderOverlap: React.FC<BorderOverlapProps> = (
   {
     children,
     column,
     row,
     itemBackgroundColor,
-    border = {
+    itemBorder = {
       width: 1,
       style: "dashed",
       color: "#bfbf90",
@@ -66,16 +66,17 @@ const BorderOverlap: React.FC<Props> = (
 
     const bounding = children[0].getBoundingClientRect()
     root.style.width = `${bounding.width * column}px`
+    root.style.height = `${bounding.height * row}px`
 
     const percent = 100 / column
 
-    const margin = `-${border.width}px `.repeat(4)
+    const margin = `-${itemBorder.width}px `.repeat(4)
 
     children.forEach(item => {
       item.style.width = percent + "%"
-      item.style.borderColor = border.color
-      item.style.borderWidth = border.width + "px"
-      item.style.borderStyle = border.style
+      item.style.borderColor = itemBorder.color
+      item.style.borderWidth = itemBorder.width + "px"
+      item.style.borderStyle = itemBorder.style
 
       item.style.backgroundColor = itemBackgroundColor
       item.style.margin = margin
