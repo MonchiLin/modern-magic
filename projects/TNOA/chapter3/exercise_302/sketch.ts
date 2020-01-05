@@ -47,9 +47,8 @@ function draw() {
 function keyPressed() {
   if (key == ' ') {
     shot = true;
-    
+
     let force = p5.Vector.fromAngle(angle);
-    console.log(force)
     force.mult(10);
     ball.applyForce(force);
   }

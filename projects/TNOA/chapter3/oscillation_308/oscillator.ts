@@ -14,8 +14,8 @@ export default class Oscillator {
   }
 
   display() {
-    const x = sin(this.angle.x) * this.amplitude.x
-    const y = sin(this.angle.y) * this.amplitude.y
+    const y = sin(this.angle.x) * this.amplitude.x
+    const x = sin(this.angle.y) * this.amplitude.y
 
     push()
     translate(width / 2, height / 2)
