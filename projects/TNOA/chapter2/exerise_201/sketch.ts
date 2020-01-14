@@ -9,6 +9,7 @@ function setup() {
 }
 
 function draw() {
+  clear()
   mover.update()
   mover.display()
   mover.checkEdge()

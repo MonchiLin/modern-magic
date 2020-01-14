@@ -1,16 +1,15 @@
 class Mover {
-  location
-  velocity
-  acceleration
-  force
+  location: p5.Vector
+  velocity: p5.Vector
+  acceleration: p5.Vector
+  force: p5.Vector
   pass = true
 
   constructor() {
     this.location = createVector(width * 0.5, height);
     this.velocity = createVector(0, 0);
     this.acceleration = createVector(0, 0);
-    this.force = createVector(0, -0.01);
-
+    this.force = createVector(0, -0.01)
   }
 
   applyForce(force) {
@@ -18,7 +17,12 @@ class Mover {
   }
 
   update() {
+    const wind = createVector(
+      map(noise(frameCount), 0, 1, 0.01, -0.01)
+      , 0)
+
     this.applyForce(this.force)
+    this.applyForce(wind)
 
     this.velocity.add(this.acceleration);
     this.location.add(this.velocity);
@@ -33,12 +37,9 @@ class Mover {
   }
 
   checkEdge() {
-    if (this.location.y <= 0 && this.pass) {
-      this.force = createVector(0, this.velocity.y * -1)
-      this.pass = false
-    } else if (this.location.y > height) {
-      this.force = createVector(0, this.velocity.y * -1)
-      this.pass = true
+    if (this.location.y >= height + 50 || this.location.y <= 0) {
+      this.velocity = createVector(0, this.velocity.y * -1.2)
+      this.location = createVector(this.location.x, 0)
     }
   }
 
