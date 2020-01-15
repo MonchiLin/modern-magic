@@ -12,7 +12,6 @@ function setup() {
 }
 
 function draw() {
-  clear()
   const wind = createVector(0.02, 0.02)
   for (let i = 0; i < movers.length; i++) {
     movers[i].applyForce(wind)
