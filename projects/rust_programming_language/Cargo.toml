@@ -1,5 +1,5 @@
 [package]
-name = "Rust-Programming-Language"
+name = "rust_programming_language"
 version = "0.1.0"
 authors = ["MonchiLin <lin912305043@gmail.com>"]
 edition = "2018"

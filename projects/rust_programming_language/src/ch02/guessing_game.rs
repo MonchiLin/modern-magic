@@ -2,6 +2,7 @@ use std::io;
 use std::cmp::Ordering;
 use rand::Rng;
 
+#[allow(dead_code)]
 pub fn run() {
   println!("来玩猜数字!");
   let secret_number = rand::thread_rng().gen_range(1, 101);
