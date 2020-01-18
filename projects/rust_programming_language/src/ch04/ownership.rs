@@ -1,5 +1,3 @@
-use std::io;
-
 pub fn run() {
   let s = "Hello";
   let mut s1 = String::from("Hello");

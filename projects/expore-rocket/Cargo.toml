@@ -1,5 +1,5 @@
 [package]
-name = "rust_programming_language"
+name = "expore-rocket"
 version = "0.1.0"
 authors = ["MonchiLin <lin912305043@gmail.com>"]
 edition = "2018"
@@ -7,5 +7,10 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-tokio = "0.2.9"
+rocket = "0.4.2"
 rand = "0.7.3"
+dotenv = "0.15.0"
+env_logger = "0.7.1"
+futures = "0.3.1"
+hyper = "0.13.1"
+log = "0.4.8"
