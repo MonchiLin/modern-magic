@@ -126,4 +126,4 @@ blog/assets/*.psd
 projects/TNOA/**/dist
 *.iml
 /projects/rust_programming_language/target/
-/projects/expore-rocket/target/
+/projects/expore_rocket/target/
