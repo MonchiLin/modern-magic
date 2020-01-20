@@ -1,8 +1,8 @@
 class Mover {
-  location
-  velocity
-  acceleration
-  mass
+  location: p5.Vector
+  velocity: p5.Vector
+  acceleration: p5.Vector
+  mass: number
 
   constructor(m, x, y) {
     this.mass = m
