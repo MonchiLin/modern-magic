@@ -3,8 +3,8 @@ import "p5"
 // Y 坐标
 let y = 150
 
-// 加速度
-let s = 0.8
+// 控制速度
+let s = 0.4
 
 function setup() {
   createCanvas(300, 300)
