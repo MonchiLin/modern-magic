@@ -1,4 +1,4 @@
-import {swap} from "../../lib/util";
+import {swap} from "../../util";
 
 function randomSort<T>(arr: T[]): T[] {
     const len = arr.length

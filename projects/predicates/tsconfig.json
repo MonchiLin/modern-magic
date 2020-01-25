@@ -3,7 +3,8 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./lib",
-    "composite": true
+    "composite": true,
+    "skipLibCheck": true
   },
   "references": [],
   "include": [
@@ -11,6 +12,7 @@
   ],
   "exclude": [
     "tests",
-    "lib"
+    "lib",
+    "node_modules"
   ]
 }

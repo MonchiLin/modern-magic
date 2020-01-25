@@ -3,7 +3,8 @@
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "./lib",
-    "composite": true
+    "composite": true,
+    "skipLibCheck": true
   },
   "files": [
     "index.ts",
@@ -19,6 +20,7 @@
     }
   ],
   "exclude": [
-    "tests"
+    "tests",
+    "node_modules"
   ]
 }
