@@ -9,15 +9,15 @@ class Grid {
 
 
   phase: number
-  // 初始相
+  // 初相 - 运动初始位置
   startPhase: number
   phaseStep: number
 
-  // TODO 角度 | 角加速度
+  // 角度的别称
   theta: number
-  // 振幅
+  // 振幅 - 振动的幅度，幅度越大距离中心点越远
   amplitude: number
-  // 周期
+  // 周期 - 完成一次运动的时间
   period: number
 
   c: p5.Color
@@ -29,7 +29,7 @@ class Grid {
     this.yPos = colIndex * size + size / 2
 
     // TAU === TWO_PI === PI * 2
-    this.period = TAU
+    this.period = TAU * pow(2, random(5))
 
     // 随意给一个振幅的值
     this.amplitude = map(noise(rowIndex, colIndex), 0, 1, 0, 20)

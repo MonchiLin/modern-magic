@@ -8,12 +8,10 @@ function setup() {
   gs = new GridSystem(10, 10, 50)
 }
 
-
 function draw() {
   background(16)
   gs.run()
 }
-
 
 // @ts-ignore
 window.setup = setup
