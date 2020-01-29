@@ -127,3 +127,5 @@ projects/TNOA/**/dist
 *.iml
 /projects/rust_programming_language/target/
 /projects/expore_rocket/target/
+.yarn
+.parcel-cache

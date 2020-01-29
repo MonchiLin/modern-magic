@@ -13,7 +13,7 @@ class Grid {
   startPhase: number
   phaseStep: number
 
-  // 角度的别称
+  // 旋转弧度（控制图像水平或者垂直）
   theta: number
   // 振幅 - 振动的幅度，幅度越大距离中心点越远
   amplitude: number
@@ -29,6 +29,7 @@ class Grid {
     this.yPos = colIndex * size + size / 2
 
     // TAU === TWO_PI === PI * 2
+    // 随机产生周期
     this.period = TAU * pow(2, random(5))
 
     // 随意给一个振幅的值
