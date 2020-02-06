@@ -7,8 +7,6 @@ function setup() {
   createCanvas(640, 640)
 }
 
-let y = 0
-
 function draw() {
   background(255)
   particleSystems.forEach(ps => {
