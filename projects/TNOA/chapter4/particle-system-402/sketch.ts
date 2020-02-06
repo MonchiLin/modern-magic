@@ -1,28 +1,26 @@
 import "p5"
+import Particle from "./particel"
 import {range} from "ramda";
-import Particle from "./particle";
 
+const total = 10
 
-const ranges = range(0, 10)
-let particles: Particle[] = []
+let particles: Particle[]
 
 function setup() {
-  createCanvas(640, 360);
-  smooth()
+  createCanvas(640, 640)
+  particles = range(0, total)
+    .map(_ => new Particle(createVector(random(width), random(height))))
 
-  ranges.forEach(i => {
-    particles.push(new Particle(createVector(random(width / 2), random(height / 2))))
-  })
 }
 
 function draw() {
-  particles.push(new Particle(createVector(random(width / 2), random(height / 2))))
-  particles.forEach((p, i) => {
-    p.run()
-    if (p.isDead) {
-      particles.splice(i, 1)
-    }
-  })
+  background(255)
+  particles.push(new Particle(createVector(width / 2, 50)))
+  particles = particles.filter(p => !p.isDead)
+    .map(p => {
+      p.run()
+      return p
+    })
 }
 
 // @ts-ignore

@@ -1,20 +1,16 @@
 import "p5"
 import Particle from "./particel"
 
-let particle: Particle
+let particle:Particle
 
 function setup() {
-  createCanvas(640, 360);
-  smooth()
-
+  createCanvas(640, 640)
   particle = new Particle(createVector(width / 2, height / 2))
 }
 
 function draw() {
-  particle.run()
-
-  if (particle.isDead) {
-    console.log("particle dead")
+  if (!particle.isDead) {
+    particle.run()
   }
 }
 

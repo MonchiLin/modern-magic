@@ -1,16 +1,16 @@
 import p5 from 'p5'
 
 export default class Particle {
+  location: p5.Vector;
+  velocity: p5.Vector;
+  acceleration: p5.Vector;
+  lifespan: number
 
-  location: p5.Vector
-  velocity: p5.Vector
-  acceleration: p5.Vector
-  lifespan = 255
-
-  constructor(l: p5.Vector) {
-    this.location = l.copy()
-    this.acceleration = createVector(0, 0.05)
+  constructor(location: p5.Vector) {
+    this.location = location.copy()
+    this.acceleration = createVector(0, 0.5)
     this.velocity = createVector(random(-1, 1), random(-2, 0))
+    this.lifespan = 255
   }
 
   get isDead() {
@@ -18,8 +18,8 @@ export default class Particle {
   }
 
   run() {
-    this.update()
-    this.display()
+    this.update();
+    this.display();
   }
 
   update() {
