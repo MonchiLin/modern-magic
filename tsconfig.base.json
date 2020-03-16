@@ -12,7 +12,7 @@
     "noImplicitThis": false,
     "preserveConstEnums": true,
     "moduleResolution": "node",
-    "esModuleInterop": true,
+    "esModuleInterop": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "downlevelIteration": true,

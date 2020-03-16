@@ -30,16 +30,6 @@ var __spread = (this && this.__spread) || function () {
     return ar;
 };
 var timeWorkers = [];
-import day from 'dayjs';
-/**
- * 格式化 13 位时间戳
- * @param timeStamp
- * @param format
- */
-function dateFormatter(timeStamp, format) {
-    if (format === void 0) { format = "YYYY/MM/DD HH:mm:ss"; }
-    return day(timeStamp).format(format);
-}
 var noop = function () {
     var args = [];
     for (var _i = 0; _i < arguments.length; _i++) {
@@ -54,6 +44,7 @@ var CountdownService = /** @class */ (function () {
      * @param config.precision 精度，单位为毫秒，用于自动矫正时间
      */
     function CountdownService(config) {
+        var _this = this;
         this.config = config;
         // 当前倒计时的时间
         this.currentTime = 0;
@@ -72,6 +63,17 @@ var CountdownService = /** @class */ (function () {
         this.countdownConfig = null;
         // 是否处于暂停状态
         this.isSuspend = false;
+        /**
+         * 终止当前 timer
+         */
+        this.clearRequestInterval = function () {
+            if (_this.config.mode === "RAF") {
+                cancelAnimationFrame(_this.handle.timer);
+            }
+            else if (_this.config.mode === "interval") {
+                clearInterval(_this.handle.timer);
+            }
+        };
         config.token = config.token || new Date().getTime() * Math.random();
         config.log = config.log || false;
         config.mode = config.mode || "RAF";
@@ -80,7 +82,7 @@ var CountdownService = /** @class */ (function () {
         this.tryRemoveTimerByToken(config.token);
         var inBrowser = typeof window === "undefined";
         // 若是在浏览器的环境中则默认使用 requestAnimationFrame 来实现，否则使用 setInterval 实现
-        // 当然，若是手动指定定时器为 "interval" 则优先使用 setInterval
+        // 当然，若是手动指定定时器为 "interval" 则强制使用 setInterval
         this.requestInterval = inBrowser && config.mode === "RAF"
             ? function (fn, delay) {
                 var timer = setInterval(fn, delay);
@@ -104,17 +106,6 @@ var CountdownService = /** @class */ (function () {
                 return handle;
             };
     }
-    /**
-     * 终止当前 timer
-     */
-    CountdownService.prototype.clearRequestInterval = function () {
-        if (this.config.mode === "RAF") {
-            cancelAnimationFrame(this.handle.timer);
-        }
-        else if (this.config.mode === "interval") {
-            clearInterval(this.handle.timer);
-        }
-    };
     /**
      * 尝试从 timerWorker 中清除指定 token
      * @param token
@@ -163,7 +154,6 @@ var CountdownService = /** @class */ (function () {
         this.infoForRectification.startTime = new Date().getTime();
         // 期望结束时间 = 开始时间
         this.infoForRectification.endTime = this.infoForRectification.startTime + (from / step * 1000);
-        console.log("开始时间 => ", dateFormatter(this.infoForRectification.startTime), "结束时间 =>", dateFormatter(this.infoForRectification.endTime));
         // 如果不是通过 keepOn 进来的，则保存配置参数
         if (!this.isSuspend) {
             // 储存参数
@@ -209,15 +199,18 @@ var CountdownService = /** @class */ (function () {
      * 矫正时间
      */
     CountdownService.prototype.rectifyTime = function () {
-        // 当前期望的当前时间
+        // 倒计时开始后经过了多久
         var now = new Date().getTime() - this.infoForRectification.startTime;
+        // 完成倒计时需要多久
         var total = this.infoForRectification.endTime - this.infoForRectification.startTime;
+        // 期望的当前剩余时间
         var timeOfAnticipation = this.countdownConfig.step * (total - now);
-        console.log("剩余时间 =>", timeOfAnticipation, "ms");
-        console.log("误差 =>", this.currentTime * 1000 - timeOfAnticipation, "ms");
-        var offset = this.currentTime * 1000 - timeOfAnticipation;
-        if (offset >= this.config.precision) {
-            this.currentTime += offset / 1000;
+        console.log("期望的当前剩余时间 =>", timeOfAnticipation / 1000, "s");
+        console.log("实际当前剩余时间 =>", this.currentTime, "s");
+        var offset = this.currentTime - timeOfAnticipation / 1000;
+        console.log("误差 =>", offset, "s");
+        if (offset >= this.config.precision / 1000) {
+            this.currentTime -= offset;
         }
     };
     /**

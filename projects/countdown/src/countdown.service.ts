@@ -1,19 +1,6 @@
-import { ConsConfig, CountdownConfig, CountdownListener, CountdownTimer, Handle } from './type'
+import {ConsConfig, CountdownConfig, CountdownListener, CountdownTimer, Handle} from './type'
 
 let timeWorkers: CountdownTimer[] = []
-
-
-import day from 'dayjs';
-
-
-/**
- * 格式化 13 位时间戳
- * @param timeStamp
- * @param format
- */
-function dateFormatter(timeStamp: string | number, format = "YYYY/MM/DD HH:mm:ss") {
-  return day(timeStamp).format(format);
-}
 
 const noop = (...args) => {
 }
@@ -48,7 +35,7 @@ class CountdownService {
   /**
    * 终止当前 timer
    */
-  clearRequestInterval() {
+  clearRequestInterval = () => {
     if (this.config.mode === "RAF") {
       cancelAnimationFrame(this.handle.timer)
     } else if (this.config.mode === "interval") {
@@ -93,7 +80,7 @@ class CountdownService {
     const inBrowser = typeof window === "undefined"
 
     // 若是在浏览器的环境中则默认使用 requestAnimationFrame 来实现，否则使用 setInterval 实现
-    // 当然，若是手动指定定时器为 "interval" 则优先使用 setInterval
+    // 当然，若是手动指定定时器为 "interval" 则强制使用 setInterval
     this.requestInterval = inBrowser && config.mode === "RAF"
       ? (fn, delay) => {
         const timer = setInterval(fn, delay)
@@ -158,8 +145,6 @@ class CountdownService {
     // 期望结束时间 = 开始时间
     this.infoForRectification.endTime = this.infoForRectification.startTime + (from / step * 1000)
 
-    console.log("开始时间 => ", dateFormatter(this.infoForRectification.startTime), "结束时间 =>", dateFormatter(this.infoForRectification.endTime))
-
     // 如果不是通过 keepOn 进来的，则保存配置参数
     if (!this.isSuspend) {
       // 储存参数
@@ -185,7 +170,9 @@ class CountdownService {
         // 递减当前时间
         this.currentTime -= step
         // 矫正当前时间
-        this.rectifyTime()
+        if (!this.rectifyTime()) {
+          return
+        }
         this.listeners.forEach(cb => cb && cb(this.currentTime))
       } else {
         this.clearRequestInterval()
@@ -210,16 +197,32 @@ class CountdownService {
    * 矫正时间
    */
   rectifyTime() {
-    // 当前期望的当前时间
+    // 注：  this.infoForRectification.startTime 为本次倒计时的开始的时间点
+    // 注：  this.infoForRectification.endTime   为本次倒计时的结束时时间点
+    //  this.infoForRectification.endTime = 本次倒计时的开始的时间点 + 需要倒计时的时间
+    //  这里楼主的代码已经
+
+    // 倒计时开始后经过了多久 = 当前时间 - 倒计时开始的时间
     const now = new Date().getTime() - this.infoForRectification.startTime
+    // 完成倒计时总需时间    = 倒计时的结束时时间点 - 倒计时开始的时间点
     const total = this.infoForRectification.endTime - this.infoForRectification.startTime
+    // 期望的当前剩余时间    = 倒计时开始后经过了多久 - 完成倒计时总需时间 （step 先无视）
     const timeOfAnticipation = this.countdownConfig.step * (total - now)
-    console.log("剩余时间 =>", timeOfAnticipation, "ms")
-    console.log("误差 =>", this.currentTime * 1000 - timeOfAnticipation, "ms")
-    const offset = this.currentTime * 1000 - timeOfAnticipation
-    if (offset >= this.config.precision) {
-      this.currentTime += offset / 1000
+    console.log("期望的当前剩余时间 =>", timeOfAnticipation / 1000, "s")
+    console.log("实际当前剩余时间 =>", this.currentTime, "s")
+    // 偏差 = 当前的倒计时 - 期望的当前剩余时间 / 1000 （因为期望的剩余时间是时间戳）
+    const offset = this.currentTime - timeOfAnticipation / 1000
+    console.log("误差 =>", offset, "s")
+
+    // 处理离开屏幕太久的情况, 早就已经完成了倒计时，在调用函数的地方进行处理，若是返回 false 则认为已经倒计时结束
+    if (offset > this.currentTime) {
+      return false
+    } else if (offset >= this.config.precision / 1000) {
+      // this.config.precision：精度
+      // 如果误差已经大于容许的偏差则矫正一次当前的倒计时
+      this.currentTime -= offset
     }
+    return true
   }
 
   /**

@@ -11,7 +11,7 @@ declare class CountdownService {
     /**
      * 终止当前 timer
      */
-    clearRequestInterval(): void;
+    clearRequestInterval: () => void;
     /**
      * 尝试从 timerWorker 中清除指定 token
      * @param token
