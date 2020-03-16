@@ -6,6 +6,9 @@
     },
     {
       "path": "./predicates/tsconfig.json"
+    },
+    {
+      "path": "./countdown/tsconfig.json"
     }
   ]
 }
