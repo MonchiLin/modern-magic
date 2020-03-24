@@ -29,21 +29,21 @@
 //
 
 // @ts-ignore
-// eslint-disable-next-line no-extend-native
-Array.prototype.myFilter = function (predicate, self?) {
-    const arr = this
-    const newArr = []
-
-    for (let i = 0; i < arr.length; i++) {
-        if (predicate.call(self, arr[i])) {
-            newArr.push(arr[i])
-        }
-    }
-
-    return newArr
-}
-
-
-const arr = [1, 2, 3, 4]
-// @ts-ignore
-arr.my()
+// // eslint-disable-next-line no-extend-native
+// Array.prototype.myFilter = function (predicate, self?) {
+//     const arr = this
+//     const newArr = []
+//
+//     for (let i = 0; i < arr.length; i++) {
+//         if (predicate.call(self, arr[i])) {
+//             newArr.push(arr[i])
+//         }
+//     }
+//
+//     return newArr
+// }
+//
+//
+// const arr = [1, 2, 3, 4]
+// // @ts-ignore
+// arr.my()
