@@ -12,6 +12,7 @@ module.exports = {
         '<rootDir>/projects/**/__tests__/**/*spec.[jt]s?(x)',
         '<rootDir>/projects/Daily-Interview-Question/**/*.ts',
         '<rootDir>/projects/leetcode/**/*.ts',
+        '<rootDir>/projects/Data-Structure-and-Algorithms/**/*.ts',
         '<rootDir>/blog/**/*.[jt]s?(x)',
     ],
     globals: {
