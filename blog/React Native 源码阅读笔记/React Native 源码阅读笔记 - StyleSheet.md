@@ -1,6 +1,7 @@
 # React Native 源码阅读笔记 - StyleSheet
 
-
+* \[时间\]: 2020/3/27
+* \[keyword\]: React Native，Typescript，源码阅读
 
 StyleSheet 的源码位置在: Libraries\StyleSheet\StyleSheet.js
 
