@@ -24,7 +24,7 @@
 
 vue-rx 代码仓库：https://github.com/vuejs/vue-rx
 
-
+[impl-yourself-vue-rx](https://github.com/MonchiLin/impl-yourself-vue-rx) 仓库里 `src` 均可使用 `vue serve xx.vue` 来直接启动看效果
 
 注1：本文会从每个大函数入手，先根据功能来自行实现一个简单版本，最后逐行（并不）分析源代码。
 
@@ -241,7 +241,7 @@ export function install (_Vue) {
 
 `domStreams` 实现的代码已经在下面了，注释应该也足够完善，如果还有疑问请留言。
 
-笔者将写好的代码放在了代码仓库里，如果小伙伴们自己写的时候发现有问题可以参考这个文件，包含了实现和使用的例子，TODO 此处应有文件位置
+笔者将写好的代码放在了代码仓库里，如果小伙伴们自己写的时候发现有问题可以参考这个文件，包含了实现和使用的例子，[文件地址](https://github.com/MonchiLin/impl-yourself-vue-rx/blob/master/src/rx-domStream.vue)
 
 ```javascript
 export default {
@@ -270,7 +270,7 @@ export default {
 
 `subscriptions` 实现的代码已经在下面了，注释应该也足够完善，如果还有疑问请留言。
 
-笔者将写好的代码放在了代码仓库里，如果小伙伴们自己写的时候发现有问题可以参考这个文件，包含了实现和使用的例子，TODO 此处应有文件位置
+笔者将写好的代码放在了代码仓库里，如果小伙伴们自己写的时候发现有问题可以参考这个文件，包含了实现和使用的例子，[文件地址](https://github.com/MonchiLin/impl-yourself-vue-rx/blob/master/src/rx-mixin-subscriptions.vue)
 
 ```vue
 <template>
@@ -429,7 +429,13 @@ export default {
 
 `v-stream` 实现的代码已经在下面了，注释应该也足够完善，如果还有疑问请留言。
 
-笔者将写好的代码放在了代码仓库里，如果小伙伴们自己写的时候发现有问题可以参考这个文件，包含了实现和使用的例子，TODO 此处应有文件位置
+笔者将写好的代码放在了代码仓库里，如果小伙伴们自己写的时候发现有问题可以参考这个文件，包含了实现和使用的例子
+
+[第一个版本文件地址](https://github.com/MonchiLin/impl-yourself-vue-rx/blob/master/src/v-stream-1.vue)
+
+[第二个版本文件地址](https://github.com/MonchiLin/impl-yourself-vue-rx/blob/master/src/v-stream-2.vue)
+
+[第三个版本文件地址](https://github.com/MonchiLin/impl-yourself-vue-rx/blob/master/src/v-stream-3.vue)
 
 根据基础用法实现
 
@@ -892,7 +898,93 @@ new Vue({
 1. 一个是可以用 `v-on` 绑定到模板的 `submitHandler` 方法；
 2. 一个是可以流式调用 `submitHandler` 的`submitHandler$` observable。
 
+### 实现
 
+笔者将写好的代码放在了代码仓库里，如果小伙伴们自己写的时候发现有问题可以参考这个文件，包含了实现和使用的例子，[文件地址](https://github.com/MonchiLin/impl-yourself-vue-rx/blob/master/src/createObservableMethod.vue)
+
+```javascript
+export default {
+  mixins: [{
+    created() {
+      const vm = this
+      const $createObservableMethod = (methodName) => {
+        // 定义一个 subscriber
+        const subscriber = (observer) => {
+          // 在 vm 上挂载方法 vm["muchMore"] = xx
+          // 调用这个方法时就会触发 observer.next
+          vm[methodName] = (val) => {
+            observer.next(val)
+          }
+          return () => {
+            delete vm[methodName]
+          }
+        }
+
+        return new Observable(subscriber).pipe(share())
+      }
+
+      // 假设我们传入如下结构
+      // observableMethods: {
+      //    muchMore: 'muchMore$',
+      //    minus: 'minus$'
+      // }
+      const observableMethods = vm.$options.observableMethods
+      Object.keys(observableMethods).forEach(key => {
+        // 在 vm 上面挂载 muchMore$，muchMore$ 是一个 Observable
+        // vm["muchMore$"] = $createObservableMethod("muchMore")
+        vm[observableMethods[key]] = $createObservableMethod(key)
+      })
+
+
+    }
+  }],
+}
+```
+
+
+
+### 源码分析
+
+```
+export default function createObservableMethod (methodName, passContext) {
+  const vm = this
+
+  // 处理错误
+  if (vm[methodName] !== undefined) {
+    warn(
+      'Potential bug: ' +
+      `Method ${methodName} already defined on vm and has been overwritten by $createObservableMethod.` +
+      String(vm[methodName]),
+      vm
+    )
+  }
+
+  const creator = function (observer) {
+    vm[methodName] = function () {
+      // arguments 是 function 声明的函数的特有属性，由实参构成的“类数组”
+      // Array.from(arguments) 将 arguments 转换成数组
+      const args = Array.from(arguments)
+      if (passContext) {
+        args.push(this)
+        observer.next(args)
+      } else {
+        if (args.length <= 1) {
+          observer.next(args[0])
+        } else {
+          observer.next(args)
+        }
+      }
+    }
+    
+    // 取消订阅时删除 vm 上的方法
+    return function () {
+      delete vm[methodName]
+    }
+  }
+
+  return new Observable(creator).pipe(share())
+}
+```
 
 
 
