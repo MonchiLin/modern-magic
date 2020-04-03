@@ -36,12 +36,24 @@ EventEmitter 是作为 RN 的基础设施存在的（类似与我们的工具库
 ```javascript
 EventEmitter 负责管理一组监听器(listeners)，并在发生事件后告知（told that）监听器。除了给定事件的数据外，它还发送一个事件控制对象(Event Control Object)，允许监听器/处理器(handles) 阻止给定事件的默认行为。
 
-EventEmitter 被设计的足够通用，以支持所有可能要发射（Emit）事件的不同上下文(All differnent context)，这是一种简单的多播机制，可以在其上集成其他功能，在它之上可以组成额外的功能。例如，更高级的发射器可以使用 EventHolder 和 EventFactory。
+EventEmitter 被设计的足够通用，以支持所有可能要发射（Emit）事件的不同上下文(All differnent context)，这是一种简单的多播（multicast）机制，可以在其上集成其他功能，在它之上可以组成额外的功能。例如，更高级的发射器可以使用 EventHolder 和 EventFactory。
 ```
 
-上面的描述提到了几个点：`EventEmiiter` `listeners` `Event Control Object`
+上面的描述提到了几个点：
 
+`EventEmiiter`
 
+`listeners`
+
+`Event Control Object`
+
+`multicast`
+
+`EventHolder`
+
+`EventFactory`
+
+这篇涉及的比较多，先暂时停更一段时间
 
 
 
