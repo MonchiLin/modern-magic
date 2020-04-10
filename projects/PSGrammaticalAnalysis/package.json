@@ -1,0 +1,46 @@
+{
+  "name": "phonetic-symbol-grammatical-analysis",
+  "version": "1.0.0",
+  "description": "A phonetic symbol grammatical analysis",
+  "author": "",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt-ts",
+    "build": "nuxt-ts build",
+    "generate": "nuxt-ts generate",
+    "start": "nuxt-ts start",
+    "lint": "eslint --ext .ts,.vue --ignore-path .gitignore .",
+    "test": "jest"
+  },
+  "dependencies": {
+    "ts-md5": "^1.2.7",
+    "ant-design-vue": "2.0.0-beta.1",
+    "ramda": "^0.27.0",
+    "@vue/composition-api": "^0.5.0",
+    "nuxt": "^2.12.2",
+    "@nuxt/typescript-runtime": "^0.4.2",
+    "@nuxtjs/axios": "^5.9.7",
+    "@nuxtjs/pwa": "^3.0.0-beta.20"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "vue-loader": "^15.9.1",
+    "core-js": "^2.6.11",
+    "@types/ramda": "^0.27.3",
+    "@nuxt/typescript-build": "^0.6.2",
+    "@nuxtjs/tailwindcss": "^1.4.0",
+    "@nuxtjs/eslint-config-typescript": "^1.0.2",
+    "@nuxtjs/eslint-module": "^1.1.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-plugin-nuxt": ">=0.5.2",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^2.0.4",
+    "@vue/test-utils": "^1.0.0-beta.32",
+    "babel-jest": "^25.2.6",
+    "jest": "^25.2.7",
+    "vue-jest": "^4.0.0-0",
+    "ts-jest": "^25.3.1"
+  }
+}
