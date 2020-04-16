@@ -9,6 +9,8 @@
 // 因为 nums[0] + nums[1] = 2 + 7 = 9
 // 所以返回 [0, 1]
 
+// https://leetcode-cn.com/problems/two-sum/
+
 
 describe("tow sum", () => {
   it('force', () => {
@@ -53,4 +55,26 @@ describe("tow sum", () => {
 
     expect(solution(arr, 6)).toStrictEqual([1, 2])
   });
+
+
+  it('hash2', function () {
+    const arr = [3, 2, 4]
+    const solution = (nums: number[], target: number) => {
+      const map = new Map()
+
+      for (let i = 0; i < nums.length; i++) {
+        const item = nums[i]
+        if (map.has(item)) {
+          return [map.get(item), i]
+        } else {
+          map.set(target - item, i)
+        }
+
+      }
+    }
+
+    expect(solution(arr, 6)).toStrictEqual([1, 2])
+  });
+
+
 })
