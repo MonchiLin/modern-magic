@@ -11,6 +11,7 @@ module.exports = {
   testMatch: [
     '<rootDir>/projects/**/__tests__/**/*spec.[jt]s?(x)',
     '<rootDir>/projects/Daily-Interview-Question/**/*.ts',
+    '<rootDir>/projects/mostly-adequate-guide/*.ts',
     '<rootDir>/projects/leetcode/**/*.ts',
     '<rootDir>/projects/Data-Structure-and-Algorithms/**/*.ts',
     '<rootDir>/blog/**/*.[jt]s?(x)',
