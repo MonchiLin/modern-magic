@@ -1,5 +1,5 @@
 import Stack from '../Stack'
-import {isLeftBrackets, isNumber, isOperator, isRightBrackets, isSpace, isWord} from '@magic/predicates'
+import {isLeftBrackets, isNumber, isOperator, isRightBrackets, isSpace, isWord} from '../../../re'
 
 
 function 比较优先级(s1, s2) {
@@ -114,7 +114,7 @@ function calcSuffix(stack: Stack) {
 
         poped = stack.pop()
     }
-    
+
 }
 
 
@@ -194,7 +194,7 @@ describe('Stack 练习', function () {
      * 段程序，在不改变盒内其他糖果叠放顺序的基础上，将黄色糖果移出。
      */
     it('删除黄色糖果', function () {
-        
+
     });
 });
 

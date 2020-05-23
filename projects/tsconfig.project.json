@@ -2,13 +2,7 @@
   "files": [],
   "references": [
     {
-      "path": "./data-structure-and-algorithms/tsconfig.json"
-    },
-    {
-      "path": "./predicates/tsconfig.json"
-    },
-    {
-      "path": "./countdown/tsconfig.json"
+      "path": "./Data-Structure-and-Algorithms/tsconfig.json"
     }
   ]
 }

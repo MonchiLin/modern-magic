@@ -1,5 +1,5 @@
 import Stack from '../Stack';
-import { isLeftBrackets, isNumber, isOperator, isRightBrackets, isSpace } from '@magic/predicates';
+import { isLeftBrackets, isNumber, isOperator, isRightBrackets, isSpace } from '../../../re';
 function 比较优先级(s1, s2) {
     const priorities = {
         "+": 1,

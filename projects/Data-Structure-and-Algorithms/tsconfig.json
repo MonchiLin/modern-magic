@@ -8,16 +8,12 @@
   },
   "files": [
     "index.ts",
-    "util.ts"
+    "util.ts",
+    "re.ts"
   ],
   "include": [
     "Algorithms",
     "DataStructure"
-  ],
-  "references": [
-    {
-      "path": "../predicates/tsconfig.json"
-    }
   ],
   "exclude": [
     "tests",
