@@ -10,7 +10,7 @@ flex 与 flexbox 的区别 ? -> [[CSS3 Flexbox: display: box vs. flexbox vs. fle
 
 ### 如何居中?
 
-"使用 css 居中元素" 是一个老生常谈的话题，你只要需要将这句话输入到搜索引擎中就可以得到数以万计的文章教授你如何以数十种方法去居中一个元素，在真实场景下我们是否需要了解这么多的居中技巧吗？显然是不需要的，大部分情况下我们仅仅只需要掌握很简单 flex 布局的就可以让 dom 元素乖乖变成我们需要的显示样式。
+"使用 css 居中元素" 是一个老生常谈的话题，你只要需要将这句话输入到搜索引擎中就可以得到数以万计的文章教授你如何以数十种方法去居中一个元素，在真实场景下我们需要了解这么多的居中技巧吗？显然是不需要的，大部分情况下我们仅仅只需要“浅显”的掌握 flex 布局就可以让 DOM 元素任我们处置。
 
 在此之前，我们需要先花费一点时间来学习一下 flex 布局中的基础知识。
 
@@ -20,7 +20,7 @@ flex 与 flexbox 的区别 ? -> [[CSS3 Flexbox: display: box vs. flexbox vs. fle
 
 在 flex 中有两根轴，x 轴和 y 轴，呸~才不是，是 **主轴** 和 **交叉轴**，主轴与交叉轴的概念与 直角坐标系 中的 x，y 很像，**只不过随着条件不同，主轴有可能是 x 轴也有可能是 y 轴**，下面我们来看一个例子。
 
-[两条轴的代码示例]( https://github.com/MonchiLin/modern-magic/blob/master/projects/Real-World-Flexbox-Exanples/two-axes.html )
+[两条轴的代码示例](https://github.com/MonchiLin/modern-magic/blob/master/projects/Real-World-Flexbox-Exanples/two-axes.html)
 
 参考这个例子，相信聪明的小伙伴们已经领悟到了一些 flex 的基础知识。
 

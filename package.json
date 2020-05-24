@@ -10,9 +10,6 @@
     "story": "start-storybook -p 9001 -c .storybook"
   },
   "private": true,
-  "workspaces": [
-    "projects/*"
-  ],
   "dependencies": {
     "animejs": "^3.2.0",
     "axios": "^0.19.2",

@@ -28,6 +28,8 @@ module.exports = {
 
     "no-undef": "off",
 
-    "no-unused-vars": "warn"
+    "no-unused-vars": "warn",
+
+    "vue/component-tags-order": "off"
   }
 };
