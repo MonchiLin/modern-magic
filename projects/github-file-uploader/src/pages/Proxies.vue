@@ -66,7 +66,7 @@
       const ipInfo = ref("")
       const pingGithubInfo = ref("")
 
-      const enabledProxies = ref(true)
+      const enabledProxies = ref(false)
 
       onMounted(() => {
         getMeIp()

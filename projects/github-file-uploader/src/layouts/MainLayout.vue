@@ -73,7 +73,9 @@
             <q-btn flat label="关闭"/>
           </template>
         </q-banner>
-        <router-view/>
+        <keep-alive>
+          <router-view/>
+        </keep-alive>
       </q-page>
     </q-page-container>
   </q-layout>

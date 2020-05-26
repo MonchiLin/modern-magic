@@ -6,7 +6,6 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
 const {configure} = require('quasar/wrappers');
-const env = require('quasar-dotenv').config()
 
 module.exports = configure(function (/* ctx */) {
   return {
@@ -36,6 +35,7 @@ module.exports = configure(function (/* ctx */) {
 
       'roboto-font', // optional, you are not bound to it
       'material-icons', // optional, you are not bound to it
+      'material-icons-round'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
@@ -60,8 +60,6 @@ module.exports = configure(function (/* ctx */) {
         "Notify"
       ]
     },
-
-    env: env,
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
     supportIE: false,

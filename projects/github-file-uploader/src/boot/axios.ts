@@ -1,6 +1,6 @@
 import axios, {AxiosInstance} from 'axios';
 import {boot} from 'quasar/wrappers';
-import { AccessToken } from 'src/config';
+import { ACCESS_TOKEN } from 'src/config';
 
 declare module 'vue/types/vue' {
   interface Vue {
@@ -10,9 +10,6 @@ declare module 'vue/types/vue' {
 
 export default boot(({Vue}) => {
   const request = axios.create({
-    headers: {
-      Authorization: `token ${AccessToken}`
-    },
     adapter: require("axios/lib/adapters/http")
   })
 

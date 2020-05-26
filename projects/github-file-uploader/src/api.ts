@@ -1,4 +1,5 @@
 import {AxiosRequestConfig} from 'axios'
+import {ACCESS_TOKEN} from "src/config";
 
 const GITHUB_BASEURL = 'https://api.github.com'
 
@@ -24,6 +25,9 @@ const githubApi = {
     }
   ): AxiosRequestConfig {
     return {
+      headers: {
+        Authorization: `token ${ACCESS_TOKEN}`
+      },
       baseURL: GITHUB_BASEURL,
       method: "put",
       url: `/repos/${owner}/${repo}/contents/${path}`,

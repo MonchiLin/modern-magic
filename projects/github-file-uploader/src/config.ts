@@ -1,9 +1,11 @@
 const platform = process.platform
-const AccessToken = ""
-const WarningSize = 50 * 1024 * 1024
-const MaxSize = WarningSize * 2
+const ACCESS_TOKEN = process.env.ACCESS_TOKEN
+const FileWarningSize = 50 * 1000 * 1000
+const FileMaxSize = FileWarningSize * 2
 
 export {
   platform,
-  AccessToken
+  ACCESS_TOKEN,
+  FileWarningSize,
+  FileMaxSize
 }
