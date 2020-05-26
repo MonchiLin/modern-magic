@@ -1,6 +1,5 @@
 import axios, {AxiosInstance} from 'axios';
 import {boot} from 'quasar/wrappers';
-import { ACCESS_TOKEN } from 'src/config';
 
 declare module 'vue/types/vue' {
   interface Vue {

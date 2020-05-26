@@ -1,5 +1,7 @@
 import path from 'path'
 import fs from 'fs-extra'
+import {ipcRenderer} from "electron";
+import {SignalType} from "src/store";
 
 const toBase64ForNode = file => new Promise((resolve, reject) => {
   const reader = new FileReader();
@@ -59,9 +61,18 @@ function getFileRecord(fileOrPath: string | File): FileRecord {
   return fileRecord
 }
 
+const isValidURL = (url) => {
+  try {
+    return new URL(url)
+  } catch (e) {
+    return null
+  }
+}
+
 export {
+  isValidURL,
   FileRecord,
   getFileRecord,
   toBase64ForJS,
-  toBase64ForNode,
+  toBase64ForNode
 }

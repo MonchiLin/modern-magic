@@ -84,6 +84,7 @@
 <script lang="ts">
   import {computed, defineComponent, onBeforeMount, ref} from '@vue/composition-api'
   import {githubApi} from "src/api";
+  import {SignalType} from "src/store";
 
   const MenuList = [
     {
@@ -114,16 +115,12 @@
     setup(props, context) {
       const drawer = ref(false)
       const miniState = ref(true)
-      const {$router, $route, $axios} = context.root
+      const {$router, $route, $axios, $store} = context.root
       const netError = ref(false)
       const menuList = ref(MenuList)
 
-      onBeforeMount(() => {
-        pingGithub()
-      })
-
       const showNetError = computed(() => {
-        return netError.value && $route.name !== "Proxies"
+        return $store.state.signalType === SignalType.IsBad && $route.name !== "Proxies"
       })
 
       const active = computed(() => {
@@ -135,18 +132,8 @@
       }
 
       const toSetProxy = () => {
-        netError.value = false
+        $store.commit('setSignalType', SignalType.Initialize)
         $router.push({name: "Proxies"})
-      }
-
-      const pingGithub = () => {
-        $axios(githubApi.ping())
-          .then(res => {
-            netError.value = false
-          })
-          .catch(err => {
-            netError.value = true
-          })
       }
 
       return {

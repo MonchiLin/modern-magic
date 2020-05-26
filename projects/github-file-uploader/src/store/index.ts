@@ -1,22 +1,28 @@
 import {store} from 'quasar/wrappers';
 import ElectronStore from "electron-store";
-import {remote} from 'electron'
 import Vuex from 'vuex';
+import {commonApi} from "src/api";
+import {ipcRenderer} from "electron";
+import {isValidURL} from "src/common";
 
-const {app} = remote
+export enum SignalType {
+  Initialize,
+  IsBad,
+  IsGood
+}
 
-// const SchemaA = {
-//   [name keyof string]: JSONSchema
-// }
-
-type VuexState = {
+export type VuexState = {
   files: string[],
   user: string,
   repo: string,
   path: string,
   language: string,
+  pingGithubUrl: string,
+  pingIpUrl: string,
   proxyEnabled: boolean,
   proxy: string,
+
+  signalType: SignalType
 }
 
 const schema = {
@@ -40,18 +46,28 @@ const schema = {
     type: 'string',
     default: 'zh-ch'
   },
+  pingGithubUrl: {
+    type: 'string',
+    default: 'https://github.com/git-guides'
+  },
+  pingIpUrl: {
+    type: 'string',
+    default: 'http://myip.ipip.net'
+  },
   proxyEnabled: {
     type: 'boolean',
     default: false,
   },
   proxy: {
     type: 'string',
-    default: 'http://127.0.0.1:8080'
+    format: "uri",
+    default: 'http://127.0.0.1:1086'
   }
 }
 
-const electronStore = new ElectronStore<VuexState>({
-  schema
+const eStore = new ElectronStore<VuexState>({
+  // @ts-ignore
+  schema: schema
 })
 
 /*
@@ -62,32 +78,60 @@ const electronStore = new ElectronStore<VuexState>({
 export default store(function ({Vue}) {
   Vue.use(Vuex);
 
-  const Store = new Vuex.Store<VuexState>({
+  const proxyEnabled = eStore.get('proxyEnabled')
+  const proxy = eStore.get('proxy')
+
+  const store = new Vuex.Store<VuexState>({
     state: {
-      files: electronStore.get('files'),
-      user: electronStore.get('user'),
-      repo: electronStore.get('repo'),
-      path: electronStore.get('path'),
-      language: electronStore.get('language'),
-      proxyEnabled: electronStore.get('proxyEnabled'),
-      proxy: electronStore.get('proxy'),
+      files: eStore.get('files'),
+      user: eStore.get('user'),
+      repo: eStore.get('repo'),
+      path: eStore.get('path'),
+      language: eStore.get('language'),
+      pingGithubUrl: eStore.get('pingGithubUrl'),
+      pingIpUrl: eStore.get('pingIpUrl'),
+      proxyEnabled: isValidURL(proxy) && proxyEnabled,
+      proxy: proxy,
+
+      signalType: SignalType.Initialize
     },
 
     mutations: {
-      addFile(filePath) {
-        const file = {}
-        if (filePath) {
-
+      addFile(state, filePath: string) {
+        state.files.push(filePath)
+      },
+      setSignalType(state, newType: SignalType) {
+        state.signalType = newType
+      },
+      setProxyEnabled(state, status: boolean) {
+        if (status && isValidURL(state.proxy)) {
+          ipcRenderer.send("set-proxies", state.proxy)
+        } else {
+          ipcRenderer.send("close-proxies")
         }
 
-
-      }
+        eStore.set("proxyEnabled", status)
+        state.proxyEnabled = status
+      },
+      setProxy(state, url: string) {
+        eStore.set("proxy", url)
+        state.proxy = url
+      },
     },
 
-    // enable strict mode (adds overhead!)
-    // for dev mode only
     strict: !!process.env.DEV
   });
 
-  return Store;
+  if (proxyEnabled && isValidURL(proxy)) {
+    ipcRenderer.send("set-proxies", proxy)
+  } else {
+    ipcRenderer.send("close-proxies")
+  }
+
+  commonApi.pingGithub()
+    .catch(() => {
+      store.commit("setSignalType", SignalType.IsBad)
+    })
+
+  return store;
 });

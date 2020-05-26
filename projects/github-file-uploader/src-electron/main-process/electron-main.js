@@ -1,4 +1,7 @@
-import {app, BrowserWindow, nativeTheme} from 'electron'
+import {app, BrowserWindow, ipcMain, nativeTheme} from 'electron'
+import axios from "axios";
+import HttpsProxyAgent from "https-proxy-agent";
+import fetch from 'node-fetch'
 
 try {
   if (process.platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
@@ -6,6 +9,8 @@ try {
   }
 } catch (_) {
 }
+
+let proxies = ""
 
 /**
  * Set `__statics` path to static files in production;
@@ -30,28 +35,49 @@ async function createWindow() {
       // Change from /quasar.conf.js > electron > nodeIntegration;
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
       nodeIntegration: QUASAR_NODE_INTEGRATION,
-      nodeIntegrationInWorker: QUASAR_NODE_INTEGRATION,
-      webSecurity: false
+      nodeIntegrationInWorker: QUASAR_NODE_INTEGRATION
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
       // preload: path.resolve(__dirname, 'electron-preload.js')
     }
   })
 
+  ipcMain.on("set-proxies", (event, newProxies) => {
+    proxies = newProxies
+    mainWindow.webContents.session.setProxy({proxyRules: proxies})
+  })
 
-  // 避免访问 github 跨域
-  // const filter = {
-  //   urls: ['*://*.github.com/*']
-  // };
-  // const session = mainWindow.webContents.session
-  // session.webRequest.onBeforeSendHeaders(filter, (details, callback) => {
-  //   details.requestHeaders['Origin'] = null;
-  //   // console.log("?????", details.requestHeaders)
-  //   callback({ requestHeaders: details.requestHeaders })
-  // });
-  // session.webRequest.onCompleted(filter, (details, callback) => {
-  //   // console.log("?????", details.requestHeaders)
-  //   callback({ requestHeaders: details.requestHeaders })
-  // });
+  ipcMain.on("close-proxies", (event,) => {
+    proxies = ""
+    mainWindow.webContents.session.setProxy({})
+  })
+
+  ipcMain.on("ping-github", ({sender}) => {
+    fetch("https://github.com/git-guides", {
+      agent: proxies && new HttpsProxyAgent(proxies),
+      timeout: 3000
+    })
+      .then(res => {
+        sender.send("pong-github", {isSuccess: true, res: res})
+      })
+      .catch(err => {
+        sender.send("pong-github", {isSuccess: false, res: err})
+      })
+  })
+
+  ipcMain.on("ping-ip", ({sender}) => {
+    fetch("http://myip.ipip.net", {
+      agent: proxies && new HttpsProxyAgent(proxies),
+    })
+      .then(res => {
+        return res.text()
+      })
+      .then(res => {
+        sender.send("pong-ip", {isSuccess: true, res: res})
+      })
+      .catch(err => {
+        sender.send("pong-ip", {isSuccess: false, res: err})
+      })
+  })
 
   mainWindow.loadURL(process.env.APP_URL)
 
@@ -59,8 +85,6 @@ async function createWindow() {
     mainWindow = null
   })
 }
-
-// app.commandLine.appendSwitch('proxy-server', '127.0.0.1:1086')
 
 app.on('ready', createWindow)
 
