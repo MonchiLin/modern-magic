@@ -1,17 +1,14 @@
 import fs from 'fs-extra'
+import {remote, nativeImage} from 'electron'
+import {join} from 'path'
 
-const {remote, nativeImage} = require('electron')
 const {Tray, Menu, MenuItem, app, getCurrentWindow} = remote
-const {join} = require("path")
 
+const win = getCurrentWindow()
+const tray = new Tray(join(__dirname, "assets", "state-ok-20.png"))
 
 class TrayService {
-  win = getCurrentWindow()
-  tray = new Tray(join(__dirname, "assets", "state-ok-20.png"))
-
   constructor() {
-    const {win, tray} = this
-
     const toggleWindow = () => {
       if (win.isVisible()) {
         win.hide()
@@ -50,7 +47,6 @@ class TrayService {
     tray.on('drop-files', (event, files: string[]) => {
       files.map(async abPath => {
         const file = await fs.readFileSync(abPath)
-console.log(file)
         return 0
       })
     })

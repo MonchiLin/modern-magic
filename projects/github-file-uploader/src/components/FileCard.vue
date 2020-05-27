@@ -3,18 +3,20 @@
     <div class="flex row justify-between items-center full-width">
       <q-icon class="animation-icon-border" size="md" name="r_cancel" @click="$emit('remove')"/>
       <p class="self-center q-ma-none">{{file.name}}</p>
-      <!--   v-if="file.uploading && !file.uploaded"   -->
+
       <div>
         <q-circular-progress
-          v-if="showLoading"
+          v-if="file.uploading && !file.uploaded"
           indeterminate
           size="md"
           color="white"
         />
-        <q-icon v-if="!showLoading" class="animation-icon-border" size="md" name="r_publish"
-                @click="showLoading = true"
+        <q-icon v-if="!file.uploading && !file.uploaded" class="animation-icon-border" size="md" name="r_publish"
+                @click="$emit('upload')"
         />
-        <!--        @click="$emit('upload')"-->
+        <q-icon v-if="!file.uploading && file.uploaded" class="animation-icon-border" size="md" name="link"
+                @click="$emit('copy')"
+        />
       </div>
     </div>
     <div class="q-my-sm full-width">
@@ -23,10 +25,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
   import {defineComponent, ref} from '@vue/composition-api'
+  import {FileRecord} from "src/common";
 
-  export default defineComponent({
+  export default defineComponent<{file:FileRecord}>({
     name: "FileCard",
     props: {
       file: {
@@ -34,11 +37,8 @@
       }
     },
     setup(props, context) {
-      const showLoading = ref(false)
-      // const onClick = showLoading.value = true
 
       return {
-        showLoading,
       }
     }
 
@@ -49,7 +49,7 @@
 
 <style lang="scss" scoped>
   .file-card {
-    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background: linear-gradient(-45deg, #908e8e, #c2b0b6);
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
     border-radius: 5px;

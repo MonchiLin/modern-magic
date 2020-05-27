@@ -1,5 +1,4 @@
 import {app, BrowserWindow, ipcMain, nativeTheme} from 'electron'
-import axios from "axios";
 import HttpsProxyAgent from "https-proxy-agent";
 import fetch from 'node-fetch'
 
@@ -10,8 +9,6 @@ try {
 } catch (_) {
 }
 
-let proxies = ""
-
 /**
  * Set `__statics` path to static files in production;
  * The reason we are setting it here is that the path needs to be evaluated at runtime
@@ -20,6 +17,7 @@ if (process.env.PROD) {
   global.__statics = require('path').join(__dirname, 'statics').replace(/\\/g, '\\\\')
 }
 
+let proxies = ""
 let mainWindow
 
 async function createWindow() {
@@ -86,7 +84,8 @@ async function createWindow() {
   })
 }
 
-app.on('ready', createWindow)
+app.whenReady()
+  .then(() => createWindow())
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
