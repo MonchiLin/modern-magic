@@ -27,12 +27,13 @@
       </div>
 
       <q-btn
+        v-foxus="'手动上传文件'"
         color="deep-orange"
         :style="{
           width: empty ? '160px': '100%',
           height: '40px',
-        }"
-        glossy push @click="triggerSelect"
+        }" glossy push
+        @click="triggerSelect"
       >
         <div class="row items-center no-wrap">
           <q-icon left name="map"/>

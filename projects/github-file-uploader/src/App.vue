@@ -5,8 +5,9 @@
 </template>
 
 <script lang="ts">
-  import {defineComponent, onBeforeMount} from '@vue/composition-api'
+  import {defineComponent, onBeforeMount, onMounted} from '@vue/composition-api'
   import {remote} from 'electron'
+  import {foxusInit} from "src/foxus";
 
   export default defineComponent({
     setup(props, context) {
@@ -16,6 +17,11 @@
           context.root.$q.dark.set(true)
         }
       })
+
+      onMounted(() => {
+        foxusInit()
+      })
+
     }
   })
 </script>
