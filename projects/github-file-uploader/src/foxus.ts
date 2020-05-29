@@ -52,11 +52,14 @@ const foxusInit = () => {
 }
 
 const onHover = (e: MouseEvent) => {
+  // @ts-ignore
+  // const message = e.target.dataset.foxucMessgae
   anime({
     targets: innerCircle,
-    scale: 3,
+    scale: 2,
     duration: 500,
-    easing: "easeOutQuint"
+    easing: "easeOutQuint",
+    opacity: 0.2,
   })
 }
 
@@ -65,25 +68,23 @@ const onLeave = (e: MouseEvent) => {
     targets: innerCircle,
     scale: 1,
     duration: 500,
-    easing: "easeInCirc"
+    easing: "easeInCirc",
+    opacity: 1,
   })
 }
 
 const vFoxus: DirectiveOptions = {
-  // eslint-disable-next-line max-params
-  bind(el, binding, vnode, oldVnode) {
-    // el.style['mix-blend-mode'] = 'difference'
+  bind(el, binding) {
+    el.dataset.foxucMessgae = binding.value
   },
-  // eslint-disable-next-line max-params
-  inserted(el, binding, vnode, oldVnode) {
+  inserted(el, binding) {
     el.addEventListener("mouseenter", onHover)
     el.addEventListener("mouseleave", onLeave)
   },
-  update() {
-
+  update(el, binding) {
+    el.dataset.foxucMessgae = binding.value
   },
-  // eslint-disable-next-line max-params
-  componentUpdated(el, binding, vnode, oldVnode) {
+  componentUpdated(el, binding) {
 
   },
   unbind() {

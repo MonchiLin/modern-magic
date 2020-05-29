@@ -3,7 +3,7 @@ import ElectronStore from "electron-store";
 import Vuex from 'vuex';
 import {commonApi} from "src/api";
 import {ipcRenderer} from "electron";
-import {isValidURL} from "src/common";
+import {FileRecord, isValidURL} from "src/common";
 
 export enum SignalType {
   Initialize,
@@ -12,10 +12,11 @@ export enum SignalType {
 }
 
 export type VuexState = {
-  files: string[],
+  fileRecords: FileRecord[],
   user: string,
   repo: string,
   path: string,
+  commitMessage: string,
   language: string,
   pingGithubUrl: string,
   pingIpUrl: string,
@@ -26,7 +27,7 @@ export type VuexState = {
 }
 
 const schema = {
-  files: {
+  fileRecords: {
     type: 'array',
     default: []
   },
@@ -35,6 +36,10 @@ const schema = {
     default: ""
   },
   repo: {
+    type: 'string',
+    default: ""
+  },
+  commitMessage: {
     type: 'string',
     default: ""
   },
@@ -83,10 +88,11 @@ export default store(function ({Vue}) {
 
   const store = new Vuex.Store<VuexState>({
     state: {
-      files: eStore.get('files'),
+      fileRecords: eStore.get('fileRecords'),
       user: eStore.get('user'),
       repo: eStore.get('repo'),
       path: eStore.get('path'),
+      commitMessage: eStore.get('commitMessage'),
       language: eStore.get('language'),
       pingGithubUrl: eStore.get('pingGithubUrl'),
       pingIpUrl: eStore.get('pingIpUrl'),
@@ -97,11 +103,24 @@ export default store(function ({Vue}) {
     },
 
     mutations: {
-      addFile(state, filePath: string) {
-        state.files.push(filePath)
-      },
       setSignalType(state, newType: SignalType) {
         state.signalType = newType
+      },
+      addFile(state, record: FileRecord) {
+        state.fileRecords.push(record)
+        eStore.set('fileRecords', state.fileRecords)
+      },
+      setFileRecords(state, records: FileRecord[]) {
+        state.fileRecords = records
+        eStore.set('fileRecords', state.fileRecords)
+      },
+      updateFileRecord(state, {index, record}) {
+        state.fileRecords = [
+          ...state.fileRecords.slice(0, index),
+          record,
+          ...state.fileRecords.slice(index + 1,)
+        ]
+        eStore.set('fileRecords', state.fileRecords)
       },
       setProxyEnabled(state, status: boolean) {
         if (status && isValidURL(state.proxy)) {
@@ -109,14 +128,25 @@ export default store(function ({Vue}) {
         } else {
           ipcRenderer.send("close-proxies")
         }
-
-        eStore.set("proxyEnabled", status)
         state.proxyEnabled = status
+        eStore.set("proxyEnabled", status)
       },
       setProxy(state, url: string) {
-        eStore.set("proxy", url)
         state.proxy = url
+        eStore.set("proxy", url)
       },
+      setUser(state, value: string) {
+        state.user = value
+        eStore.set("user", value)
+      },
+      setRepo(state, value: string) {
+        state.repo = value
+        eStore.set("repo", value)
+      },
+      setCommitMessage(state, value: string) {
+        state.commitMessage = value
+        eStore.set("commitMessage", value)
+      }
     },
 
     strict: !!process.env.DEV

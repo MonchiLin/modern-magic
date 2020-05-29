@@ -8,7 +8,7 @@
 
 - [x] 设置代理
 
-- [ ] 持久化配置
+- [x] 持久化配置
 
 - [ ] 动画（应分成多个子任务）
 
@@ -19,6 +19,8 @@
 - [ ] 多仓库管理（在完成网盘功能之后）
 
 - [ ] HackUI
+
+- [ ] 支持 Windows 10+ /Linux
 
 POWEREDBY: **Vue, Quasar，Electron**
 

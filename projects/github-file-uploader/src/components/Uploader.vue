@@ -6,10 +6,9 @@
         flex:true,
         'full-width': true,
         'column': empty,
-        'justify-center': empty,
         'items-center': empty,
       }"
-      style="min-height: 20vh;"
+      style="min-height: 80vh;"
       @drop="onDrop"
       @dragenter="onDropEnter"
       @dragover="onDropOver"
@@ -17,12 +16,12 @@
 
       <div class="full-width">
         <file-card
-          v-for="file of fileRecords"
+          v-for="(file, index) of fileRecords"
           :key="file.name"
           :file="file"
-          @remove="remove(file)"
-          @upload="upload(file)"
-          @copy="copyMarkdown(file)"
+          @remove="$emit('remove', file, index)"
+          @upload="$emit('upload', file, index)"
+          @copy="$emit('copy', file, index)"
         />
       </div>
 
@@ -48,26 +47,33 @@
 </template>
 
 <script lang="ts">
-  import {computed, defineComponent, reactive, ref} from '@vue/composition-api'
+  import {computed, defineComponent, ref} from '@vue/composition-api'
   import FileCard from './FileCard.vue'
-  import {githubApi} from "src/api";
   import {FileRecord, getFileRecord} from 'src/common';
   import {FileMaxSize} from "src/config";
-  import {clipboard} from 'electron'
 
-  export default defineComponent({
+  type Props = {
+    fileRecords: FileRecord[];
+    fileResults: [];
+  }
+
+  export default defineComponent<Props>({
     name: "Uploader",
     components: {
       FileCard
     },
-    setup(props, context) {
-      const {$axios, $q} = context.root
-
-      const fileRecords = ref<FileRecord[]>([])
-      const fileResults = reactive([])
+    props: {
+      fileRecords: {
+        type: Array,
+        required: true,
+      },
+    },
+    setup({fileRecords}, context) {
+      const {root, emit} = context
+      const {$q} = root
 
       const QFile = ref<any>()
-      const empty = computed(() => fileRecords.value.length === 0)
+      const empty = computed(() => fileRecords.length === 0)
 
       const triggerSelect = (e) => {
         QFile.value.pickFiles()
@@ -82,52 +88,11 @@
       }
 
       const onDropOver = (e: DragEvent) => {
-        // console.log("onDropOver")
         e.preventDefault();
       }
 
       const onDropEnter = (e) => {
-        // console.log("onDropEnter")
         e.preventDefault();
-      }
-
-      const upload = async (record: FileRecord) => {
-        const [name, ext] = [record.name, record.ext]
-        record.uploading = true
-
-        $axios(
-          githubApi.createFile("MonchiLin", "arsenal", name + new Date().getTime() + ext, {
-            message: "测试, " + new Date().getTime(),
-            content: record.base64,
-            committer: {
-              name: "GithubFileUploader",
-              email: "gfu@undefind.com"
-            }
-          }))
-          // @ts-ignore
-          .then(({data}) => {
-            fileResults[name] = data.content.download_url
-            record.uploaded = true
-          })
-          .catch(err => {
-            record.error = err
-          })
-          .finally(() => {
-            record.uploading = false
-          })
-      }
-
-      const remove = (record: FileRecord) => {
-        fileRecords.value = fileRecords.value
-          .filter(item => item.name !== record.name)
-      }
-
-      const copyMarkdown = (record: FileRecord) => {
-        $q.notify({
-          message: "已复制 Markdown 至剪切板"
-        })
-        const template = `![${record.name}](${fileResults[record.name]})`
-        clipboard.writeText(template)
       }
 
       const handleFileSelect = (file: File) => {
@@ -135,21 +100,20 @@
           $q.notify({message: `文件 【 ${file.name} 】 大于 100M`, type: 'negative'})
           return
         }
-        fileRecords.value.push(getFileRecord(file))
+        if (fileRecords.findIndex(record => record.name === file.name) !== -1) {
+          return;
+        }
+        emit('fileSelected', getFileRecord(file))
       }
 
       return {
-        fileRecords,
         QFile,
         empty,
-        upload,
-        remove,
-        copyMarkdown,
         onDrop,
         onDropOver,
         onDropEnter,
         triggerSelect,
-        handleFileSelect,
+        handleFileSelect
       }
     }
   })

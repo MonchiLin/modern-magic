@@ -1,32 +1,27 @@
 <template>
-  <div class="full-width file-card flex column justify-center">
-    <div class="flex row justify-between items-center full-width">
-      <q-icon class="animation-icon-border" size="md" name="r_cancel" @click="$emit('remove')"/>
-      <p class="self-center q-ma-none">{{file.name}}</p>
-
-      <div>
-        <q-circular-progress
-          v-if="file.uploading && !file.uploaded"
-          indeterminate
-          size="md"
-          color="white"
-        />
-        <q-icon v-if="!file.uploading && !file.uploaded" class="animation-icon-border" size="md" name="r_publish"
-                @click="$emit('upload')"
-        />
-        <q-icon v-if="!file.uploading && file.uploaded" class="animation-icon-border" size="md" name="link"
-                @click="$emit('copy')"
-        />
-      </div>
-    </div>
-    <div class="q-my-sm full-width">
-      <q-linear-progress :indeterminate="file.uploading"/>
+  <div class="flex row justify-between items-center full-width file-card q-mb-lg q-px-md">
+    <q-icon size="md" name="r_cancel" @click="$emit('remove')"/>
+    <p class="self-center q-ma-none">{{file.name}}</p>
+    <div>
+      <q-circular-progress
+        v-if="file.uploading && !file.uploaded"
+        v-foxus
+        indeterminate
+        size="md"
+        color="white"
+      />
+      <q-icon v-if="!file.uploading && !file.uploaded" v-foxus size="md" name="r_publish"
+              @click="$emit('upload')"
+      />
+      <q-icon v-if="!file.uploading && file.uploaded" v-foxus size="md" name="link"
+              @click="$emit('copy')"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  import {defineComponent, ref} from '@vue/composition-api'
+  import {defineComponent} from '@vue/composition-api'
   import {FileRecord} from "src/common";
 
   export default defineComponent<{file:FileRecord}>({
@@ -35,15 +30,8 @@
       file: {
         required: true,
       }
-    },
-    setup(props, context) {
-
-      return {
-      }
     }
-
   })
-
 
 </script>
 

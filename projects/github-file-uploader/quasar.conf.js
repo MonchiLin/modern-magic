@@ -53,8 +53,12 @@ module.exports = configure(function (/* ctx */) {
       //            (not treeshaking Quasar; biggest bundle size; convenient)
       all: 'auto',
 
-      components: [],
-      directives: [],
+      components: [
+        'QPopupProxy'
+      ],
+      directives: [
+        'ClosePopup'
+      ],
 
       // Quasar plugins
       plugins: [
