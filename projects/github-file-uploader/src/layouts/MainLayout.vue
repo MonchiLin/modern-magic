@@ -6,28 +6,14 @@
       :width="100"
       :breakpoint="400"
       :mini="true"
-      @click="miniState = false"
       content-style="border-right: 1px solid #ddd"
     >
 
-      <div v-show="miniState" class="flex justify-center items-center" style="height: 56px;">
+      <div class="flex justify-center items-center" style="height: 56px;">
         <q-avatar size="32px">
           <img :src="require('assets/boy-avatar.png')">
         </q-avatar>
       </div>
-
-      <q-img v-show="!miniState"
-             :src="require('assets/material.png')"
-             style="height: 150px"
-      >
-        <div class="absolute-bottom bg-transparent">
-          <q-avatar size="56px" class="q-mb-sm">
-            <img :src="require('assets/boy-avatar.png')">
-          </q-avatar>
-          <div class="text-weight-bold">Razvan Stoenescu</div>
-          <div>@rstoenescu</div>
-        </div>
-      </q-img>
 
       <q-scroll-area style="height: 100%;">
         <q-list padding>

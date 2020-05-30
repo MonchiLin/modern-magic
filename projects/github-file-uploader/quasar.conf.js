@@ -34,8 +34,8 @@ module.exports = configure(function (/* ctx */) {
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
-      // 'roboto-font', // optional, you are not bound to it
-      // 'material-icons', // optional, you are not bound to it
+      'roboto-font', // optional, you are not bound to it
+      'material-icons', // optional, you are not bound to it
       // 'material-icons-round'
     ],
 
@@ -164,7 +164,7 @@ module.exports = configure(function (/* ctx */) {
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-electron-apps/configuring-electron
     electron: {
-      bundler: 'packager', // 'packager' or 'builder'
+      bundler: 'builder', // 'packager' or 'builder'
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
@@ -182,7 +182,12 @@ module.exports = configure(function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'github-file-uploader'
+        appId: 'github-file-uploader',
+
+        mac: {  // mac
+          icon: "./src-electron/icons/icon.icns"
+        },
+
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
