@@ -1,7 +1,5 @@
 import path from 'path'
 import fs from 'fs-extra'
-import {ipcRenderer} from "electron";
-import {SignalType} from "src/store";
 
 const toBase64ForNode = file => new Promise((resolve, reject) => {
   const reader = new FileReader();
@@ -24,7 +22,9 @@ type FileRecord = {
   uploaded: boolean;
   error: Object | null | boolean;
   base64: string;
-  mineType: string
+  uri: string;
+  size: number,
+  mineType: string;
 }
 
 const MINE_TYPES = {
@@ -41,6 +41,8 @@ function getFileRecord(fileOrPath: string | File): FileRecord {
     uploaded: false,
     error: false,
     base64: "",
+    size: 0,
+    uri: "",
     mineType: "data;base64",
   }
 
@@ -48,10 +50,12 @@ function getFileRecord(fileOrPath: string | File): FileRecord {
     fileRecord.name = fileOrPath.name
     fileRecord.ext = path.extname(fileOrPath.name)
     fileRecord.base64 = fs.readFileSync(fileOrPath.path, {encoding: 'base64'})
+    fileRecord.size = fileOrPath.size
   } else {
     fileRecord.name = path.basename(fileOrPath)
     fileRecord.ext = path.extname(fileOrPath)
     fileRecord.base64 = fs.readFileSync(fileOrPath, {encoding: 'base64'})
+    fileRecord.size = fs.statSync(fileOrPath).size
   }
 
   if (MINE_TYPES[fileRecord.ext]) {

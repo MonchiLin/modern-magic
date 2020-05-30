@@ -1,34 +1,58 @@
 <template>
-  <div class="flex row justify-between items-center full-width file-card q-mb-lg q-px-md">
-    <q-icon size="md" name="r_cancel" @click="$emit('remove')"/>
-    <p class="self-center q-ma-none">{{file.name}}</p>
+  <div class="flex row justify-between items-center full-width record-card q-mb-lg q-px-md">
+    <q-icon size="sm" :name="ionCloseOutline" @click="$emit('remove', record)"/>
+    <p
+      class="self-center q-ma-none overflow-hidden-y"
+      style="width: 60%; white-space: nowrap;text-overflow: ellipsis;"
+      :title="record.name"
+    >
+      {{record.name}}
+    </p>
     <div>
       <q-circular-progress
-        v-if="file.uploading && !file.uploaded"
+        title="上传中..."
+        v-if="record.uploading && !record.uploaded"
         v-foxus
         indeterminate
         size="md"
         color="white"
       />
-      <q-icon v-if="!file.uploading && !file.uploaded" v-foxus size="md" name="r_publish"
-              @click="$emit('upload')"
+      <q-icon v-if="!record.uploading && !record.uploaded" v-foxus size="sm" :name="ionCloudUpload"
+              @click="$emit('upload', record)" title="上传"
       />
-      <q-icon v-if="!file.uploading && file.uploaded" v-foxus size="md" name="link"
-              @click="$emit('copy')"
+      <q-icon v-if="!record.uploading && record.uploaded" v-foxus size="sm" :name="ionClipboard"
+              @click="$emit('copy', record)" title="复制"
+      />
+      <q-icon v-if="!record.uploading && record.uploaded && isImage" v-foxus size="sm" :name="ionLogoMarkdown"
+              @click="$emit('copyMarkdown', record)" title="复制 Markdown"
       />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-  import {defineComponent} from '@vue/composition-api'
+  import {defineComponent, computed} from '@vue/composition-api'
   import {FileRecord} from "src/common";
+  import {ionCloudUpload, ionClipboard, ionCloseOutline, ionLogoMarkdown} from '@quasar/extras/ionicons-v5'
 
-  export default defineComponent<{file:FileRecord}>({
+  const IMAGE_EXTS = [".jpg", ".jpeg", ".bmp", ".png", ".gif"]
+
+  export default defineComponent<{ record: FileRecord }>({
     name: "FileCard",
     props: {
-      file: {
+      record: {
         required: true,
+      }
+    },
+    setup({record}) {
+      const isImage = computed(() => IMAGE_EXTS.includes(record.ext))
+
+      return {
+        isImage,
+        ionCloudUpload,
+        ionClipboard,
+        ionCloseOutline,
+        ionLogoMarkdown,
       }
     }
   })
@@ -36,7 +60,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .file-card {
+  .record-card {
     background: linear-gradient(-45deg, #908e8e, #c2b0b6);
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;

@@ -25,10 +25,11 @@ async function createWindow() {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    width: 1500,
-    height: 1000,
+    width: 500,
+    height: 700,
     useContentSize: true,
     // frame: false,
+    enableRemoteModule: true,
     webPreferences: {
       // Change from /quasar.conf.js > electron > nodeIntegration;
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
@@ -94,6 +95,9 @@ app.on('window-all-closed', () => {
 })
 
 app.on('activate', () => {
+  if (!mainWindow.isVisible()) {
+    mainWindow.show()
+  }
   if (mainWindow === null) {
     createWindow()
   }

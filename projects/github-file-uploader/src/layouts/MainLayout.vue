@@ -3,27 +3,26 @@
     <q-drawer
       v-model="drawer"
       show-if-above
-      :width="200"
+      :width="100"
       :breakpoint="400"
-      :mini="miniState"
+      :mini="true"
+      @click="miniState = false"
       content-style="border-right: 1px solid #ddd"
-      @mouseover="miniState = false"
-      @mouseout="miniState = true"
     >
 
       <div v-show="miniState" class="flex justify-center items-center" style="height: 56px;">
         <q-avatar size="32px">
-          <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+          <img :src="require('assets/boy-avatar.png')">
         </q-avatar>
       </div>
 
       <q-img v-show="!miniState"
-             src="https://cdn.quasar.dev/img/material.png"
+             :src="require('assets/material.png')"
              style="height: 150px"
       >
         <div class="absolute-bottom bg-transparent">
           <q-avatar size="56px" class="q-mb-sm">
-            <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+            <img :src="require('assets/boy-avatar.png')">
           </q-avatar>
           <div class="text-weight-bold">Razvan Stoenescu</div>
           <div>@rstoenescu</div>
@@ -35,6 +34,7 @@
 
           <q-item v-for="item of menuList"
                   :key="item.label"
+                  :title="item.label"
                   v-ripple
                   clickable
                   :active="active === item.routeName"
@@ -51,9 +51,9 @@
 
           <q-separator/>
 
-          <q-item v-ripple clickable>
+          <q-item @click="handleExit" v-ripple clickable>
             <q-item-section avatar>
-              <q-icon name="highlight_off"/>
+              <q-icon :name="ionExitOutline"/>
             </q-item-section>
 
             <q-item-section>退出</q-item-section>
@@ -82,29 +82,37 @@
 </template>
 
 <script lang="ts">
-  import {computed, defineComponent, onBeforeMount, ref} from '@vue/composition-api'
-  import {githubApi} from "src/api";
+  import {computed, defineComponent, ref} from '@vue/composition-api'
+  import {remote} from 'electron'
   import {SignalType} from "src/store";
+  import {
+    ionCloudUploadOutline,
+    ionListOutline,
+    ionSettingsOutline,
+    ionGlobeOutline,
+    ionHelpCircleOutline,
+    ionExitOutline
+  } from '@quasar/extras/ionicons-v5'
 
   const MenuList = [
     {
-      icon: 'send',
+      icon: ionCloudUploadOutline,
       label: '上传',
       routeName: "Main"
     }, {
-      icon: 'history',
+      icon: ionListOutline,
       label: '上传记录',
       routeName: "Record"
     }, {
-      icon: 'settings',
+      icon: ionSettingsOutline,
       label: '偏好设置',
       routeName: "Preference"
     }, {
-      icon: 'perm_data_setting',
+      icon: ionGlobeOutline,
       label: '代理',
       routeName: "Proxies"
     }, {
-      icon: 'help',
+      icon: ionHelpCircleOutline,
       iconColor: 'primary',
       label: '教程',
       routeName: "Guide"
@@ -136,6 +144,10 @@
         $router.push({name: "Proxies"})
       }
 
+      const handleExit = () => {
+        remote.app.exit()
+      }
+
       return {
         menuList,
         drawer,
@@ -143,7 +155,9 @@
         active,
         onClickItem,
         showNetError,
-        toSetProxy
+        toSetProxy,
+        handleExit,
+        ionExitOutline
       }
     }
   })

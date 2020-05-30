@@ -1,18 +1,15 @@
-import { route } from 'quasar/wrappers';
+import {route} from 'quasar/wrappers';
 import VueRouter from 'vue-router';
-import { VuexState } from '../store';
+import {VuexState} from '../store';
 import routes from './routes';
 
-/*
- * If not building with SSR mode, you can
- * directly export the Router instantiation
- */
+let vueRouter: VueRouter
 
-export default route<VuexState>(function ({ Vue }) {
+export default route<VuexState>(function ({Vue}) {
   Vue.use(VueRouter);
 
-  const Router = new VueRouter({
-    scrollBehavior: () => ({ x: 0, y: 0 }),
+  vueRouter = new VueRouter({
+    scrollBehavior: () => ({x: 0, y: 0}),
     routes,
 
     // Leave these as is and change from quasar.conf.js instead!
@@ -22,5 +19,9 @@ export default route<VuexState>(function ({ Vue }) {
     base: process.env.VUE_ROUTER_BASE
   });
 
-  return Router;
+  return vueRouter;
 })
+
+export {
+  vueRouter
+}

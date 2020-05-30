@@ -32,6 +32,24 @@ const foxusInit = () => {
   const outerBounding = outerCircle.getBoundingClientRect()
   const innerBounding = innerCircle.getBoundingClientRect()
 
+  window.addEventListener("mousedown", (e) => {
+    anime({
+      targets: innerCircle,
+      scale: 0.5,
+      duration: 500,
+      easing: "easeOutQuint",
+    })
+  })
+
+  window.addEventListener("mouseup", (e) => {
+    anime({
+      targets: innerCircle,
+      scale: 1,
+      duration: 500,
+      easing: "easeOutQuint",
+    })
+  })
+
   window.addEventListener("mousemove", (e) => {
     const {x, y} = e
     anime.timeline({

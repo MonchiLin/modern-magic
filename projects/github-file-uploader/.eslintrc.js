@@ -1,10 +1,9 @@
-// .eslintrc.js
-const {resolve} = require('path');
+const { resolve } = require('path')
 
 module.exports = {
   // https://eslint.org/docs/user-guide/configuring#configuration-cascading-and-hierarchy
   // This option interrupts the configuration hierarchy at this file
-  // Remove this if you have an higher level ESLint config file (it usually happens into a monorepos)
+  // Remove this if you have an higher level ESLint config file (it usually happens into a monorepo)
   root: true,
 
   // https://eslint.vuejs.org/user-guide/#how-to-use-custom-parser
@@ -19,31 +18,35 @@ module.exports = {
     project: resolve(__dirname, './tsconfig.json'),
     tsconfigRootDir: __dirname,
     ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
-    sourceType: 'module', // Allows for the use of imports
+    sourceType: 'module' // Allows for the use of imports
   },
 
-  // Rules order is important, please avoid shuffling them
+  // Configuration extensions order is important
+  // CHANGE IT ONLY IF YOU KNOW WHAT YOU'RE DOING
   extends: [
     // Base ESLint recommended rules
-    'eslint:recommended',
+    // 'eslint:recommended',
 
     // https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin#usage
-    // ESLint typescript rules
-    'plugin:@typescript-eslint/eslint-recommended',
+    // ESLint typescript rules, uncomment when using 'eslint:recommended'
+    // 'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     // consider disabling this class of rules if linting takes too long
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
 
-    // https://eslint.vuejs.org/rules/#priority-a-essential-error-prevention
-    // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules
-    'plugin:vue/essential',
+    // Uncomment any of the lines below to choose desired strictness,
+    // but leave only one uncommented!
+    // See https://eslint.vuejs.org/rules/#available-rules
+    'plugin:vue/essential', // Priority A: Essential (Error Prevention)
+    // 'plugin:vue/strongly-recommended' // Priority B: Strongly Recommended (Improving Readability)
+    // 'plugin:vue/recommended' // Priority C: Recommended (Minimizing Arbitrary Choices and Cognitive Overhead)
 
-    // --- ONLY WHEN USING PRETTIER ---
+    
     // https://github.com/prettier/eslint-config-prettier#installation
     // usage with Prettier, provided by 'eslint-config-prettier'.
     'prettier',
     'prettier/@typescript-eslint',
-    'prettier/vue',
+    'prettier/vue'
   ],
 
   plugins: [
@@ -53,14 +56,36 @@ module.exports = {
     // https://eslint.vuejs.org/user-guide/#why-doesn-t-it-work-on-vue-file
     // required to lint *.vue files
     'vue',
+
+    
+    // https://github.com/typescript-eslint/typescript-eslint/issues/389#issuecomment-509292674
+    // Prettier has not been included as plugin to avoid performance impact
+    // add it as an extension for your IDE
+    
   ],
+
+  env: {
+    browser: true
+  },
+
+  globals: {
+    'ga': true, // Google Analytics
+    'cordova': true,
+    '__statics': true,
+    'process': true,
+    'Capacitor': true,
+    'chrome': true
+  },
 
   // add your custom rules here
   rules: {
-    // others rules...
+    'prefer-promise-reject-errors': 'off',
 
     // TypeScript
     'quotes': ['warn', 'single'],
     '@typescript-eslint/explicit-function-return-type': 'off',
+
+    // allow debugger during development only
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   }
 }

@@ -1,9 +1,11 @@
 import {store} from 'quasar/wrappers';
 import ElectronStore from "electron-store";
-import Vuex from 'vuex';
+import Vuex, {Store} from 'vuex';
 import {commonApi} from "src/api";
 import {ipcRenderer} from "electron";
 import {FileRecord, isValidURL} from "src/common";
+import {FileMaxSize} from "src/config";
+import { Notify } from 'quasar'
 
 export enum SignalType {
   Initialize,
@@ -75,10 +77,7 @@ const eStore = new ElectronStore<VuexState>({
   schema: schema
 })
 
-/*
- * If not building with SSR mode, you can
- * directly export the Store instantiation
- */
+let vueStore: Store<VuexState>
 
 export default store(function ({Vue}) {
   Vue.use(Vuex);
@@ -86,9 +85,16 @@ export default store(function ({Vue}) {
   const proxyEnabled = eStore.get('proxyEnabled')
   const proxy = eStore.get('proxy')
 
-  const store = new Vuex.Store<VuexState>({
+  vueStore = new Vuex.Store<VuexState>({
     state: {
-      fileRecords: eStore.get('fileRecords'),
+      fileRecords: eStore.get('fileRecords')
+        .map(item => {
+          return {
+            ...item,
+            uploading: false,
+            uploaded: !!item.uri
+          }
+        }),
       user: eStore.get('user'),
       repo: eStore.get('repo'),
       path: eStore.get('path'),
@@ -107,6 +113,13 @@ export default store(function ({Vue}) {
         state.signalType = newType
       },
       addFile(state, record: FileRecord) {
+        if (record.size > FileMaxSize) {
+          Notify.create({message: `文件 【 ${record.name} 】 大于 100M`, type: 'negative'})
+          return
+        }
+        if (state.fileRecords.findIndex(item => item.name === record.name) !== -1) {
+          return;
+        }
         state.fileRecords.push(record)
         eStore.set('fileRecords', state.fileRecords)
       },
@@ -114,10 +127,14 @@ export default store(function ({Vue}) {
         state.fileRecords = records
         eStore.set('fileRecords', state.fileRecords)
       },
-      updateFileRecord(state, {index, record}) {
+      updateFileRecord(state, {index, key, value}) {
+        const record = state.fileRecords[index]
         state.fileRecords = [
           ...state.fileRecords.slice(0, index),
-          record,
+          {
+            ...record,
+            [key]: value
+          },
           ...state.fileRecords.slice(index + 1,)
         ]
         eStore.set('fileRecords', state.fileRecords)
@@ -160,8 +177,12 @@ export default store(function ({Vue}) {
 
   commonApi.pingGithub()
     .catch(() => {
-      store.commit("setSignalType", SignalType.IsBad)
+      vueStore.commit("setSignalType", SignalType.IsBad)
     })
 
-  return store;
+  return vueStore;
 });
+
+export {
+  vueStore
+}

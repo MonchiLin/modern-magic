@@ -5,7 +5,7 @@
       <q-input v-model="repo" placeholder="Repo Name" label="Repo"/>
       <q-input v-model="commitMessage" placeholder="Commit Message" label="Message">
         <template v-slot:append>
-          <q-icon v-foxus="MESSAGE_PATTERN" name="contact_support">
+          <q-icon v-foxus="MESSAGE_PATTERN" :name="ionHelpCircleOutline">
             <q-tooltip>
               <p
                 style="word-break: normal; width:auto; display:block; white-space:pre-wrap; word-wrap:break-word; overflow: hidden ;">
@@ -14,23 +14,39 @@
           </q-icon>
         </template>
       </q-input>
+      <q-space/>
+      <q-btn
+        v-foxus="'手动上传文件'"
+        color="deep-orange"
+        glossy push
+        @click="triggerSelect"
+      >
+        <div class="row items-center no-wrap">
+          <q-icon left :name="ionAlbumsOutline"/>
+          <div class="text-center">手动浏览</div>
+        </div>
+      </q-btn>
+
     </div>
-    <Uploader
+    <upload-area
       :file-records="fileRecords"
       @upload="upload"
       @remove="remove"
-      @copy="copy"
+      @copy="copyUri"
+      @copyMarkdown="copyMarkdown"
       @fileSelected="handleFileSelect"
     />
+    <q-file ref="QFile" style="display: none;" hidden @input="handleFileSelect"/>
   </div>
 </template>
 
 <script lang="ts">
   import {computed, defineComponent, ref,} from '@vue/composition-api'
   import {githubApi} from "src/api";
-  import Uploader from "src/components/Uploader.vue";
-  import {FileRecord} from "src/common";
+  import UploadArea from "components/UploadArea.vue";
+  import {FileRecord, getFileRecord} from "src/common";
   import {clipboard} from "electron";
+  import {ionHelpCircleOutline, ionAlbumsOutline} from '@quasar/extras/ionicons-v5'
 
   const MESSAGE_PATTERN = `
 Message 用于在显示在 commit message 区域，除纯文本之外也支持下面几个占位符
@@ -46,12 +62,11 @@ Message 用于在显示在 commit message 区域，除纯文本之外也支持�
 
   export default defineComponent({
     components: {
-      Uploader
+      UploadArea
     },
     setup(props, context) {
       const {$axios, $q, $store} = context.root
-
-      const fileResults = ref([])
+      const QFile = ref<any>()
 
       const commitMessage = computed({
         get: () => $store.state.commitMessage,
@@ -85,9 +100,9 @@ Message 用于在显示在 commit message 区域，除纯文本之外也支持�
         }
       })
 
-      const upload = async (record: FileRecord, index) => {
+      const upload = async (record: FileRecord, index: number) => {
         const [name, ext] = [record.name, record.ext]
-        $store.commit("updateFileRecord", {index, record: {...record, uploading: true}})
+        $store.commit("updateFileRecord", {index, key: "uploading", value: true})
 
         $axios(
           githubApi.createFile(user.value, repo.value, name + new Date().getTime() + ext, {
@@ -99,14 +114,14 @@ Message 用于在显示在 commit message 区域，除纯文本之外也支持�
             }
           }))
           .then(({data}) => {
-            fileResults[name] = data.content.download_url
-            $store.commit("updateFileRecord", {index, record: {...record, uploaded: true}})
+            $store.commit("updateFileRecord", {index, key: "uploaded", value: true})
+            $store.commit("updateFileRecord", {index, key: "uri", value: data.content.download_url})
           })
           .catch(err => {
-            $store.commit("updateFileRecord", {index, record: {...record, error: err}})
+            $store.commit("updateFileRecord", {index, key: "error", value: err})
           })
           .finally(() => {
-            $store.commit("updateFileRecord", {index, record: {...record, uploading: false}})
+            $store.commit("updateFileRecord", {index, key: "uploading", value: false})
           })
       }
 
@@ -115,29 +130,44 @@ Message 用于在显示在 commit message 区域，除纯文本之外也支持�
           .filter(item => item.name !== record.name)
       }
 
-      const copy = (record: FileRecord) => {
+      const copyUri = (record: FileRecord) => {
+        $q.notify({
+          message: "已复制资源地址至至剪切板"
+        })
+        clipboard.writeText(record.uri)
+      }
+
+      const copyMarkdown = (record: FileRecord) => {
         $q.notify({
           message: "已复制 Markdown 至剪切板"
         })
-        const template = `![${record.name}](${fileResults[record.name]})`
+        const template = `![${record.name}](${[record.uri]})`
         clipboard.writeText(template)
       }
 
-      const handleFileSelect = (record: FileRecord) => {
-        addFile(record)
+      const handleFileSelect = (file: File) => {
+        addFile(getFileRecord(file))
+      }
+
+      const triggerSelect = (e) => {
+        QFile.value.pickFiles()
       }
 
       return {
+        QFile,
         user,
         repo,
         commitMessage,
         fileRecords,
-        fileResults,
         upload,
         remove,
-        copy,
+        copyUri,
+        copyMarkdown,
+        triggerSelect,
         handleFileSelect,
         MESSAGE_PATTERN,
+        ionHelpCircleOutline,
+        ionAlbumsOutline,
       }
     }
   })

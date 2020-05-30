@@ -7,5 +7,5 @@ export {
   platform,
   ACCESS_TOKEN,
   FileWarningSize,
-  FileMaxSize
+  FileMaxSize,
 }
