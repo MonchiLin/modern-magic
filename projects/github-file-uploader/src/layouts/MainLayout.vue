@@ -10,7 +10,7 @@
     >
 
       <div class="flex justify-center items-center" style="height: 56px;">
-        <q-avatar size="32px">
+        <q-avatar @click="$router.push({name:'Preference'})" size="32px">
           <img :src="require('assets/boy-avatar.png')">
         </q-avatar>
       </div>
@@ -85,15 +85,13 @@
       icon: ionCloudUploadOutline,
       label: '上传',
       routeName: "Main"
-    }, {
-      icon: ionListOutline,
-      label: '上传记录',
-      routeName: "Record"
-    }, {
-      icon: ionSettingsOutline,
-      label: '偏好设置',
-      routeName: "Preference"
-    }, {
+    },
+    // {
+    //   icon: ionListOutline,
+    //   label: '上传记录',
+    //   routeName: "Record"
+    // },
+    {
       icon: ionGlobeOutline,
       label: '代理',
       routeName: "Proxies"
