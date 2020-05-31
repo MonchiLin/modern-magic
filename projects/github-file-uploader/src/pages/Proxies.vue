@@ -160,7 +160,7 @@
         }
         callPingIP()
         callPing()
-      })
+      }, {lazy: true})
 
 
       return {
