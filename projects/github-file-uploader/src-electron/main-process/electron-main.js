@@ -97,6 +97,7 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
+    return
   }
   if (!mainWindow.isVisible()) {
     mainWindow.show()

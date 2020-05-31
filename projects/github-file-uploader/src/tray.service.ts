@@ -1,11 +1,13 @@
-import fs from 'fs-extra'
 import {remote} from 'electron'
 import path from 'path'
 import {vueStore} from "src/store";
 import {getFileRecord} from "src/common";
+import anime from "animejs";
 
 const {Tray, Menu, MenuItem, nativeImage, app, getCurrentWindow} = remote
 
+const quasarApp = document.querySelector("#q-app")
+let isProcessing = false
 const mainWindow = getCurrentWindow()
 const logo = nativeImage.createFromPath(path.resolve(path.join(__dirname, "assets", "state-ok-20.png")))
 
@@ -20,29 +22,41 @@ const contextMenu = Menu.buildFromTemplate([
 class TrayService {
   constructor() {
     const toggleWindow = () => {
+      if (isProcessing) {
+        return
+      }
+      isProcessing = true
       if (mainWindow.isVisible()) {
-        mainWindow.hide()
+        anime({
+          opacity: 0,
+          duration: 500,
+          update: (anim) => {
+            mainWindow.setOpacity((1 - Math.round(anim.progress) / 100))
+          },
+          complete: anim => {
+            mainWindow.hide()
+            isProcessing = false
+          }
+        })
       } else {
-        showWindow()
+        const trayPos = tray.getBounds()
+        const windowPos = mainWindow.getBounds()
+        let x = Math.round(trayPos.x + (trayPos.width / 2) - (windowPos.width / 2))
+        let y = Math.round(trayPos.y + trayPos.height)
+        mainWindow.show()
+        mainWindow.setPosition(x, y, true)
+        anime({
+          opacity: 1,
+          duration: 500,
+          update: anim => {
+            mainWindow.setOpacity(Math.round(anim.progress) / 100)
+          },
+          complete: anim => {
+            mainWindow.focus()
+            isProcessing = false
+          }
+        })
       }
-    }
-
-    const showWindow = () => {
-      const trayPos = tray.getBounds()
-      const windowPos = mainWindow.getBounds()
-      let x;
-      let y;
-      if (process.platform === 'darwin') {
-        x = Math.round(trayPos.x + (trayPos.width / 2) - (windowPos.width / 2))
-        y = Math.round(trayPos.y + trayPos.height)
-      } else {
-        x = Math.round(trayPos.x + (trayPos.width / 2) - (windowPos.width / 2))
-        y = Math.round(trayPos.y + trayPos.height * 10)
-      }
-
-      mainWindow.setPosition(x, y, false)
-      mainWindow.show()
-      mainWindow.focus()
     }
 
     tray.on('click', function (event) {
