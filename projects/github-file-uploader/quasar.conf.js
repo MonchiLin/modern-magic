@@ -51,23 +51,12 @@ module.exports = configure(function (/* ctx */) {
       //            (fastest compile time; minimum bundle size; most tedious)
       // * true   - Import everything from Quasar
       //            (not treeshaking Quasar; biggest bundle size; convenient)
-      all: 'auto',
-
-      components: [
-        'QPopupProxy'
-      ],
-      directives: [
-        'ClosePopup'
-      ],
-
+      importStrategy: 'auto',
       // Quasar plugins
       plugins: [
         "Notify"
       ]
     },
-
-    // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
-    supportIE: false,
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ts
     supportTS: true,

@@ -136,15 +136,15 @@
 
       watch(protocol, () => {
         onProxyChange()
-      }, {lazy: true})
+      }, {immediate: true})
 
       watch(hostname, () => {
         onProxyChange()
-      }, {lazy: true})
+      }, {immediate: true})
 
       watch(port, () => {
         onProxyChange()
-      }, {lazy: true})
+      }, {immediate: true})
 
 
       watch(proxyEnabled, (val) => {
@@ -160,7 +160,7 @@
         }
         callPingIP()
         callPing()
-      }, {lazy: true})
+      }, {immediate: true})
 
 
       return {
