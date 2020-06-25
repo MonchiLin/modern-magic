@@ -1,20 +1,19 @@
 import {remote} from 'electron'
 import path from 'path'
-import {vueStore} from "src/store";
-import {getFileRecord} from "src/common";
-import anime from "animejs";
+import {vueStore} from 'src/store';
+import {getFileRecord} from 'src/common';
+import anime from 'animejs';
 
-const {Tray, Menu, MenuItem, nativeImage, app, getCurrentWindow} = remote
+const {Tray, Menu, nativeImage} = remote
 
-const quasarApp = document.querySelector("#q-app")
 let isProcessing = false
-const mainWindow = getCurrentWindow()
-const logo = nativeImage.createFromPath(path.resolve(path.join(__dirname, "assets", "state-ok-20.png")))
+const mainWindow = remote.getCurrentWindow()
+const logo = nativeImage.createFromPath(path.resolve(path.join(__dirname, 'assets', 'state-ok-20.png')))
 
 const tray = new Tray(logo)
 
 const contextMenu = Menu.buildFromTemplate([
-  {label: '关于', click: () => console.log("?????")},
+  {label: '关于', click: () => console.log('?????')},
   {label: 'Separator', type: 'separator'},
   {label: '退出', role: 'quit', click: () => remote.app.quit()},
 ]);
@@ -41,8 +40,8 @@ class TrayService {
       } else {
         const trayPos = tray.getBounds()
         const windowPos = mainWindow.getBounds()
-        let x = Math.round(trayPos.x + (trayPos.width / 2) - (windowPos.width / 2))
-        let y = Math.round(trayPos.y + trayPos.height)
+        const x = Math.round(trayPos.x + (trayPos.width / 2) - (windowPos.width / 2))
+        const y = Math.round(trayPos.y + trayPos.height)
         mainWindow.show()
         mainWindow.setPosition(x, y, true)
         anime({
@@ -69,15 +68,9 @@ class TrayService {
     })
 
     tray.on('drop-files', (event, files: string[]) => {
-      files.forEach(async abPath => {
-        vueStore.commit('addFile', getFileRecord(abPath))
+      files.forEach(abPath => {
+       vueStore.commit('addFile', getFileRecord(abPath))
       })
-    })
-
-    mainWindow.on('blur', () => {
-      if (!mainWindow.webContents.isDevToolsOpened()) {
-        mainWindow.hide()
-      }
     })
 
     tray.on('right-click', (event) => tray.popUpContextMenu(contextMenu));

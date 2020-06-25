@@ -5,13 +5,26 @@
 
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
-const {configure} = require('quasar/wrappers');
 
-module.exports = configure(function (/* ctx */) {
+/* eslint-env node */
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { configure } = require('quasar/wrappers');
+
+module.exports = configure(function (ctx) {
   return {
+    // https://quasar.dev/quasar-cli/supporting-ts
+    supportTS: {
+      tsCheckerConfig: {
+        eslint: true
+      }
+    },
+
+    // https://quasar.dev/quasar-cli/prefetch-feature
+    // preFetch: true,
+
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
-    // https://quasar.dev/quasar-cli/cli-documentation/boot-files
+    // https://quasar.dev/quasar-cli/boot-files
     boot: [
       'boot',
       'composition-api',
@@ -26,7 +39,7 @@ module.exports = configure(function (/* ctx */) {
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
-      // 'ionicons-v4',
+      'ionicons-v4',
       // 'mdi-v5',
       // 'fontawesome-v5',
       // 'eva-icons',
@@ -36,37 +49,18 @@ module.exports = configure(function (/* ctx */) {
 
       'roboto-font', // optional, you are not bound to it
       'material-icons', // optional, you are not bound to it
-      // 'material-icons-round'
     ],
-
-    // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
-    framework: {
-      iconSet: 'material-icons', // Quasar icon set
-      lang: 'en-us', // Quasar language pack
-
-      // Possible values for "all":
-      // * 'auto' - Auto-import needed Quasar components & directives
-      //            (slightly higher compile time; next to minimum bundle size; most convenient)
-      // * false  - Manually specify what to import
-      //            (fastest compile time; minimum bundle size; most tedious)
-      // * true   - Import everything from Quasar
-      //            (not treeshaking Quasar; biggest bundle size; convenient)
-      importStrategy: 'auto',
-      // Quasar plugins
-      plugins: [
-        "Notify"
-      ]
-    },
-
-    // https://quasar.dev/quasar-cli/cli-documentation/supporting-ts
-    supportTS: true,
-
-    // https://quasar.dev/quasar-cli/cli-documentation/prefetch-feature
-    // preFetch: true
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
+
+      // transpile: false,
+
+      // Add dependencies for transpiling with Babel (Array of string/regex)
+      // (from node_modules, which are by default not transpiled).
+      // Applies only if "transpile" is set to true.
+      // transpileDependencies: [],
 
       // rtl: false, // https://quasar.dev/options/rtl-support
       // preloadChunks: true,
@@ -77,8 +71,19 @@ module.exports = configure(function (/* ctx */) {
       // Options below are automatically set depending on the env, set them if you want to override
       // extractCSS: false,
 
-      // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
-      extendWebpack(cfg) {
+      // https://quasar.dev/quasar-cli/handling-webpack
+      extendWebpack (cfg) {
+        // linting is slow in TS projects, we execute it only for production builds
+
+        // 只使用 IDE 进行 eslint
+        // if (ctx.prod) {
+        //   cfg.module.rules.push({
+        //     enforce: 'pre',
+        //     test: /\.(ts|js|vue)$/,
+        //     loader: 'eslint-loader',
+        //     exclude: /node_modules/
+        //   })
+        // }
       },
     },
 
@@ -87,6 +92,23 @@ module.exports = configure(function (/* ctx */) {
       https: false,
       port: 8080,
       open: true // opens browser window automatically
+    },
+
+    // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
+    framework: {
+      iconSet: 'material-icons', // Quasar icon set
+      lang: 'en-us', // Quasar language pack
+      config: {},
+
+      // Possible values for "importStrategy":
+      // * 'auto' - (DEFAULT) Auto-import needed Quasar components & directives
+      // * 'all'  - Manually specify what to import
+      importStrategy: 'auto',
+
+      // Quasar plugins
+      plugins: [
+        'Notify'
+      ]
     },
 
     // animations: 'all', // --- includes all animations
@@ -103,36 +125,36 @@ module.exports = configure(function (/* ctx */) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: 'Github File Uploader',
-        short_name: 'Github File Uploader',
-        description: 'Github File Uploader',
+        name: 'github-file-uploader',
+        short_name: 'github-file-uploader',
+        description: 'A Github File Uploader',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
         theme_color: '#027be3',
         icons: [
           {
-            src: 'statics/icons/icon-128x128.png',
+            src: 'icons/icon-128x128.png',
             sizes: '128x128',
             type: 'image/png'
           },
           {
-            src: 'statics/icons/icon-192x192.png',
+            src: 'icons/icon-192x192.png',
             sizes: '192x192',
             type: 'image/png'
           },
           {
-            src: 'statics/icons/icon-256x256.png',
+            src: 'icons/icon-256x256.png',
             sizes: '256x256',
             type: 'image/png'
           },
           {
-            src: 'statics/icons/icon-384x384.png',
+            src: 'icons/icon-384x384.png',
             sizes: '384x384',
             type: 'image/png'
           },
           {
-            src: 'statics/icons/icon-512x512.png',
+            src: 'icons/icon-512x512.png',
             sizes: '512x512',
             type: 'image/png'
           }
@@ -143,7 +165,6 @@ module.exports = configure(function (/* ctx */) {
     // Full list of options: https://quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
     cordova: {
       // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
-      id: 'com.kiki.github_file_uploader'
     },
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-capacitor-apps/configuring-capacitor
@@ -174,7 +195,7 @@ module.exports = configure(function (/* ctx */) {
         appId: 'github-file-uploader',
 
         mac: {  // mac
-          icon: "./src-electron/icons/icon.icns"
+          icon: './src-electron/icons/icon.icns'
         },
 
       },
@@ -182,7 +203,7 @@ module.exports = configure(function (/* ctx */) {
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
       nodeIntegration: true,
 
-      extendWebpack(/* cfg */) {
+      extendWebpack (/* cfg */) {
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack
       }

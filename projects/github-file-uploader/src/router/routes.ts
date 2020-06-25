@@ -5,10 +5,10 @@ const routes: RouteConfig[] = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      {path: '', name: "Main", component: () => import('pages/Main.vue')},
-      {path: 'Guide', name: "Guide", component: () => import('pages/Guide.vue')},
-      {path: 'Preference', name: "Preference", component: () => import('pages/Preference.vue')},
-      {path: 'Proxies', name: "Proxies", component: () => import('pages/Proxies.vue')},
+      {path: '', name: 'Main', component: () => import('pages/Main.vue')},
+      {path: 'Guide', name: 'Guide', component: () => import('pages/Guide.vue')},
+      {path: 'Preference', name: 'Preference', component: () => import('pages/Preference.vue')},
+      {path: 'Proxies', name: 'Proxies', component: () => import('pages/Proxies.vue')},
     ]
   }
 ];

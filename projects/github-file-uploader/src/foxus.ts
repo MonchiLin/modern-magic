@@ -1,7 +1,7 @@
 import {DirectiveOptions} from 'vue'
-import anime from "animejs";
-import {BehaviorSubject} from "rxjs";
-import "./css/foxus.scss"
+import anime from 'animejs';
+import {BehaviorSubject} from 'rxjs';
+import './css/foxus.scss'
 
 /**
  * 朴实无华且枯燥的 cursor，用于代替 popover
@@ -9,21 +9,17 @@ import "./css/foxus.scss"
 
 const FoxusObservable = new BehaviorSubject([])
 
-const registerFoxus = ({id, el}: { id: string, el: HTMLElement }) => {
-
-}
-
 let outerCircle: HTMLElement = null
 let innerCircle: HTMLElement = null
 
 const foxusInit = () => {
-  const el = document.createElement("div")
-  outerCircle = document.createElement("div")
-  innerCircle = document.createElement("div")
+  const el = document.createElement('div')
+  outerCircle = document.createElement('div')
+  innerCircle = document.createElement('div')
 
-  el.classList.add("v-foxuc-el")
-  outerCircle.classList.add("outer-circle")
-  innerCircle.classList.add("inner-circle")
+  el.classList.add('v-foxuc-el')
+  outerCircle.classList.add('outer-circle')
+  innerCircle.classList.add('inner-circle')
 
   document.body.append(el)
   el.append(outerCircle)
@@ -32,25 +28,25 @@ const foxusInit = () => {
   const outerBounding = outerCircle.getBoundingClientRect()
   const innerBounding = innerCircle.getBoundingClientRect()
 
-  window.addEventListener("mousedown", (e) => {
+  window.addEventListener('mousedown', (e) => {
     anime({
       targets: innerCircle,
       scale: 0.5,
       duration: 500,
-      easing: "easeOutQuint",
+      easing: 'easeOutQuint',
     })
   })
 
-  window.addEventListener("mouseup", (e) => {
+  window.addEventListener('mouseup', (e) => {
     anime({
       targets: innerCircle,
       scale: 1,
       duration: 500,
-      easing: "easeOutQuint",
+      easing: 'easeOutQuint',
     })
   })
 
-  window.addEventListener("mousemove", (e) => {
+  window.addEventListener('mousemove', (e) => {
     const {x, y} = e
     anime.timeline({
       easing: 'easeOutExpo',
@@ -76,7 +72,7 @@ const onHover = (e: MouseEvent) => {
     targets: innerCircle,
     scale: 2,
     duration: 500,
-    easing: "easeOutQuint",
+    easing: 'easeOutQuint',
     opacity: 0.2,
   })
 }
@@ -86,7 +82,7 @@ const onLeave = (e: MouseEvent) => {
     targets: innerCircle,
     scale: 1,
     duration: 500,
-    easing: "easeInCirc",
+    easing: 'easeInCirc',
     opacity: 1,
   })
 }
@@ -96,17 +92,15 @@ const vFoxus: DirectiveOptions = {
     el.dataset.foxucMessgae = binding.value
   },
   inserted(el, binding) {
-    el.addEventListener("mouseenter", onHover)
-    el.addEventListener("mouseleave", onLeave)
+    el.addEventListener('mouseenter', onHover)
+    el.addEventListener('mouseleave', onLeave)
   },
   update(el, binding) {
     el.dataset.foxucMessgae = binding.value
   },
-  componentUpdated(el, binding) {
-
-  },
-  unbind() {
-
+  unbind(el) {
+    el.removeEventListener('mouseenter', onHover)
+    el.removeEventListener('mouseleave', onLeave)
   }
 }
 

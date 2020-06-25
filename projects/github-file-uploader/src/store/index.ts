@@ -1,10 +1,10 @@
 import {store} from 'quasar/wrappers';
-import ElectronStore from "electron-store";
+import ElectronStore from 'electron-store';
 import Vuex, {Store} from 'vuex';
-import {commonApi} from "src/api";
-import {ipcRenderer} from "electron";
-import {FileRecord, isValidURL} from "src/common";
-import {FileMaxSize} from "src/config";
+import {commonApi} from 'src/api';
+import {ipcRenderer} from 'electron';
+import {FileRecord, isValidURL} from 'src/common';
+import {FileMaxSize} from 'src/config';
 import { Notify } from 'quasar'
 
 export enum SignalType {
@@ -35,19 +35,19 @@ const schema = {
   },
   user: {
     type: 'string',
-    default: ""
+    default: ''
   },
   repo: {
     type: 'string',
-    default: ""
+    default: ''
   },
   commitMessage: {
     type: 'string',
-    default: ""
+    default: ''
   },
   path: {
     type: 'string',
-    default: ""
+    default: ''
   },
   language: {
     type: 'string',
@@ -67,7 +67,7 @@ const schema = {
   },
   proxy: {
     type: 'string',
-    format: "uri",
+    format: 'uri',
     default: 'http://127.0.0.1:1086'
   }
 }
@@ -127,7 +127,7 @@ export default store(function ({Vue}) {
         state.fileRecords = records
         eStore.set('fileRecords', state.fileRecords)
       },
-      updateFileRecord(state, {index, key, value}) {
+      updateFileRecord(state, {index, key, value}: {index: number, key: string, value: string}) {
         const record = state.fileRecords[index]
         state.fileRecords = [
           ...state.fileRecords.slice(0, index),
@@ -141,28 +141,28 @@ export default store(function ({Vue}) {
       },
       setProxyEnabled(state, status: boolean) {
         if (status && isValidURL(state.proxy)) {
-          ipcRenderer.send("set-proxies", state.proxy)
+          ipcRenderer.send('set-proxies', state.proxy)
         } else {
-          ipcRenderer.send("close-proxies")
+          ipcRenderer.send('close-proxies')
         }
         state.proxyEnabled = status
-        eStore.set("proxyEnabled", status)
+        eStore.set('proxyEnabled', status)
       },
       setProxy(state, url: string) {
         state.proxy = url
-        eStore.set("proxy", url)
+        eStore.set('proxy', url)
       },
       setUser(state, value: string) {
         state.user = value
-        eStore.set("user", value)
+        eStore.set('user', value)
       },
       setRepo(state, value: string) {
         state.repo = value
-        eStore.set("repo", value)
+        eStore.set('repo', value)
       },
       setCommitMessage(state, value: string) {
         state.commitMessage = value
-        eStore.set("commitMessage", value)
+        eStore.set('commitMessage', value)
       }
     },
 
@@ -170,14 +170,14 @@ export default store(function ({Vue}) {
   });
 
   if (proxyEnabled && isValidURL(proxy)) {
-    ipcRenderer.send("set-proxies", proxy)
+    ipcRenderer.send('set-proxies', proxy)
   } else {
-    ipcRenderer.send("close-proxies")
+    ipcRenderer.send('close-proxies')
   }
 
   commonApi.pingGithub()
     .catch(() => {
-      vueStore.commit("setSignalType", SignalType.IsBad)
+      vueStore.commit('setSignalType', SignalType.IsBad)
     })
 
   return vueStore;

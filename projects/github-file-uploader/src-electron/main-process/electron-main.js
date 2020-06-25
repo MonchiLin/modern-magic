@@ -1,5 +1,5 @@
 import {app, BrowserWindow, ipcMain, nativeTheme} from 'electron'
-import HttpsProxyAgent from "https-proxy-agent";
+import HttpsProxyAgent from 'https-proxy-agent';
 import fetch from 'node-fetch'
 
 try {
@@ -17,10 +17,10 @@ if (process.env.PROD) {
   global.__statics = require('path').join(__dirname, 'statics').replace(/\\/g, '\\\\')
 }
 
-let proxies = ""
+let proxies = ''
 let mainWindow
 
-async function createWindow() {
+function createWindow() {
   /**
    * Initial window options
    */
@@ -31,8 +31,6 @@ async function createWindow() {
     // frame: false,
     enableRemoteModule: true,
     webPreferences: {
-      // Change from /quasar.conf.js > electron > nodeIntegration;
-      // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
       nodeIntegration: true,
       nodeIntegrationInWorker: true
       // More info: /quasar-cli/developing-electron-apps/electron-preload-script
@@ -40,41 +38,41 @@ async function createWindow() {
     }
   })
 
-  ipcMain.on("set-proxies", (event, newProxies) => {
+  ipcMain.on('set-proxies', (event, newProxies) => {
     proxies = newProxies
     mainWindow.webContents.session.setProxy({proxyRules: proxies})
   })
 
-  ipcMain.on("close-proxies", (event,) => {
-    proxies = ""
+  ipcMain.on('close-proxies', (event,) => {
+    proxies = ''
     mainWindow.webContents.session.setProxy({})
   })
 
-  ipcMain.on("ping-github", ({sender}) => {
-    fetch("https://github.com/git-guides", {
+  ipcMain.on('ping-github', ({sender}) => {
+    fetch('https://github.com/git-guides', {
       agent: proxies && new HttpsProxyAgent(proxies),
       timeout: 3000
     })
       .then(res => {
-        sender.send("pong-github", {isSuccess: true, res: res})
+        sender.send('pong-github', {isSuccess: true, res: res})
       })
       .catch(err => {
-        sender.send("pong-github", {isSuccess: false, res: err})
+        sender.send('pong-github', {isSuccess: false, res: err})
       })
   })
 
-  ipcMain.on("ping-ip", ({sender}) => {
-    fetch("http://myip.ipip.net", {
+  ipcMain.on('ping-ip', ({sender}) => {
+    fetch('http://myip.ipip.net', {
       agent: proxies && new HttpsProxyAgent(proxies),
     })
       .then(res => {
         return res.text()
       })
       .then(res => {
-        sender.send("pong-ip", {isSuccess: true, res: res})
+        sender.send('pong-ip', {isSuccess: true, res: res})
       })
       .catch(err => {
-        sender.send("pong-ip", {isSuccess: false, res: err})
+        sender.send('pong-ip', {isSuccess: false, res: err})
       })
   })
 

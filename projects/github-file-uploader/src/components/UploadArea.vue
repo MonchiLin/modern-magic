@@ -40,7 +40,7 @@
   }
 
   export default defineComponent<Props>({
-    name: "UploadArea",
+    name: 'UploadArea',
     components: {
       FileCard
     },

@@ -70,7 +70,7 @@
 <script lang="ts">
   import {computed, defineComponent, ref} from '@vue/composition-api'
   import {remote} from 'electron'
-  import {SignalType} from "src/store";
+  import {SignalType} from 'src/store';
   import {
     ionCloudUploadOutline,
     ionListOutline,
@@ -84,7 +84,7 @@
     {
       icon: ionCloudUploadOutline,
       label: '上传',
-      routeName: "Main"
+      routeName: 'Main'
     },
     // {
     //   icon: ionListOutline,
@@ -94,12 +94,12 @@
     {
       icon: ionGlobeOutline,
       label: '代理',
-      routeName: "Proxies"
+      routeName: 'Proxies'
     }, {
       icon: ionHelpCircleOutline,
       iconColor: 'primary',
       label: '教程',
-      routeName: "Guide"
+      routeName: 'Guide'
     }
   ]
 
@@ -112,7 +112,7 @@
       const menuList = ref(MenuList)
 
       const showNetError = computed(() => {
-        return $store.state.signalType === SignalType.IsBad && $route.name !== "Proxies"
+        return $store.state.signalType === SignalType.IsBad && $route.name !== 'Proxies'
       })
 
       const active = computed(() => {
@@ -125,7 +125,7 @@
 
       const toSetProxy = () => {
         $store.commit('setSignalType', SignalType.Initialize)
-        $router.push({name: "Proxies"})
+        $router.push({name: 'Proxies'})
       }
 
       const handleExit = () => {

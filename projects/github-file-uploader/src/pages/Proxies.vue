@@ -51,10 +51,10 @@
 <script lang="ts">
   import {defineComponent, onMounted, ref, watch, computed, watchEffect} from '@vue/composition-api'
   import {debounce} from 'quasar'
-  import {remote} from "electron";
-  import {commonApi} from "src/api";
+  import {remote} from 'electron';
+  import {commonApi} from 'src/api';
 
-  const PROTOCOLS = ["http:", "https:"]
+  const PROTOCOLS = ['http:', 'https:']
 
   export default defineComponent({
     setup(props, context) {
@@ -63,8 +63,8 @@
       const protocol = ref(proxyURL.protocol)
       const hostname = ref(proxyURL.hostname)
       const port = ref(proxyURL.port)
-      const ipInfo = ref("")
-      const pingGithubInfo = ref("")
+      const ipInfo = ref('')
+      const pingGithubInfo = ref('')
 
       const proxyEnabled = computed({
         get: () => $store.state.proxyEnabled,
@@ -83,27 +83,27 @@
       })
 
       const callPing = () => {
-        pingGithubInfo.value = "正在 Ping Github ..."
+        pingGithubInfo.value = '正在 Ping Github ...'
         const startTime = new Date().getTime()
         commonApi.pingGithub()
           .then(_ => {
             const endTime = new Date().getTime()
             const duration = (endTime - startTime)
-            pingGithubInfo.value = "与 Github 连接测试完成 " + duration + "ms"
+            pingGithubInfo.value = '与 Github 连接测试完成 ' + duration + 'ms'
           })
           .catch(_ => {
-            pingGithubInfo.value = "与 Github 连接失败，请检查网络/代理"
+            pingGithubInfo.value = '与 Github 连接失败，请检查网络/代理'
           })
       }
 
       const callPingIP = () => {
-        ipInfo.value = "正在获取 IP 信息..."
+        ipInfo.value = '正在获取 IP 信息...'
         commonApi.pingIP()
           .then(res => {
             ipInfo.value = res
           })
           .catch(err => {
-            ipInfo.value = "获取 IP 信息出错，请检查网络/代理"
+            ipInfo.value = '获取 IP 信息出错，请检查网络/代理'
           })
       }
 
@@ -112,8 +112,8 @@
         remote.getCurrentWindow().webContents.session.setProxy({proxyRules: proxyString.value})
 
         $q.notify({
-          message: "设置成功，正在更新 IP 信息",
-          position: "top-right",
+          message: '设置成功，正在更新 IP 信息',
+          position: 'top-right',
           timeout: 1000,
           type: 'info'
         })
@@ -152,8 +152,8 @@
           setHttpProxy()
         } else {
           $q.notify({
-            message: "已禁用代理",
-            position: "top-right",
+            message: '已禁用代理',
+            position: 'top-right',
             timeout: 1000,
             type: 'info'
           })

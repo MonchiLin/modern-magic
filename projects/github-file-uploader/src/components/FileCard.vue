@@ -32,13 +32,13 @@
 
 <script lang="ts">
   import {defineComponent, computed} from '@vue/composition-api'
-  import {FileRecord} from "src/common";
+  import {FileRecord} from 'src/common';
   import {ionCloudUpload, ionClipboard, ionCloseOutline, ionLogoMarkdown} from '@quasar/extras/ionicons-v5'
 
-  const IMAGE_EXTS = [".jpg", ".jpeg", ".bmp", ".png", ".gif"]
+  const IMAGE_EXTS = ['.jpg', '.jpeg', '.bmp', '.png', '.gif']
 
   export default defineComponent<{ record: FileRecord }>({
-    name: "FileCard",
+    name: 'FileCard',
     props: {
       record: {
         required: true,

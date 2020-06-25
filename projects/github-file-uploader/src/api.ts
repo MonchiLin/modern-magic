@@ -1,6 +1,6 @@
 import {AxiosRequestConfig} from 'axios'
-import {ACCESS_TOKEN} from "src/config";
-import {ipcRenderer} from "electron";
+import {ACCESS_TOKEN} from 'src/config';
+import {ipcRenderer} from 'electron';
 
 const GITHUB_BASEURL = 'https://api.github.com'
 
@@ -30,7 +30,7 @@ const githubApi = {
         Authorization: `token ${ACCESS_TOKEN}`
       },
       baseURL: GITHUB_BASEURL,
-      method: "put",
+      method: 'put',
       url: `/repos/${owner}/${repo}/contents/${path}`,
       data: body
     }
@@ -39,9 +39,9 @@ const githubApi = {
 
 const commonApi = {
   pingIP(): Promise<string> {
-    ipcRenderer.send("ping-ip")
+    ipcRenderer.send('ping-ip')
     return new Promise((resolve, reject) => {
-      ipcRenderer.on("pong-ip", (event, {isSuccess, res}) => {
+      ipcRenderer.on('pong-ip', (event, {isSuccess, res}) => {
         if (isSuccess) {
           resolve(res)
         } else {
@@ -51,13 +51,12 @@ const commonApi = {
     })
   },
   pingGithub(): Promise<boolean> {
-    ipcRenderer.send("ping-github")
+    ipcRenderer.send('ping-github')
     return new Promise((resolve, reject) => {
-      ipcRenderer.on("pong-github", (event, message) => {
+      ipcRenderer.on('pong-github', (event, message) => {
         if (message) {
           resolve()
         } else {
-          // eslint-disable-next-line prefer-promise-reject-errors
           reject()
         }
       })

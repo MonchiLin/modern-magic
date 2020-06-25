@@ -13,7 +13,7 @@ require('electron-debug')({ showDevTools: true })
 // Install `vue-devtools`
 app.on('ready', () => {
   installExtension(VUEJS_DEVTOOLS)
-    .then((name) => console.log(`Added Extension:  ${name}`))
+    .then((ext) => console.log(`Added Extension:  ${ext.name}`))
     .catch((err) => console.log('An error occurred: ', err));
 })
 

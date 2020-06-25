@@ -20,7 +20,7 @@ type FileRecord = {
   ext: string;
   uploading: boolean;
   uploaded: boolean;
-  error: Object | null | boolean;
+  error: Error | null | boolean;
   base64: string;
   uri: string;
   size: number,
@@ -28,22 +28,22 @@ type FileRecord = {
 }
 
 const MINE_TYPES = {
-  "png": "data:image/png;base64",
-  "jpg": "data:image/jpg;base64",
-  "jpeg": "data:image/jpeg;base64",
+  'png': 'data:image/png;base64',
+  'jpg': 'data:image/jpg;base64',
+  'jpeg': 'data:image/jpeg;base64',
 }
 
 function getFileRecord(fileOrPath: string | File): FileRecord {
   const fileRecord: FileRecord = {
-    name: "",
-    ext: "",
+    name: '',
+    ext: '',
     uploading: false,
     uploaded: false,
     error: false,
-    base64: "",
+    base64: '',
     size: 0,
-    uri: "",
-    mineType: "data;base64",
+    uri: '',
+    mineType: 'data;base64',
   }
 
   if (fileOrPath instanceof File) {

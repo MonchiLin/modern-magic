@@ -42,10 +42,10 @@
 
 <script lang="ts">
   import {computed, defineComponent, ref,} from '@vue/composition-api'
-  import {githubApi} from "src/api";
-  import UploadArea from "components/UploadArea.vue";
-  import {FileRecord, getFileRecord} from "src/common";
-  import {clipboard} from "electron";
+  import {githubApi} from 'src/api';
+  import UploadArea from 'components/UploadArea.vue';
+  import {FileRecord, getFileRecord} from 'src/common';
+  import {clipboard} from 'electron';
   import {ionHelpCircleOutline, ionAlbumsOutline} from '@quasar/extras/ionicons-v5'
 
   const MESSAGE_PATTERN = `
@@ -100,28 +100,28 @@ Message 用于在显示在 commit message 区域，除纯文本之外也支持�
         }
       })
 
-      const upload = async (record: FileRecord, index: number) => {
+      const upload = (record: FileRecord, index: number) => {
         const [name, ext] = [record.name, record.ext]
-        $store.commit("updateFileRecord", {index, key: "uploading", value: true})
+        $store.commit('updateFileRecord', {index, key: 'uploading', value: true})
 
         $axios(
           githubApi.createFile(user.value, repo.value, name + new Date().getTime() + ext, {
-            message: commitMessage + " " + new Date().getTime(),
+            message: commitMessage + ' ' + new Date().getTime(),
             content: record.base64,
             committer: {
-              name: "GithubFileUploader",
-              email: "gfu@undefind.com"
+              name: 'GithubFileUploader',
+              email: 'gfu@undefind.com'
             }
           }))
           .then(({data}) => {
-            $store.commit("updateFileRecord", {index, key: "uploaded", value: true})
-            $store.commit("updateFileRecord", {index, key: "uri", value: data.content.download_url})
+            $store.commit('updateFileRecord', {index, key: 'uploaded', value: true})
+            $store.commit('updateFileRecord', {index, key: 'uri', value: data.content.download_url})
           })
           .catch(err => {
-            $store.commit("updateFileRecord", {index, key: "error", value: err})
+            $store.commit('updateFileRecord', {index, key: 'error', value: err})
           })
           .finally(() => {
-            $store.commit("updateFileRecord", {index, key: "uploading", value: false})
+            $store.commit('updateFileRecord', {index, key: 'uploading', value: false})
           })
       }
 
@@ -132,14 +132,14 @@ Message 用于在显示在 commit message 区域，除纯文本之外也支持�
 
       const copyUri = (record: FileRecord) => {
         $q.notify({
-          message: "已复制资源地址至至剪切板"
+          message: '已复制资源地址至至剪切板'
         })
         clipboard.writeText(record.uri)
       }
 
       const copyMarkdown = (record: FileRecord) => {
         $q.notify({
-          message: "已复制 Markdown 至剪切板"
+          message: '已复制 Markdown 至剪切板'
         })
         const template = `![${record.name}](${[record.uri]})`
         clipboard.writeText(template)

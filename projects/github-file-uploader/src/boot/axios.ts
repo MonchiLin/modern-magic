@@ -9,7 +9,7 @@ declare module 'vue/types/vue' {
 
 export default boot(({Vue}) => {
   const request = axios.create({
-    adapter: require("axios/lib/adapters/http")
+    adapter: require('axios/lib/adapters/http')
   })
 
 
