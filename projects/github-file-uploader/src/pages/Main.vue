@@ -1,14 +1,13 @@
 <template>
   <div>
     <div class="q-gutter-md row">
-      <q-input v-model="user" placeholder="Owner Name" label="Owner"/>
-      <q-input v-model="repo" placeholder="Repo Name" label="Repo"/>
-      <q-input v-model="commitMessage" placeholder="Commit Message" label="Message">
+      <q-input :debounce="150" v-model="user" placeholder="Owner Name" label="Owner"/>
+      <q-input :debounce="150" v-model="repo" placeholder="Repo Name" label="Repo"/>
+      <q-input :debounce="150" v-model="commitMessage" placeholder="Commit Message" label="Message">
         <template v-slot:append>
           <q-icon v-foxus="MESSAGE_PATTERN" :name="ionHelpCircleOutline">
             <q-tooltip>
-              <p
-                style="word-break: normal; width:auto; display:block; white-space:pre-wrap; word-wrap:break-word; overflow: hidden ;">
+              <p class="MESSAGE_PATTERN_TEXT">
                 {{MESSAGE_PATTERN}}</p>
             </q-tooltip>
           </q-icon>
@@ -41,12 +40,17 @@
 </template>
 
 <script lang="ts">
-  import {computed, defineComponent, ref,} from '@vue/composition-api'
+  import {computed, defineComponent, onMounted, ref, onUnmounted} from '@vue/composition-api'
+  import Mousetrap from 'mousetrap'
+  import fs from 'fs-extra'
+  import path from 'path'
   import {githubApi} from 'src/api';
   import UploadArea from 'components/UploadArea.vue';
   import {FileRecord, getFileRecord} from 'src/common';
-  import {clipboard} from 'electron';
+  import {clipboard, remote} from 'electron';
   import {ionHelpCircleOutline, ionAlbumsOutline} from '@quasar/extras/ionicons-v5'
+
+  const tempPath = remote.app.getPath('temp')
 
   const MESSAGE_PATTERN = `
 Message 用于在显示在 commit message 区域，除纯文本之外也支持下面几个占位符
@@ -98,6 +102,25 @@ Message 用于在显示在 commit message 区域，除纯文本之外也支持�
         set: val => {
           $store.commit('setRepo', val)
         }
+      })
+
+      onMounted(() => {
+        Mousetrap.bind(['command+v', 'ctrl+v'], (e) => {
+          const image = clipboard.readImage("clipboard")
+          if (image.isEmpty()) {
+            return false
+          }
+          const imagePath = path.join(tempPath, new Date().getTime().toString() + '.png')
+          fs.writeFile(imagePath, image.toPNG(), 'binary')
+            .then(res => {
+              addFile(getFileRecord(imagePath))
+            })
+          return false;
+        });
+      })
+
+      onUnmounted(() => {
+        Mousetrap.unbind(['command+v', 'ctrl+v']);
       })
 
       const upload = (record: FileRecord, index: number) => {
@@ -174,5 +197,7 @@ Message 用于在显示在 commit message 区域，除纯文本之外也支持�
 </script>
 
 <style>
-
+.MESSAGE_PATTERN_TEXT {
+  word-break: normal; width:auto; display:block; white-space:pre-wrap; word-wrap:break-word; overflow: hidden ;
+}
 </style>
