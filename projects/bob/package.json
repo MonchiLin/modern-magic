@@ -1,0 +1,11 @@
+{
+  "name": "bob",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "lodash": "^4.17.20",
+    "rimraf": "^3.0.2"
+  }
+}

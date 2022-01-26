@@ -54,7 +54,7 @@ Vue.use(VueRx)
 然后, 根据 [Vue.use](https://cn.vuejs.org/v2/api/#Vue-use) 文档可知 `Vue.use` 函数有两种用法: 
 1. 传入一个函数, 把 Vue 作为参数传入这个函数, 并且调用它.
 2. 传入一个对象, 会调用传入对象的 install 函数
-这时我们打开 [index.js](https://github.com/vuejs/vue-rx/blob/master/src/index.js) 可以看到下面部分，`vue-rx` 使用的是第 二 种方法
+这时我们打开 [index.jsx](https://github.com/vuejs/vue-rx/blob/master/src/index.jsx) 可以看到下面部分，`vue-rx` 使用的是第 二 种方法
 
 ```javascript
 export default function VueRx (Vue) {

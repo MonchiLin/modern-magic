@@ -5,7 +5,7 @@
 
 
 
-> 本文分析以 [lodash.clonedeep]( https://github.com/lodash/lodash/blob/4.5.0-npm-packages/lodash.clonedeep/index.js ) 为准，因为主分支里面的代码比较分散。
+> 本文分析以 [lodash.clonedeep]( https://github.com/lodash/lodash/blob/4.5.0-npm-packages/lodash.clonedeep/index.jsx ) 为准，因为主分支里面的代码比较分散。
 
 
 
