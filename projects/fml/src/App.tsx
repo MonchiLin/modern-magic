@@ -2,6 +2,7 @@ import React from "react";
 import { Arrow, Like } from '@react-vant/icons';
 import { Card, Image, Button, Toast, Space, Typography, Tag, Divider } from 'react-vant';
 import classNames from "classnames";
+import { SpinToWin } from "./persention/spin-to-win";
 
 const VantPlayground = () => {
   return <Space
@@ -117,7 +118,8 @@ const ViewPortPlayground = () => {
 
 export default function App() {
   return <div style={{ backgroundColor: '#f2f2f2' }}>
-    <ViewPortPlayground/>
-    <VantPlayground/>
+    {/*<ViewPortPlayground/>*/}
+    {/*<VantPlayground/>*/}
+    <SpinToWin/>
   </div>;
 }
