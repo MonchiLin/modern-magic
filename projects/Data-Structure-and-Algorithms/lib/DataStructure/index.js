@@ -7,4 +7,4 @@ import Stack from "./Stack/Stack";
 import { DQueue, Queue } from "./Queue/Queue";
 import Graph from "./Graph/Graph";
 export { AVLTree, BinarySearchTree, LinkedList, DoubleLinkedList, List, MSet, Stack, Queue, DQueue, Graph, };
-//# sourceMappingURL=index.jsx.map
+//# sourceMappingURL=index.js.map
