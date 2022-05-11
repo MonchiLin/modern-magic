@@ -2,17 +2,9 @@
   "name": "modern-magic",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {
-    "bootstrap": "yarn && lerna bootstrap --ignore-scripts && yarn run build",
-    "build": "tsc --build projects/tsconfig.project.json",
-    "watch": "tsc --build --watch projects/tsconfig.project.json"
-  },
   "private": true,
-  "dependencies": {
-  },
-  "devDependencies": {
-    "lerna": "^3.22.1",
-    "ts-node": "^8.10.2",
-    "typescript": "^3.9.5"
-  }
+  "packageManager": "yarn@3.2.0",
+  "workspaces": [
+    "projects/*"
+  ]
 }

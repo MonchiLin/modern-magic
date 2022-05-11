@@ -13,34 +13,34 @@
     "test": "jest"
   },
   "dependencies": {
-    "ts-md5": "^1.2.7",
-    "ant-design-vue": "2.0.0-beta.1",
-    "ramda": "^0.27.0",
-    "@vue/composition-api": "^0.6.6",
-    "nuxt": "^2.13.0",
     "@nuxt/typescript-runtime": "^0.4.10",
     "@nuxtjs/axios": "^5.11.0",
-    "@nuxtjs/pwa": "^3.0.0-beta.20"
+    "@nuxtjs/pwa": "^3.0.0-beta.20",
+    "@vue/composition-api": "^0.6.6",
+    "ant-design-vue": "2.0.0-beta.1",
+    "nuxt": "^2.13.0",
+    "ramda": "^0.27.0",
+    "ts-md5": "^1.2.7"
   },
   "devDependencies": {
-    "dotenv": "^8.2.0",
-    "vue-loader": "^15.9.2",
-    "core-js": "^3.6.5",
-    "@types/ramda": "^0.27.6",
     "@nuxt/typescript-build": "^1.0.3",
-    "@nuxtjs/tailwindcss": "^2.0.0",
     "@nuxtjs/eslint-config-typescript": "^2.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.3.0",
-    "eslint-plugin-nuxt": ">=1.0.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.4",
-    "prettier": "^2.0.5",
+    "@nuxtjs/tailwindcss": "^2.0.0",
+    "@types/ramda": "^0.27.6",
     "@vue/test-utils": "^1.0.3",
+    "babel-eslint": "^10.1.0",
     "babel-jest": "^26.0.1",
+    "core-js": "^3.6.5",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.3.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-nuxt": ">=1.0.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "jest": "^26.0.1",
+    "prettier": "^2.0.5",
+    "ts-jest": "^26.1.0",
     "vue-jest": "^4.0.0-0",
-    "ts-jest": "^26.1.0"
+    "vue-loader": "^15.9.2"
   }
 }

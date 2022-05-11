@@ -129,3 +129,11 @@ projects/TNOA/**/dist
 /projects/expore_rocket/target/
 .yarn
 .parcel-cache
+
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
