@@ -1,6 +1,15 @@
 import React, {useEffect, useRef} from "react";
 import style from "./menu-indicator.module.scss"
 
+type Point = {
+  x: number,
+  y: number,
+}
+
+// 获取斜率
+const getSlope = (a: Point, b: Point) => {
+  return Math.abs(a.x - b.x / a.y - b.y)
+}
 
 const MenuIndicator = () => {
   const rootRef = useRef<HTMLDivElement>(null)
@@ -42,6 +51,15 @@ const MenuIndicator = () => {
       y: 0
     }
 
+    const triangle = triangleRef.current!
+    const triangleRect = triangle.getBoundingClientRect()
+    const rootRect = getRootPosition()
+
+    const slop = getSlope(
+      {x: triangleRect.width, y: 1},
+      {x: 1, y: triangleRect.height},
+    )
+
     const d = () => {
       ctx.beginPath(); // 开始路径绘制
       if (type === 0) {
@@ -56,15 +74,15 @@ const MenuIndicator = () => {
           d()
         }
       } else if (type === 1) {
-        const triangle = triangleRef.current
 
         ctx.moveTo(prev.x, prev.y); // 设置路径起点，坐标为(20,20)
         prev.y += 1
         ctx.lineTo(prev.x, prev.y);
 
+        prev.x = triangleRect.width + (triangleRect.x - rootRect.x) + slop * (-1 * prev.y) - 1
         if (prev.y >= canvas.height) {
           type = 2
-          prev.x = canvas.width
+          prev.x = rootRect.width - triangleRect.width
           prev.y = canvas.height
           d()
         }
@@ -89,8 +107,8 @@ const MenuIndicator = () => {
         }
       }
 
-      ctx.lineWidth = 2.0; // 设置线宽
-      ctx.strokeStyle = "#CC0000"; // 设置线的颜色
+      ctx.lineWidth = 3.0; // 设置线宽
+      ctx.strokeStyle = "#7f7878"; // 设置线的颜色
       ctx.stroke(); // 进行线的着色，这时整条线才变得可见
 
       setTimeout(() => {
