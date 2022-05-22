@@ -17,7 +17,6 @@ const MenuIndicator = () => {
   const triangleRef = useRef<HTMLDivElement>(null)
 
   const onMouseEnter = () => {
-    console.log("onMouseEnter")
     clearCanvas()
     draw()
   }
@@ -61,10 +60,12 @@ const MenuIndicator = () => {
     )
 
     const d = () => {
+      const step = 0.5
+
       ctx.beginPath(); // 开始路径绘制
       if (type === 0) {
         ctx.moveTo(prev.x, 0); // 设置路径起点，坐标为(20,20)
-        prev.x += 1
+        prev.x += step
         ctx.lineTo(prev.x, 0); // 绘制一条到(200,20)的直线
 
         if (prev.x >= canvas.width) {
@@ -76,7 +77,7 @@ const MenuIndicator = () => {
       } else if (type === 1) {
 
         ctx.moveTo(prev.x, prev.y); // 设置路径起点，坐标为(20,20)
-        prev.y += 1
+        prev.y += step
         ctx.lineTo(prev.x, prev.y);
 
         prev.x = triangleRect.width + (triangleRect.x - rootRect.x) + slop * (-1 * prev.y) - 1
@@ -88,7 +89,7 @@ const MenuIndicator = () => {
         }
       } else if (type === 2) {
         ctx.moveTo(prev.x, prev.y); // 设置路径起点，坐标为(20,20)
-        prev.x -= 1
+        prev.x -= step
         ctx.lineTo(prev.x, prev.y); // 绘制一条到(200,20)的直线
 
         if (prev.x <= 0) {
@@ -99,7 +100,7 @@ const MenuIndicator = () => {
         }
       } else if (type === 3) {
         ctx.moveTo(prev.x, prev.y); // 设置路径起点，坐标为(20,20)
-        prev.y -= 1
+        prev.y -= step
         ctx.lineTo(prev.x, prev.y); // 绘制一条到(200,20)的直线
 
         if (prev.y <= 0) {
@@ -113,7 +114,7 @@ const MenuIndicator = () => {
 
       setTimeout(() => {
         d()
-      }, 8)
+      }, 1)
     }
 
     d()

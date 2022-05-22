@@ -2,8 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
+html, body, #__next {
   height: 100%;
   width: 100%;
   background: #1D1D1D;
+  display: flex;
 }
