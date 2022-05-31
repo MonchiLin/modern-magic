@@ -130,8 +130,8 @@ projects/TNOA/**/dist
 .yarn
 .parcel-cache
 
+.pnp.*
 .yarn/*
-!.yarn/cache
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
