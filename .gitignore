@@ -121,14 +121,9 @@ dist
 .idea
 .cache/*
 *.tsbuildinfo
-blog/assets/*.psd
 .cache
-projects/TNOA/**/dist
 *.iml
-/projects/rust_programming_language/target/
-/projects/expore_rocket/target/
 .yarn
-.parcel-cache
 
 .pnp.*
 .yarn/*
