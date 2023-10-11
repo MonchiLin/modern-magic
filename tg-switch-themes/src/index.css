@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Breaking Bad";
+  font-style: normal;
+  font-weight: bold;
+  src: url("./assets/Heart Breaking Bad.otf") format("opentype");
+}
+
+.font-breaking-bad {
+  font-family: "Breaking Bad", sans-serif;
+}
