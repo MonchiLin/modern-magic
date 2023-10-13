@@ -17,7 +17,13 @@ function App() {
         canvasRef.current = canvas
         parentRef.current.appendChild(canvas)
         setTimeout(() => {
-          crop(canvas, event).then(() => parentRef.current.removeChild(canvas))
+          crop(
+            canvas,
+            event,
+            {reverse: themeContext.mode === "dark"}
+          ).then(() => {
+            parentRef.current.removeChild(canvas)
+          })
           themeContext.toggleTheme()
         }, 1)
       })

@@ -30,9 +30,18 @@ export function toCanvas(el) {
   })
 }
 
-function easeOutQuad(t, b, c, d) {
-  t /= d;
-  return -c * t * (t - 2) + b;
+export function easeInOutQuint(elapsed, initialValue, amountOfChange, duration) {
+  if ((elapsed /= duration / 2) < 1) {
+    return amountOfChange / 2 * elapsed * elapsed * elapsed * elapsed * elapsed + initialValue;
+  }
+  return amountOfChange / 2 * ((elapsed -= 2) * elapsed * elapsed * elapsed * elapsed + 2) + initialValue;
+}
+
+export function easeInOutQuart(elapsed, initialValue, amountOfChange, duration) {
+  if ((elapsed /= duration / 2) < 1) {
+    return amountOfChange / 2 * elapsed * elapsed * elapsed * elapsed + initialValue;
+  }
+  return -amountOfChange / 2 * ((elapsed -= 2) * elapsed * elapsed * elapsed - 2) + initialValue;
 }
 
 function getMousePos(canvas, evt) {
@@ -47,21 +56,24 @@ function getMaxRadius(canvas) {
   return Math.sqrt(Math.pow(canvas.width, 2) + Math.pow(canvas.height, 2));
 }
 
-export const crop = (canvas, initialPosition) => {
+export const crop = (canvas, initialPosition, {reverse = false}) => {
   const ctx = canvas.getContext('2d');
   const {x, y} = getMousePos(canvas, initialPosition);
   const maxRadius = getMaxRadius(canvas);
 
   return new Promise(resolve => {
-    let radius = 0;
-    ctx.fillStyle = 'rgba(255, 255, 255, 1)';
     let progress = 0;
-    const duration = 120;
+    const duration = 60;
+    ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+    ctx.globalCompositeOperation = reverse ? 'destination-in' : 'destination-out';
 
     function draw() {
-      ctx.globalCompositeOperation = 'destination-out';
-
-      radius = easeOutQuad(progress, 0, maxRadius, duration);
+      let radius;
+      if (reverse) {
+        radius = easeInOutQuint(progress, maxRadius, -maxRadius, duration);
+      } else {
+        radius = easeInOutQuart(progress, 0, maxRadius, duration);
+      }
 
       ctx.beginPath();
       ctx.arc(x, y, radius, 0, Math.PI * 2, false);
@@ -72,7 +84,7 @@ export const crop = (canvas, initialPosition) => {
       if (progress < duration) {
         requestAnimationFrame(draw);
       } else {
-        resolve(canvas)
+        resolve(canvas);
       }
     }
 
