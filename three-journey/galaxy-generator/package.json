@@ -1,0 +1,21 @@
+{
+  "name": "galaxy-generator",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 7002",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "gsap": "3.12.5",
+    "lil-gui": "^0.19.2",
+    "three": "0.163.0"
+  },
+  "devDependencies": {
+    "@types/three": "0.163.0",
+    "typescript": "5.4.5",
+    "vite": "^5.2.0"
+  }
+}
