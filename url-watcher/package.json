@@ -1,0 +1,37 @@
+{
+  "name": "href-watcher",
+  "version": "0.0.1",
+  "description": "Just location.href watcher",
+  "author": "MonchiLin <lin912305043@gmail.com>",
+  "homepage": "https://github.com/jasonsturges/vite-typescript-npm-package",
+  "repository": "github:jasonsturges/vite-typescript-npm-package",
+  "license": "ISC",
+  "keywords": [
+    "typescript",
+    "npm",
+    "spa",
+    "localtion"
+  ],
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "tsc && vite build --watch",
+    "build": "tsc && vite build",
+    "build:types": "dts-bundle-generator --config ./dts-bundle-generator.config.ts"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@types/node": "20",
+    "dts-bundle-generator": "9.5.1",
+    "tslib": "2.6.2",
+    "typescript": "5.4.5",
+    "vite": "5.2.10",
+    "vite-plugin-dts": "3.9.0"
+  }
+}
