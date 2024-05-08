@@ -1,10 +1,10 @@
 {
-  "name": "threejs-mesh-surface-sampler",
+  "name": "threejs-interactive-particles-text",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port 7001",
+    "dev": "vite --port 7005",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },

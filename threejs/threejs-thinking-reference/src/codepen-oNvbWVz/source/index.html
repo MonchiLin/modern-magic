@@ -1,0 +1,44 @@
+<div id = 'container'>
+	<h1 id = 'hello'>Hello.</h1>
+</div>
+
+<div id = 'world'>
+</div>
+
+<script type = 'x-shader/x-vertex' id = 'vertexShader'>
+uniform float screenWidth;
+uniform float screenHeight;
+uniform float time;
+attribute float random;
+
+void main() {
+float myFloat = 100.0;
+float timeLarge = time * 100.0;
+vec3 newPosition = vec3(
+
+	position.x, 
+	position.y - inversesqrt(timeLarge - 
+	(random*2000.0)) * 700.0 + 
+	(inversesqrt(time) * 65.0) +
+	(inversesqrt(time) * 10.0),
+	position.z 
+	
+);
+gl_PointSize = 1.8; 
+        gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+}
+</script>
+
+<script type = 'x-shader-x-fragment' id = 'fragmentShader'>
+uniform float screenWidth;
+uniform float screenHeight;
+
+void main() {
+float depth = gl_FragCoord.z / gl_FragCoord.w;
+
+
+vec2 screen = vec2(screenWidth, screenHeight);
+vec2 st = gl_FragCoord.xy / screen.xy;
+gl_FragColor = vec4(0.35, 0.36, 0.37, 1.0);
+}
+</script>
