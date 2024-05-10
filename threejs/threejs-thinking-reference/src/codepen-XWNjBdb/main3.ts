@@ -203,15 +203,15 @@ class CreateParticles {
 
     if (intersects.length > 0) {
 
+      // mx my mz 就是三维空间中鼠标的位置
+      const mx = intersects[0].point.x;
+      const my = intersects[0].point.y;
+      const mz = intersects[0].point.z;
+
       this.particles.material.uniforms.time.value = time;
-      // this.particles.material.uniforms.mouseIn3d.value = intersects[0].point;
-      this.particles.material.uniforms.mouseIn3d.value = new Vector3(this.mouse.x, this.mouse.y, 0, );
+      this.particles.material.uniforms.mouseIn3d.value = new Vector3(mx, my, mz);
       this.particles.material.uniforms.defaultEase.value = this.data.ease;
       this.particles.material.uniforms.defaultSize.value = this.data.particleSize;
-
-      if (Math.random() > 0.9) {
-        console.log(intersects[0].point)
-      }
 
       return
     }
@@ -378,7 +378,6 @@ const vertexShader = `
 
   varying vec3 vColor;
   varying float vTime;
-  varying float vSize;
 
   float distanceTo(float x1, float y1, float x2, float y2) {
     return sqrt(pow(x1 - x2, 2.0) + pow(y1 - y2, 2.0));
@@ -391,13 +390,57 @@ const vertexShader = `
 
   void main() {
     vTime = time;
-    vSize = 1.0;
 
-    vColor = mouseIn3d;
-    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+    float initX = initPosition.x;
+    float initY = initPosition.y;
+    float initZ = initPosition.z;
 
-    gl_PointSize = vSize * (300.0 / -mvPosition.z);
-    gl_Position = projectionMatrix * mvPosition;
+    float px = position.x;
+    float py = position.y;
+    float pz = position.z;
+
+    float vSize = defaultSize;
+
+    float dx = mouseIn3d.x - px;
+    float dy = mouseIn3d.y - py;
+
+    float mouseDistance = distanceTo(mouseIn3d.x, mouseIn3d.y, px, py);
+
+    float area = 250.0;
+    float d = dx * dx + dy * dy;
+    float f = -area / d;
+
+    if (mouseDistance < area) {
+      float t = atan2(dy, dx);
+
+      float random = fract(sin(time) * 43758.5453);
+      if (random < 0.25) {
+        px -= .03 * cos(t);
+        py -= .03 * sin(t);
+
+        vColor = vec3(0.15, 1.0, 0.5);
+        vSize = defaultSize / 1.2;
+      } else {
+        px += f * cos(t);
+        py += f * sin(t);
+
+        vSize = defaultSize * 1.3;
+
+        if ((px > initX + 10.0 || px < initX - 10.0) || (py > initY + 10.0 || py < initY - 10.0)) {
+          vColor = vec3(0.15, 1.0, 0.5);
+          vSize = defaultSize * 1.8;
+        }
+      }
+
+      px += (initX - px) * defaultEase;
+      py += (initY - py) * defaultEase;
+      pz += (initZ - pz) * defaultEase;
+
+      vec4 mvPosition = modelViewMatrix * vec4(px, py, pz, 1.0);
+
+      gl_PointSize = vSize * ( 300.0 / -mvPosition.z );
+      gl_Position = projectionMatrix * mvPosition;
+    }
   }
 `
 
@@ -416,13 +459,15 @@ const fragmentShader = `
   uniform vec3 mouseColor;
   uniform sampler2D pointTexture;
 
+  uniform vec3 color;
+
   varying vec3 vColor;
   varying float vTime;
 
  void main() {
    float zigzagTime = 1.0 + (sin(vTime * 2.0 * PI)) / 6.0;
 
-   gl_FragColor = vec4(vec3(1.0, 1.0, 1.0), 1.0);
+   gl_FragColor = vec4(color * vColor, 1.0);
    gl_FragColor = gl_FragColor * texture2D(pointTexture, gl_PointCoord);
  }
 `

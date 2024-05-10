@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mouse Rectangle with Shader</title>
+  <style>
+    body { margin: 0; }
+    canvas { width: 100%; height: 100%; }
+  </style>
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js"></script>
+<script id="vertexShader" type="x-shader/x-vertex">
+  void main() {
+    gl_Position = vec4(position, 1.0);
+  }
+</script>
+<script id="fragmentShader" type="x-shader/x-fragment">
+  uniform vec2 u_resolution;
+  uniform vec2 u_mouse;
+  uniform float u_rectSize;
+
+  void main() {
+    vec2 st = gl_FragCoord.xy / u_resolution.xy;
+    vec2 mousePos = u_mouse.xy / u_resolution.xy;
+
+    float rectWidth = u_rectSize / u_resolution.x;
+    float rectHeight = u_rectSize / u_resolution.y;
+
+    vec2 rectCenter = mousePos;
+    vec2 rectMin = rectCenter - vec2(rectWidth, rectHeight) * 10.0;
+    vec2 rectMax = rectCenter + vec2(rectWidth, rectHeight) * 10.0;
+
+    vec3 color = vec3(0.0);
+    if (st.x >= rectMin.x && st.x <= rectMax.x && st.y >= rectMin.y && st.y <= rectMax.y) {
+      color = vec3(1.0);
+    }
+
+    gl_FragColor = vec4(color, 1.0);
+  }
+</script>
+<script id="fragmentShaderOptimized" type="x-shader/x-fragment">
+  uniform vec2 u_resolution;
+  uniform vec2 u_mouse;
+  uniform float u_rectSize;
+
+  void main() {
+    vec2 rectCenter = u_mouse.xy;
+    vec2 rectHalfSize = vec2(u_rectSize * 10.0);
+    vec2 rectMin = rectCenter - rectHalfSize;
+    vec2 rectMax = rectCenter + rectHalfSize;
+
+    vec2 fragCoord = gl_FragCoord.xy;
+    if (fragCoord.x < rectMin.x || fragCoord.x > rectMax.x ||
+        fragCoord.y < rectMin.y || fragCoord.y > rectMax.y) {
+      discard;
+    }
+
+    gl_FragColor = vec4(1.0);
+  }
+</script>
+<script>
+  // Set up the scene, camera, and renderer
+  const scene = new THREE.Scene();
+  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  const renderer = new THREE.WebGLRenderer();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  const stats = new Stats()
+  stats.domElement.style.cssText = 'position:absolute;top:0px;left:0px;';
+  document.body.appendChild(stats.domElement)
+  document.body.appendChild(renderer.domElement);
+
+  // Create a plane geometry and a shader material
+  const geometry = new THREE.PlaneGeometry(2, 2);
+  const material = new THREE.ShaderMaterial({
+    uniforms: {
+      u_resolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+      u_mouse: { value: new THREE.Vector2() },
+      u_rectSize: { value: 24.0 }
+    },
+    vertexShader: document.getElementById('vertexShader').textContent,
+    // fragmentShader: document.getElementById('fragmentShader').textContent
+    fragmentShader: document.getElementById('fragmentShaderOptimized').textContent
+  });
+
+  // Create a mesh using the geometry and material, and add it to the scene
+  const mesh = new THREE.Mesh(geometry, material);
+  scene.add(mesh);
+
+  // Update the mouse uniform on mousemove
+  document.addEventListener('mousemove', (event) => {
+    material.uniforms.u_mouse.value.set(event.clientX, window.innerHeight - event.clientY);
+  });
+
+  // Render the scene
+  function render() {
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+    stats.update()
+  }
+  render();
+</script>
+</body>
+</html>

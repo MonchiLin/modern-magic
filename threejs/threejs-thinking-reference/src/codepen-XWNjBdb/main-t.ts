@@ -11,7 +11,7 @@ const globalParameters = {
 gui.add(globalParameters, 'animationSpeed', 0, 100)
 
 
-function main3() {
+function main() {
   manager = new LoadingManager()
 
   let fontType: Font
@@ -108,6 +108,7 @@ class CreateParticles {
   private data: { area: number; ease: number; amount: number; textSize: number; particleColor: number; particleSize: number; text: string };
   private planeArea: Mesh<PlaneGeometry, MeshBasicMaterial, Object3DEventMap>;
   private particles: Points<BufferGeometry<NormalBufferAttributes>, ShaderMaterial, Object3DEventMap>;
+  private geometryCopy: BufferGeometry<NormalBufferAttributes>;
   private currenPosition: Vector3;
 
   constructor(scene: Scene, font: Font, particle: Texture, camera: PerspectiveCamera, renderer: WebGLRenderer) {
@@ -202,18 +203,199 @@ class CreateParticles {
     const intersects = this.raycaster.intersectObject(this.planeArea);
 
     if (intersects.length > 0) {
+      // 当前文字粒子的坐标
+      const pos = this.particles.geometry.attributes.position;
+      // 初始文字粒子的坐标
+      const copy = this.geometryCopy.attributes.position;
+      // 当前文字粒子的颜色
+      const coulors = this.particles.geometry.attributes.customColor;
+      //
+      const size = this.particles.geometry.attributes.size;
 
-      this.particles.material.uniforms.time.value = time;
-      // this.particles.material.uniforms.mouseIn3d.value = intersects[0].point;
-      this.particles.material.uniforms.mouseIn3d.value = new Vector3(this.mouse.x, this.mouse.y, 0, );
-      this.particles.material.uniforms.defaultEase.value = this.data.ease;
-      this.particles.material.uniforms.defaultSize.value = this.data.particleSize;
+      // mx my mz 就是三维空间中鼠标的位置
+      const mx = intersects[0].point.x;
+      const my = intersects[0].point.y;
+      const mz = intersects[0].point.z;
+      // 在 mx my mz 创建一个矩形, 方便调试, 3秒后移除掉, 通过这段代码可以, mx my mz 是三维空间中当前鼠标的位置
+      // const rect = new Mesh(
+      //   new PlaneGeometry(1, 1),
+      //   new MeshBasicMaterial({color: 0xff0000}),
+      // )
+      // rect.position.set(mx, my, mz)
+      // this.scene.add(rect)
+      //  setTimeout(() => {
+      //    this.scene.remove(rect)
+      //  }, 3000)
 
-      if (Math.random() > 0.9) {
-        console.log(intersects[0].point)
+      // 循环每一个粒子
+      for (var i = 0, l = pos.count; i < l; i++) {
+        // 获取初始位置
+        const initX = copy.getX(i);
+        const initY = copy.getY(i);
+        const initZ = copy.getZ(i);
+
+        // 获取粒子当前位置
+        let px = pos.getX(i);
+        let py = pos.getY(i);
+        let pz = pos.getZ(i);
+
+        // 修改粒子的 customColor 和 size 属性
+        this.colorChange.setHSL(.5, 1, 1)
+        coulors.setXYZ(i, this.colorChange.r, this.colorChange.g, this.colorChange.b)
+        coulors.needsUpdate = true;
+
+        size.array[i] = this.data.particleSize;
+        size.needsUpdate = true;
+
+        // dx 表示鼠标的 x 坐标 mx 与粒子的 x 坐标 px 之间的差值。
+        // dy 表示鼠标的 y 坐标 my 与粒子的 y 坐标 py 之间的差值。
+        let dx = mx - px;
+        let dy = my - py;
+        const dz = mz - pz;
+
+        // 欧几里得距离: 欧几里得距离是指在二维平面上，两点之间的直线距离。它可以通过勾股定理计算得出，即 sqrt((mx - px)^2 + (my - py)^2)。
+        const mouseDistance = this.distance(mx, my, px, py)
+
+        // 鼠标越靠近当前粒子的位置, d 越大, 反之则越小
+        let d = dx * dx + dy * dy;
+
+        /**
+         * 这个是力的模拟, 当 d 越大, f 就越小, 作用是模拟鼠标对粒子施加的力的强度
+         * 参考图像 https://www.desmos.com/calculator/bo1bner62o
+         *
+         * f 可以被理解为对力的模拟，特别是在物理模拟中，它通常表示一个物体对另一个物体施加的力的强度。在这个特定的上下文中，f 表示鼠标对粒子施加的力的强度，这个力可以是吸引力或排斥力，取决于代码中的逻辑和鼠标的状态（例如，鼠标是否被按下）。
+         *
+         * 在 render 函数中，f 的意义和意图可以从以下几个方面来理解：
+         *
+         * 交互性：f 的存在使得粒子系统能够响应用户的交互，即鼠标的移动。通过改变 f 的值，粒子的行为会随之改变，从而创造出一种动态的、交互式的视觉效果。
+         *
+         * 衰减效应：f 与 d（距离的平方和）成反比关系，这意味着随着粒子与鼠标之间距离的增加，粒子受到的力会减弱。这种衰减效应模拟了现实世界中力的传播方式，即力随着距离的增加而减弱。
+         *
+         * 控制粒子行为：f 的值被用来计算粒子的新位置，这直接影响粒子的移动。通过调整 f 的值，可以控制粒子是向鼠标靠拢（吸引力）还是远离鼠标（排斥力），以及这种移动的速度和幅度。
+         *
+         * 视觉反馈：f 的计算和应用为用户提供了一种视觉反馈，用户可以通过移动鼠标来直接影响粒子系统的行为。这种反馈增强了用户体验，使得用户感觉自己能够控制和影响场景中的元素。
+         *
+         * 动画效果：f 的动态变化是实现动画效果的关键。随着鼠标的移动，f 的值不断更新，导致粒子的位置和颜色也随之变化，从而创造出一种连续的、流畅的动画效果。
+         *
+         * 总的来说，f 在 render 函数中的意义是作为一个力的模拟，用于控制粒子系统对鼠标交互的响应。它的意图是通过模拟力和距离之间的关系，实现一个交互式的、动态的粒子动画效果，为用户提供一种直观和有趣的视觉体验。
+         */
+        const f = -this.data.area / d;
+
+        if (this.buttom) {
+
+          const t = Math.atan2(dy, dx);
+          px -= f * Math.cos(t);
+          py -= f * Math.sin(t);
+
+          this.colorChange.setHSL(.5 + zigzagTime, 1.0, .5)
+          coulors.setXYZ(i, this.colorChange.r, this.colorChange.g, this.colorChange.b)
+          coulors.needsUpdate = true;
+
+          if ((px > (initX + 70)) || (px < (initX - 70)) || (py > (initY + 70) || (py < (initY - 70)))) {
+
+            this.colorChange.setHSL(.15, 1.0, .5)
+            coulors.setXYZ(i, this.colorChange.r, this.colorChange.g, this.colorChange.b)
+            coulors.needsUpdate = true;
+
+          }
+
+        } else {
+          if (mouseDistance < this.data.area) {
+            /**
+             * 通过 atan2 可以得到一个弧度值, 值为鼠标与粒子之间的夹角弧度
+             * PI = 180 度
+             * PI / 2 = 90 度
+             * 1 度 = 180度 / PI
+             *
+             * 如果鼠标在粒子的正右方,夹角为 0
+             * 如果鼠标在粒子的正上方,夹角为 π/2
+             * 如果鼠标在粒子的正左方,夹角为 π 或 -π
+             * 如果鼠标在粒子的正下方,夹角为 -π/2
+             *
+             * 坐标系如下
+             *         -90°
+             *          |
+             *          |
+             *          |
+             *          |
+             * 180 ______________ 0°
+             *          |
+             *          |
+             *          |
+             *          |
+             *        -90°
+             */
+            const t = Math.atan2(dy, dx);
+            // 下面代码解除注释后会在控制台打印夹角的度数 方便调试, random > 0.9 防止卡死..
+            // if (Math.random() > 0.9) {
+            //   console.log(t * (180 / Math.PI))
+            // }
+
+            /**
+             * 通过运行代码可以看到现在的效果是鼠标移动到粒子上时会产生一个粒子被推开的效果, 并且底部还有一个完整的 shape(文字)
+             * 其实文字就是 i % 5 == 0 时渲染的, 试着把 5 变小就会发现底部 shape 变清晰, 反之则变模糊
+             * 这是因为当这个 if 进去的比较多时底部 shape 渲染的次数就多, 从而视觉上更清晰
+             */
+            if (i % 5 == 0) {
+
+              px -= .03 * Math.cos(t);
+              py -= .03 * Math.sin(t);
+
+              this.colorChange.setHSL(.15, 1.0, .5)
+              coulors.setXYZ(i, this.colorChange.r, this.colorChange.g, this.colorChange.b)
+              coulors.needsUpdate = true;
+
+              size.array[i] = this.data.particleSize / 1.2;
+              size.needsUpdate = true;
+
+            }
+            else {
+              /**
+               * 上面提到 i % 5 == 0 时是渲染的底部文字, 而这里渲染的正是被鼠标推动的文字
+               *
+               * t: 鼠标与粒子的夹角
+               * f: 根据鼠标距离与当前粒子计算出来的力, 可以理解成就是半径
+               * cos(t): 计算 x 在 t 弧度上的位置
+               * sin(t): 计算 y 在 t 弧度上的位置
+               *
+               * 这里的原理是通过上面计算的 f 作为力施加在 xy 上, 计算出新的坐标
+               *
+               */
+
+              px += f * Math.cos(t);
+              py += f * Math.sin(t);
+
+              pos.setXYZ(i, px, py, pz);
+              pos.needsUpdate = true;
+
+              // 这里让粒子新的大小比原来大一些, 这样就可以盖住底部的 shape, 试着修改 particleSize 或者把 1.3 修改成更大或者更小的值试试
+              size.array[i] = this.data.particleSize * 1.3;
+              size.needsUpdate = true;
+            }
+
+            // 如果新的位置比原来的位置远10像素则改变其颜色, 并且粒子也变得更小
+            if ((px > (initX + 10)) || (px < (initX - 10)) || (py > (initY + 10) || (py < (initY - 10)))) {
+
+              this.colorChange.setHSL(.15, 1.0, .5)
+              coulors.setXYZ(i, this.colorChange.r, this.colorChange.g, this.colorChange.b)
+              coulors.needsUpdate = true;
+
+              size.array[i] = this.data.particleSize / 1.8;
+              size.needsUpdate = true;
+
+            }
+          }
+
+        }
+
+        px += (initX - px) * this.data.ease;
+        py += (initY - py) * this.data.ease;
+        pz += (initZ - pz) * this.data.ease;
+
+        pos.setXYZ(i, px, py, pz);
+        pos.needsUpdate = true;
+
       }
-
-      return
     }
   }
 
@@ -274,31 +456,57 @@ class CreateParticles {
       })
     }
 
+    // 大概为 1500 * 11 + 2 * 750 = 18000
+    // console.log(thePoints)
+    // 1500 * 11 + 2 * 750 * 3 = 54000
+    // console.log(colors)
+    // 1500 * 11 + 2 * 750 = 18000
+    // console.log(sizes)
+
     const geoParticles = new BufferGeometry()
       .setFromPoints(thePoints)
       .translate(xMid, yMid, 0)
 
+    // 存到 attr 里面
+    geoParticles.setAttribute('customColor', new Float32BufferAttribute(colors, 3));
     geoParticles.setAttribute('size', new Float32BufferAttribute(sizes, 1));
-    geoParticles.setAttribute('initPosition', new Float32BufferAttribute(sizes, 3));
 
     const material = new ShaderMaterial({
       uniforms: {
+        // 为 shader 存入颜色和纹理变量
         color: {value: new Color(0xffffff)},
         pointTexture: {value: this.particleImg},
-        time: { value: 0.0 },
-        mouseIn3d: { value: new Vector3() },
-        defaultSize: { value: this.data.particleSize },
-        defaultEase: { value: this.data.ease },
       },
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
+      /**
+       *
+       * https://www.youtube.com/watch?v=AxopC4yW4uY
+       *
+       * blending属性用于设置材质的混合模式。这里设置为AdditiveBlending,表示使用加法混合。
+       *
+       * 加法混合的效果是,将材质的颜色值与背景的颜色值相加。这常用于创建发光、火焰等效果,因为加法混合会让亮度不断累加,产生更亮的效果。
+       */
       blending: AdditiveBlending,
+      /**
+       * 深度测试的作用是决定哪些面片可以渲染、哪些被遮挡。默认情况下,深度测试是开启的。渲染时,远处的物体会被近处的物体遮挡。
+       *
+       * 禁用深度测试后,渲染顺序就完全取决于物体添加到场景的顺序,后添加的物体会覆盖先添加的物体,与远近无关。
+       * 这种做法常用于渲染总是显示在最前面的效果,如火焰粒子、镜头光晕等。
+       */
       depthTest: false,
       transparent: true,
     })
 
+    /**
+     * font -> shape(生成形状) -> shape.getSpacedPoints(根据形状变成粒子) -> new BufferGeometry().setFromPoints(thePoints) 变成 BufferGeometry
+     */
     this.particles = new Points(geoParticles, material);
     this.scene.add(this.particles);
+
+    // 这里是存一份初始的 geometry 的拷贝, 主要是为了用其原始的 position 属性
+    this.geometryCopy = new BufferGeometry();
+    this.geometryCopy.copy(this.particles.geometry);
   }
 
 
@@ -349,12 +557,15 @@ class CreateParticles {
   }
 
   distance(x1: number, y1: number, x2: number, y2: number) {
-    return Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
+    return Math.sqrt(
+      Math.pow((x1 - x2), 2)
+      + Math.pow((y1 - y2), 2)
+    );
   }
 
 }
 
-main3()
+main()
 
 /**
  * 1. 声明了两个attribute变量size和customColor,分别表示点的大小和自定义颜色。
@@ -366,37 +577,14 @@ main3()
  *  3.4 计算最终的裁剪空间坐标gl_Position
  */
 const vertexShader = `
-  #define PI 3.1415926535897932384626433832795
-
-  uniform float time;
-  uniform vec3 initPosition;
-  uniform float defaultEase;
-
   attribute float size;
-  attribute float defaultSize;
-  attribute vec3 mouseIn3d;
-
+  attribute vec3 customColor;
   varying vec3 vColor;
-  varying float vTime;
-  varying float vSize;
-
-  float distanceTo(float x1, float y1, float x2, float y2) {
-    return sqrt(pow(x1 - x2, 2.0) + pow(y1 - y2, 2.0));
-  }
-
-  float atan2(in float y, in float x) {
-    bool s = (abs(x) > abs(y));
-    return mix(PI/2.0 - atan(x,y), atan(y,x), s);
-  }
 
   void main() {
-    vTime = time;
-    vSize = 1.0;
-
-    vColor = mouseIn3d;
-    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-
-    gl_PointSize = vSize * (300.0 / -mvPosition.z);
+    vColor = customColor;
+    vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+    gl_PointSize = size * ( 300.0 / -mvPosition.z );
     gl_Position = projectionMatrix * mvPosition;
   }
 `
@@ -410,19 +598,12 @@ const vertexShader = `
  *  3.3 将片元颜色和纹理颜色相乘得到最终颜色
  */
 const fragmentShader = `
-  #define PI 3.1415926535897932384626433832795
-
-  uniform float colorChangeSpeed;
-  uniform vec3 mouseColor;
-  uniform sampler2D pointTexture;
-
-  varying vec3 vColor;
-  varying float vTime;
+ uniform vec3 color;
+ uniform sampler2D pointTexture;
+ varying vec3 vColor;
 
  void main() {
-   float zigzagTime = 1.0 + (sin(vTime * 2.0 * PI)) / 6.0;
-
-   gl_FragColor = vec4(vec3(1.0, 1.0, 1.0), 1.0);
-   gl_FragColor = gl_FragColor * texture2D(pointTexture, gl_PointCoord);
+   gl_FragColor = vec4( color * vColor, 1.0 );
+   gl_FragColor = gl_FragColor * texture2D( pointTexture, gl_PointCoord );
  }
 `
