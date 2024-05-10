@@ -303,6 +303,15 @@ class CreateParticles {
           if (mouseDistance < this.data.area) {
             /**
              * 通过 atan2 可以得到一个弧度值, 值为鼠标与粒子之间的夹角弧度
+             * PI = 180 度
+             * PI / 2 = 90 度
+             * 1 度 = 180度 / PI
+             *
+             * 如果鼠标在粒子的正右方,夹角为 0
+             * 如果鼠标在粒子的正上方,夹角为 π/2
+             * 如果鼠标在粒子的正左方,夹角为 π 或 -π
+             * 如果鼠标在粒子的正下方,夹角为 -π/2
+             *
              * 坐标系如下
              *         -90°
              *          |
@@ -341,6 +350,18 @@ class CreateParticles {
 
             }
             else {
+              /**
+               * 上面提到 i % 5 == 0 时是渲染的底部文字, 而这里渲染的正是被鼠标推动的文字
+               *
+               * t: 鼠标与粒子的夹角
+               * f: 根据鼠标距离与当前粒子计算出来的力, 可以理解成就是半径
+               * cos(t): 计算 x 在 t 弧度上的位置
+               * sin(t): 计算 y 在 t 弧度上的位置
+               *
+               * 这里的原理是通过上面计算的 f 作为力施加在 xy 上, 计算出新的坐标
+               *
+               */
+
               px += f * Math.cos(t);
               py += f * Math.sin(t);
 
@@ -352,6 +373,7 @@ class CreateParticles {
               size.needsUpdate = true;
             }
 
+            // 如果新的位置比原来的位置远10像素则改变其颜色, 并且粒子也变得更小
             if ((px > (initX + 10)) || (px < (initX - 10)) || (py > (initY + 10) || (py < (initY - 10)))) {
 
               this.colorChange.setHSL(.15, 1.0, .5)
