@@ -1,7 +1,6 @@
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
-import {DoubleSide, Mesh, MeshPhongMaterial, PerspectiveCamera, PlaneGeometry, Scene, ShaderMaterial, WebGLRenderer} from "three";
+import {DoubleSide, Mesh, PerspectiveCamera, PlaneGeometry, Scene, ShaderMaterial, WebGLRenderer} from "three";
 import {Font, FontLoader} from "three/examples/jsm/loaders/FontLoader";
-import {TextGeometry} from "three/examples/jsm/geometries/TextGeometry";
 
 // language=GLSL
 const patterns = [
@@ -280,7 +279,7 @@ const patterns = [
       }
     `
   },
-  // pattern17
+  // pattern17 pattern17.ts
   {
     vertexShader: `
       varying vec2 vUv;
@@ -299,7 +298,7 @@ const patterns = [
       }
     `
   },
-  // pattern18
+  // pattern18 pattern18.ts
   {
     vertexShader: `
       varying vec2 vUv;
@@ -314,6 +313,27 @@ const patterns = [
 
       void main() {
         float strength = max(abs(vUv.x - 0.5), abs(vUv.y - 0.5));
+
+        gl_FragColor = vec4(strength, strength, strength, 1.0);
+      }
+    `
+  },
+  // pattern19: import "./pattern18.ts" 控制台看输出结果
+  // 可以看到越靠近 (0.5,0.5) 值域越接近 0.0, 所以这里 step(0.2) 就会输出靠近 (0.5,0.5) 20% 范围的值
+  {
+    vertexShader: `
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+
+      void main() {
+        float strength = step(0.2, max(abs(vUv.x - 0.5), abs(vUv.y - 0.5)));
 
         gl_FragColor = vec4(strength, strength, strength, 1.0);
       }
