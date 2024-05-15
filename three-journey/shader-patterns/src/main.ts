@@ -339,6 +339,249 @@ const patterns = [
       }
     `
   },
+  // pattern20
+  {
+    vertexShader: `
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+
+      void main() {
+        float strength = step(0.2, max(abs(vUv.x - 0.5), abs(vUv.y - 0.5)));
+        strength *= 1.0 - step(0.25, max(abs(vUv.x - 0.5), abs(vUv.y - 0.5)));
+
+        gl_FragColor = vec4(strength, strength, strength, 1.0);
+      }
+    `
+  },
+  // pattern21
+  {
+    vertexShader: `
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+
+      void main() {
+        float strength = floor(vUv.x * 10.0) / 10.0;
+
+        gl_FragColor = vec4(strength, strength, strength, 1.0);
+      }
+    `
+  },
+  // pattern22
+  {
+    vertexShader: `
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+
+      void main() {
+        float strength = floor(vUv.x * 10.0) / 10.0;
+        strength *= floor(vUv.y * 10.0) / 10.0;
+
+        gl_FragColor = vec4(strength, strength, strength, 1.0);
+      }
+    `
+  },
+  // pattern23
+  {
+    vertexShader: `
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+
+      float random(vec2 st) {
+        return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453);
+      }
+
+      void main() {
+        float strength = random(vUv);
+
+        gl_FragColor = vec4(strength, strength, strength, 1.0);
+      }
+    `
+  },
+  // pattern24
+  {
+    vertexShader: `
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+
+      float random(vec2 st) {
+        return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453);
+      }
+
+      void main() {
+        vec2 gridUV = vec2(
+          floor(vUv.x * 10.0) / 10.0,
+          floor(vUv.y * 10.0) / 10.0
+        );
+        float strength = random(gridUV);
+
+        gl_FragColor = vec4(strength, strength, strength, 1.0);
+      }
+    `
+  },
+  // pattern25
+  {
+    vertexShader: `
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+
+      float random(vec2 st) {
+        return fract(sin(dot(st.xy, vec2(12.9898, 78.233))) * 43758.5453);
+      }
+
+      void main() {
+        vec2 gridUV = vec2(
+          floor(vUv.x * 10.0) / 10.0,
+          floor(vUv.y * 10.0 + vUv.x * 5.0) / 10.0
+        );
+        float strength = random(gridUV);
+
+        gl_FragColor = vec4(strength, strength, strength, 1.0);
+      }
+    `
+  },
+  // pattern26
+  {
+    vertexShader: `
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+
+      void main() {
+        float strength = length(vUv);
+
+        gl_FragColor = vec4(strength, strength, strength, 1.0);
+      }
+    `
+  },
+  // pattern27
+  {
+    vertexShader: `
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+
+      void main() {
+//        float strength = length(vUv - .5);
+        float strength = distance(vUv, vec2(0.5, 0.5));
+
+        gl_FragColor = vec4(strength, strength, strength, 1.0);
+      }
+    `
+  },
+  // pattern28
+  {
+    vertexShader: `
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+
+      void main() {
+        float strength = 1.0 - distance(vUv, vec2(0.5, 0.5));
+
+        gl_FragColor = vec4(strength, strength, strength, 1.0);
+      }
+    `
+  },
+  // pattern29
+  {
+    vertexShader: `
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+
+      void main() {
+        float strength = 0.015 / distance(vUv, vec2(0.5, 0.5));
+
+        gl_FragColor = vec4(strength, strength, strength, 1.0);
+      }
+    `
+  },
+  // pattern30
+  {
+    vertexShader: `
+      varying vec2 vUv;
+
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: `
+      varying vec2 vUv;
+
+      void main() {
+        float strength = 0.015 / distance(vUv, vec2(0.5, 0.5));
+
+        gl_FragColor = vec4(strength, strength, strength, 1.0);
+      }
+    `
+  },
 
 ]
 
