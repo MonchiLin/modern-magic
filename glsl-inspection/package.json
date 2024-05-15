@@ -6,11 +6,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "wasm": "cd glsl-parser-wasm && wasm-pack build"
   },
   "dependencies": {
     "color-convert": "^2.0.1",
+    "glsl-parser-wasm": "link:glsl-parser-wasm/pkg",
     "vanilla-picker": "^2.12.3",
+    "vite-plugin-top-level-await": "^1.4.1",
+    "vite-plugin-wasm": "^3.3.0",
     "vue": "^3.4.21"
   },
   "devDependencies": {

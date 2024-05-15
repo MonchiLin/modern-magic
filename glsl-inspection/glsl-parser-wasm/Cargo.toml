@@ -1,0 +1,16 @@
+[package]
+name = "glsl-parser-wasm"
+version = "1.0.0"
+authors = ["MonchiLin<lin912305043@gmail.com>"]
+description = "A glsl wasm wrapper"
+license = "MIT/Apache-2.0"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+glsl = "7.0.0"
+serde_json = "1.0.117"
+wasm-bindgen = { version = "0.2" }
+serde = { version = "1.0", features = ["derive"] }
+serde-wasm-bindgen = "0.4"
