@@ -1,0 +1,230 @@
+<body>
+<!--
+!!html_title Basic ray tracing demo - Computer Graphics from scratch
+-->
+<canvas id="canvas" width=600 height=600 style="border: 1px grey solid"></canvas>
+
+<script>
+
+  // ======================================================================
+  //  Low-level canvas access.
+  // ======================================================================
+
+  var canvas = document.getElementById("canvas");
+  var canvas_context = canvas.getContext("2d");
+  var canvas_buffer = canvas_context.getImageData(0, 0, canvas.width, canvas.height);
+  /**
+   * canvas_pitch 表示 canvas_buffer 中每一行像素所占的字节数。
+   * 这里将缓冲区宽度乘以4,是因为对于一个像素,
+   * ImageData 对象使用4个值来表示:红色、绿色、蓝色和透明度,每个值占1个字节。
+   * 计算 canvas_pitch 是为了后续方便通过偏移量来访问 canvas_buffer 中的像素数据。
+   * @type {number}
+   */
+  var canvas_pitch = canvas_buffer.width * 4;
+
+
+  // 将指定坐标存入 buffer 里面
+  var PutPixel = function (x, y, color) {
+    // x = 600 / 2 + x 这一步是把 x 定位到以 canvas 中心为原点的位置
+
+    x = (canvas.width / 2) + x;
+    y = (canvas.height / 2) - y - 1;
+
+    /**
+     *       -300,-300                300,0
+     *           _______________________
+     *           |                     |
+     *           |                     |
+     *           |                     |
+     *           |                     |
+     *           |         Ori         |
+     *           |                     |
+     *           |                     |
+     *           |                     |
+     *           |                     |
+     *           _______________________
+     *      -300,300                 -300, 300
+     *
+     */
+    if (x < 0 || x >= canvas.width || y < 0 || y >= canvas.height) {
+      return;
+    }
+
+    var offset = 4 * x + canvas_pitch * y;
+    canvas_buffer.data[offset++] = color[0];
+    canvas_buffer.data[offset++] = color[1];
+    canvas_buffer.data[offset++] = color[2];
+    canvas_buffer.data[offset++] = 255; // Alpha = 255 (full opacity)
+  }
+
+
+  // Displays the contents of the offscreen buffer into the canvas.
+  var UpdateCanvas = function () {
+    canvas_context.putImageData(canvas_buffer, 0, 0);
+  }
+
+
+  // ======================================================================
+  //  Linear algebra and helpers.
+  // ======================================================================
+
+  // Dot product of two 3D vectors.
+  var DotProduct = function (v1, v2) {
+    return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
+  }
+
+
+  /**
+   *
+   * @param v1
+   * @param v2
+   * @returns {[number, number, number]}
+   * @constructor
+   */
+  var Subtract = function (v1, v2) {
+    return [v1[0] - v2[0], v1[1] - v2[1], v1[2] - v2[2]];
+  }
+
+
+  // ======================================================================
+  //  A very basic raytracer.
+  // ======================================================================
+
+  // A Sphere.
+  var Sphere = function (center, radius, color) {
+    this.center = center;
+    this.radius = radius;
+    this.color = color;
+  }
+
+  // Scene setup.
+  var viewport_size = 1;
+  var projection_plane_z = 1;
+  var camera_position = [0, 0, 0];
+  var background_color = [255, 255, 255];
+  var spheres = [
+    new Sphere([0, -1, 3], 1, [255, 0, 0]),
+    new Sphere([2, 0, 4], 1, [0, 0, 255]),
+    new Sphere([-2, 0, 4], 1, [0, 255, 0])
+  ];
+
+
+  // 2d 坐标转换为视图坐标
+  var CanvasToViewport = function (p2d) {
+    return [p2d[0] * viewport_size / canvas.width,
+      p2d[1] * viewport_size / canvas.height,
+      projection_plane_z];
+  }
+
+
+  /**
+   * 光线的参数方程
+   * 光线的参数方程描述了光线上每一点的坐标, 可以写成 𝑃 (𝑡) = 𝑂 + 𝑡𝐷
+   * P(t) 表示光线上参数为 t 的点的坐标
+   * t: 朝 D 方向移动的距离
+   * O: 光线起点
+   * D: 光线方向(归一化)
+   * 光线参数方程反映了光线的几何性质,即它是一条无限长的直线,起点为 𝑂,方向为 𝐷。通过改变参数 𝑡 的值,我们可以得到光线上任意一点的坐标。
+   * ---------------------
+   * 球面方程
+   * 球面方程描述了到球心距离等于半径的所有点的集合。对于球心在 (cx, cy, cz) 的球体,它的方程可以写成:
+   * (x−cx)²+(y−cy)²+(z−cz)²=r²
+   * xyz 表示球面(把球想象成三维的, 这里的 xyz 仅仅是球面的坐标) 任意一点的坐标, 只要满足上面的公式, 就表示这个点是球面
+   * 若球的中心点恰好为原点(0,0,0)则方程可以简化为 x²+y²+z²=r²
+   * ----------------------
+   * 1. 在三维空间中到球心 C 的距离等于 r 的点 P 集合构成一个球面
+   * 2. 计算两个向量距离 d = |V1 - V2| = 开平方( (V1.x - V2.x)² + (V1.y - V2.y)² + (V1.z - V2.z)² )
+   * 3. 球面任意点到球心的距离, P 为任意点, C 为球心
+   *  3.1 P 到 C 的距离 = |P - C| = 开平方( (P.x - C.x)² + (P.y - C.y)² + (P.z - C.z)² )
+   * 4. 根据球体定义, 球面任意一点到球心的距离等于半径 r
+   *  4.1 r = 开平方( (P.x - C.x)² + (P.y - C.y)² + (P.z - C.z)² )
+   *  4.2 削去开平方 r² = (P.x - C.x)² + (P.y - C.y)² + (P.z - C.z)²
+   *  4.3 又已知 |P - C| = r
+   *  4.4 可以得到 (P - C) · (P - C) = r²
+   *
+   * 将光线方程带入球面
+   *
+   *
+   * 判断一个射线是否与球体相交
+   * @param origin - 光线的出发点(现在是相机位置)
+   * @param direction - 光线的方向,一个单位长度的三维向量
+   * @param sphere - 一个 Sphere 对象,包含球心坐标和半径等属性
+   * @returns {[number,number]}
+   * @constructor
+   */
+  var IntersectRaySphere = function (origin, direction, sphere) {
+    // 计算光线至球体的中心的距离
+    var oc = Subtract(origin, sphere.center);
+
+    /**
+     * 光线与球体的相交问题可以转化为求解一个一元二次方程。这个一元二次方程的形式如下
+     * k1 * t^2 + k2 * t + k3 = 0
+     *
+     *
+     */
+    var k1 = DotProduct(direction, direction);
+    var k2 = 2 * DotProduct(oc, direction);
+    var k3 = DotProduct(oc, oc) - sphere.radius * sphere.radius;
+
+    var discriminant = k2 * k2 - 4 * k1 * k3;
+    if (discriminant < 0) {
+      return [Infinity, Infinity];
+    }
+
+    var t1 = (-k2 + Math.sqrt(discriminant)) / (2 * k1);
+    var t2 = (-k2 - Math.sqrt(discriminant)) / (2 * k1);
+    return [t1, t2];
+  }
+
+
+  /**
+   * 光线追踪
+   * @param origin - 光线的出发点(现在是相机位置)
+   * @param direction - 光线的方向,一个单位长度的三维向量
+   * @param min_t - 光线追踪的最小距离限制，用于剪裁掉过近的交点。
+   * @param max_t - 光线追踪的最大距离限制，用于剪裁掉过远的交点。
+   * @returns {number[]|*}
+   * @constructor
+   */
+  var TraceRay = function (origin, direction, min_t, max_t) {
+    // 初始化为Infinity，用来记录光线与球体交点中最近的那个交点的距离。
+    var closest_t = Infinity;
+    // closest_sphere: 初始化为null，用来记录与光线相交的最近的球体。
+    var closest_sphere = null;
+
+    for (var i = 0; i < spheres.length; i++) {
+      // 判断是否与球相交
+      var ts = IntersectRaySphere(origin, direction, spheres[i]);
+      if (ts[0] < closest_t && min_t < ts[0] && ts[0] < max_t) {
+        closest_t = ts[0];
+        closest_sphere = spheres[i];
+      }
+      if (ts[1] < closest_t && min_t < ts[1] && ts[1] < max_t) {
+        closest_t = ts[1];
+        closest_sphere = spheres[i];
+      }
+    }
+
+    if (closest_sphere == null) {
+      return background_color;
+    }
+
+    return closest_sphere.color;
+  }
+
+
+  for (var x = -canvas.width / 2; x < canvas.width / 2; x++) {
+    for (var y = -canvas.height / 2; y < canvas.height / 2; y++) {
+      // 转换为 3d 的坐标
+      var direction = CanvasToViewport([x, y])
+      var color = TraceRay(camera_position, direction, 1, Infinity);
+      PutPixel(x, y, color);
+    }
+  }
+
+  UpdateCanvas();
+
+
+</script>
+
+</body>

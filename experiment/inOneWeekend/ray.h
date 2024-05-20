@@ -12,6 +12,7 @@ public:
     const point3& origin() const  { return orig; }
     const vec3& direction() const { return dir; }
 
+    // 返回一个新的向量, 值为原点 + 方向*距离
     point3 at(double t) const {
         return orig + t*dir;
     }
