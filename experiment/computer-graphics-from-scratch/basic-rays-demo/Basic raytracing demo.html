@@ -30,22 +30,6 @@
     x = (canvas.width / 2) + x;
     y = (canvas.height / 2) - y - 1;
 
-    /**
-     *       -300,-300                300,0
-     *           _______________________
-     *           |                     |
-     *           |                     |
-     *           |                     |
-     *           |                     |
-     *           |         Ori         |
-     *           |                     |
-     *           |                     |
-     *           |                     |
-     *           |                     |
-     *           _______________________
-     *      -300,300                 -300, 300
-     *
-     */
     if (x < 0 || x >= canvas.width || y < 0 || y >= canvas.height) {
       return;
     }
@@ -119,49 +103,174 @@
 
   /**
    * 光线的参数方程
-   * 光线的参数方程描述了光线上每一点的坐标, 可以写成 𝑃 (𝑡) = 𝑂 + 𝑡𝐷
+   * 光线的参数方程描述了光线上每一点的坐标, 可以写成 P = O + t(V-O)
+   * V-O 是光线防线, 所以又可以变成 𝑃 (𝑡) = 𝑂 + 𝑡𝐷
    * P(t) 表示光线上参数为 t 的点的坐标
    * t: 朝 D 方向移动的距离
    * O: 光线起点
    * D: 光线方向(归一化)
    * 光线参数方程反映了光线的几何性质,即它是一条无限长的直线,起点为 𝑂,方向为 𝐷。通过改变参数 𝑡 的值,我们可以得到光线上任意一点的坐标。
+   * 方程可以读作: "从原点(O)出发的射线, 沿着方向(D)前进某个量(t)"
    * ---------------------
    * 球面方程
-   * 球面方程描述了到球心距离等于半径的所有点的集合。对于球心在 (cx, cy, cz) 的球体,它的方程可以写成:
-   * (x−cx)²+(y−cy)²+(z−cz)²=r²
-   * xyz 表示球面(把球想象成三维的, 这里的 xyz 仅仅是球面的坐标) 任意一点的坐标, 只要满足上面的公式, 就表示这个点是球面
-   * 若球的中心点恰好为原点(0,0,0)则方程可以简化为 x²+y²+z²=r²
+   * 设 C 为球心, P 为某个球面的点, 则 |P-C| = r, 这个公式就是 球面所有点的集合
+   * 已知向量长度(记作 |V| )是它自身的点积 (V·V)的平方根, 也就是
+   * |P-C|               = sqrt( |P-C|·|P-C| )
+   * |P-C|               = r
+   * sqrt( (P-C)·(P-C) ) = r
+   * (P-C)·(P-C)         = r²
    * ----------------------
-   * 1. 在三维空间中到球心 C 的距离等于 r 的点 P 集合构成一个球面
-   * 2. 计算两个向量距离 d = |V1 - V2| = 开平方( (V1.x - V2.x)² + (V1.y - V2.y)² + (V1.z - V2.z)² )
-   * 3. 球面任意点到球心的距离, P 为任意点, C 为球心
-   *  3.1 P 到 C 的距离 = |P - C| = 开平方( (P.x - C.x)² + (P.y - C.y)² + (P.z - C.z)² )
-   * 4. 根据球体定义, 球面任意一点到球心的距离等于半径 r
-   *  4.1 r = 开平方( (P.x - C.x)² + (P.y - C.y)² + (P.z - C.z)² )
-   *  4.2 削去开平方 r² = (P.x - C.x)² + (P.y - C.y)² + (P.z - C.z)²
-   *  4.3 又已知 |P - C| = r
-   *  4.4 可以得到 (P - C) · (P - C) = r²
+   * 接下来就是判断是否相交, 如果相交交点在哪里
+   * 如果相交, 那么点一定即在射线上, 也在球体的表面上, 所以要求的就是同时两个方程的点
+   * (P-C)·(P-C) = r²
+   * O + tD      = P
+   * C: 已知-向量-球体原点
+   * O: 已知-向量-射线原点
+   * D: 已知-向量-光线方向
+   * r: 已知-球体半径
+   * t/P: 未知
+   * 试着把光线方程带入球体方程可得: (O + tD - C)·(O + tD - C)=r²
+   *       -->
+   * 首先让 CO = O-C, 方程就变成了 (CO + tD)·(CO + tD)=r²
+   * 利用分配律展开点积
+   * (CO + tD)·CO + (CO + td)·tD           = r²
+   * CO · CO + tD · CO + CO · tD + tD · tD = r²
+   * tD · tD + 2*(CO·tD) + CO · CO         = r²
+   * 移动 r²
+   * t*D · t*D + 2*(CO·t*D) + CO · CO - r²   = 0
+   * t² *(D·D) + 2*t*(CO · D) + CO · CO - r² = 0
+   * 把已知的项提取出来, 并且给它起个别名
+   * a = D·D
+   * b = 2*(CO · D)
+   * c = (CO · CO) - r²
+   * 然后就得到一个标准的一元二次方程
+   * a * x² + b*x + c = 0
+   * x 换成 t 得到
+   * a * t² + b*t + c = 0
+   * 利用求根公式可得相交的两个点(最远和最近)
+   * [t1, t2] = (-b (+|-) sqrt(b² - 4ac) ) / 2a
    *
-   * 将光线方程带入球面
+   * -----------
+   * 接下来要做的事
+   * 1. 计算出视口中对应的点
+   * 2. 给定相机和球体位置
+   * 3. 计算射线与球体相交的位置, 保留与相机最近的那个交点, 然后绘制颜色
+   * 通过这几步最终就可以绘制出所有的球体的可见部分
+   * P = O + t(V-O)
+   * 随着 t 的变化有三种情况
+   * t == 0:       那么 P 为 0
+   * t == 1:       那么 P 为 V
+   * t <  0:       那么 P 在 O 后面
+   * 0 <= t <= 1 : 在相机和视口之间
+   * t > 1 :       在视口前面
+   *
+   * -----------------------
+   *  假设原 Canvas 为 左上角(0,0) 右下角(600,600)
+   *  这里转换成 300,300 为原点, 所以坐标系就变成了下图
+   *
+   *   -300,-300                300,0
+   *       _______________________
+   *       |                     |
+   *       |                     |
+   *       |                     |
+   *       |                     |
+   *       |         Ori         |
+   *       |                     |
+   *       |                     |
+   *       |                     |
+   *       |                     |
+   *       _______________________
+   *   -300,300                 -300, 300
+   *
+   * main() {
+   *   O = (0,0,0)
+   *   循环 x, 从 -Cw/2 到 Cw / 2
+   *     循环 y, 从 -Ch/2 到 Ch / 2
+   *       // 计算 x,y 投影坐标到相机的距离
+   *       D = CanvasToViewport(x,y)
+   *       // 计算光线追踪得到颜色
+   *       // 1 光线追踪的最小距离限制，用于剪裁掉过近的交点
+   *       // inf 光线追踪的最大距离限制，用于剪裁掉过远的交点。
+   *       color = TraceRay(O, D, 1, inf)
+   *       // 存储颜色到像素
+   *       canvas.PutPixel(x,y,color)
+   * }
+   *
+   * 假设 Cw 为 600, cH 为 600
+   * vW = 6, vH = 6
+   * x,y = (1,1) 那么结果就为 1*6/600, 1*6/600 = (0.01, 0.01)
+   * x,y = (2,2) 那么结果就为 2*6/600, 2*6/600 = (0.02, 0.02)
+   * 这个函数的意义就是把 x,y 从 canvas 的坐标系变成 viewport 坐标系的值
+   * CanvasToViewport(x,y) {
+   *   return (x * vW / Cw, y * vH / CH);
+   * }
+   *
+   * O 射线起点
+   * D x,y 投影坐标到相机的距离
+   * sphere 包含原点(中心点的位置), 半径, 颜色的球体对象
+   * IntersectRaySphere(O, D, sphere) {
+   *   r = sphere.radius
+   *   // 射线到园中心的距离
+   *   CO = O - sphere.center
+   *
+   *   // a = D·D
+   *   // b = 2*(CO · D)
+   *   // c = (CO · CO) - r²
+   *
+   *   a = dot(D · D)
+   *   b = 2 * dot(CO, D)
+   *   c = dot(CO, CO) - r*r
    *
    *
-   * 判断一个射线是否与球体相交
-   * @param origin - 光线的出发点(现在是相机位置)
-   * @param direction - 光线的方向,一个单位长度的三维向量
-   * @param sphere - 一个 Sphere 对象,包含球心坐标和半径等属性
-   * @returns {[number,number]}
-   * @constructor
+   *   Δ = b^2 - 4ac
+   *   discriminant 有三种情况
+   *   1. Δ > 0: 有两个不同的实数根
+   *   2. Δ = 0: 有两个相同的实数根
+   *   3. Δ < 0: 方程没有实数根
+   *
+   *   discriminant = b * b - 4 * a * c
+   *
+   *   // 无实数根
+   *   if (discriminant < 0) {
+   *     return inf, inf
+   *   }
+   *
+   *   t1 = (-b + sqrt(discriminant)) / (2*a)
+   *   t2 = (-b - sqrt(discriminant)) / (2*a)
+   *
+   *   // 光线进入球体和离开球体的位置
+   *   return t1, t2
+   * }
+   *
+   *
+   * TraceRay(O, D, t_min, t_max) {
+   *   // 这个变量用于跟踪光线与场景中物体的最近交点的距离。它初始化为无穷大,表示还没有找到任何交点。
+   *   closest_t = inf;
+   *   // 这个变量用于跟踪与光线最近交点对应的球体。它初始化为 null,表示还没有找到任何交点。
+   *   closest_sphere = NULL;
+   *   循环 sphere 从 spheres {
+   *     t1,t2 = IntersectRaySphere(O, D, sphere)
+   *     如果 t1 在 t_min 和 t_max 之间 && t1 < closest_t {
+   *       closest_t = t1;
+   *       closest_sphere = sphere;
+   *     }
+   *     如果 t2 在 t_min 和 t_max 之间 && t2 < closest_t {
+   *       closest_t = t2;
+   *       closest_sphere = sphere;
+   *     }
+   *   }
+   *   如果 closest_sphere == NULL {
+   *     返回 背景颜色
+   *   }
+   *
+   *   返回 closest_sphere.color;
+   * }
+   *
    */
   var IntersectRaySphere = function (origin, direction, sphere) {
     // 计算光线至球体的中心的距离
     var oc = Subtract(origin, sphere.center);
 
-    /**
-     * 光线与球体的相交问题可以转化为求解一个一元二次方程。这个一元二次方程的形式如下
-     * k1 * t^2 + k2 * t + k3 = 0
-     *
-     *
-     */
     var k1 = DotProduct(direction, direction);
     var k2 = 2 * DotProduct(oc, direction);
     var k3 = DotProduct(oc, oc) - sphere.radius * sphere.radius;
@@ -187,13 +296,10 @@
    * @constructor
    */
   var TraceRay = function (origin, direction, min_t, max_t) {
-    // 初始化为Infinity，用来记录光线与球体交点中最近的那个交点的距离。
     var closest_t = Infinity;
-    // closest_sphere: 初始化为null，用来记录与光线相交的最近的球体。
     var closest_sphere = null;
 
     for (var i = 0; i < spheres.length; i++) {
-      // 判断是否与球相交
       var ts = IntersectRaySphere(origin, direction, spheres[i]);
       if (ts[0] < closest_t && min_t < ts[0] && ts[0] < max_t) {
         closest_t = ts[0];
